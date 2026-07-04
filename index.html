@@ -163,11 +163,14 @@
     width:100vw;
     display:flex;
     flex-direction:row;
-    overflow-x:scroll;
+    overflow-x:auto;
     overflow-y:hidden;
+    overscroll-behavior-x: contain;
+    overscroll-behavior-y: none;
     scroll-snap-type:x mandatory;
     scroll-behavior:smooth;
-    touch-action:pan-x;
+    touch-action:pan-x pinch-zoom;
+    -webkit-overflow-scrolling: touch;
   }
   .panel{
     flex:0 0 100vw;
@@ -484,7 +487,8 @@
 
   /* ---------- MOBILE TUNING ---------- */
   @media (max-width:640px){
-    .panel{ padding:84px 18px 96px; }
+    .panels{ overflow-x:auto; overflow-y:hidden; overscroll-behavior-x:contain; overscroll-behavior-y:none; touch-action:pan-x pinch-zoom; }
+    .panel{ padding:84px 18px 96px; width:100vw; }
     .panel-inner{ padding:0 2px; }
     .frame{ inset:10px; }
     .brandmark{ top:16px; left:16px; font-size:9.5px; }
@@ -581,14 +585,8 @@
           </div>
         </div>
         <div id="aboutCopy">
-          <p>Brandon leads and builds tech communities across Zimbabwe and the wider region — helping
-            <strong>revitalise Google Developer Groups (GDG) Harare</strong>, mentoring student communities
-            through Applied Machine Learning Days Africa and Zindi, and previously serving as a
-            <strong>Microsoft Learn Student Ambassador</strong>.</p>
-          <p>His work is powered by a genuine interest in everyone, and by the DBAD principle of doing
-            better and delivering. He is committed to being the help he never had, creating support
-            systems for members who need guidance, encouragement, and real-world outcomes.</p>
-          <p><strong><em>Inspire</em></strong>, <strong><em>inform</em></strong>, and <strong><em>engage</em></strong> are the pillars he uses to build stronger, more inclusive communities.</p>
+          <p>Brandon builds and leads purpose-driven tech communities across Zimbabwe and Southern Africa, grounded in the DBAD principle of doing better and delivering. He brings inclusive AI, mentorship and practical support to developers, students and everyday users.</p>
+          <p><strong><em>Inspire</em></strong>, <strong><em>inform</em></strong>, and <strong><em>engage</em></strong> are the pillars behind every community, workshop and keynote.</p>
         </div>
         <div class="log glitch-card" id="transmissionLog">
           <div class="log-title">// transmission log</div>
@@ -768,9 +766,8 @@
       const shortBio = bio.length > 520 ? `${bio.slice(0, 517)}…` : bio;
       aboutCopy.innerHTML = `
         <p><strong>${escapeHtml(speaker.tagline || 'Tech Community Lead | Speaker | Strategic Manager')}</strong></p>
-        <p>${escapeHtml(shortBio || 'Brandon leads and builds tech communities across Zimbabwe and the wider region.')}</p>
-        <p><strong>He brings genuine interest in everyone, powered by the DBAD principle of doing better and delivering.</strong> He is committed to being the help he never had and making sure every member feels supported.</p>
-        <p><strong><em>Inspire</em></strong>, <strong><em>inform</em></strong>, and <strong><em>engage</em></strong> are the pillars he uses to build stronger, more inclusive communities.</p>`;
+        <p>${escapeHtml(shortBio || 'Brandon builds and leads purpose-driven tech communities across Zimbabwe and Southern Africa, grounded in the DBAD principle of doing better and delivering. He brings inclusive AI, mentorship and practical support to developers, students and everyday users.')}</p>
+        <p><strong><em>Inspire</em></strong>, <strong><em>inform</em></strong>, and <strong><em>engage</em></strong> are the pillars behind every community, workshop and keynote.</p>`;
     }
 
     const photo = document.getElementById('speakerPhoto');
