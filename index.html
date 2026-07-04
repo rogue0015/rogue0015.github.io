@@ -463,8 +463,17 @@
   .thead h3{ font-size:clamp(1.1rem,2.4vw,1.6rem); line-height:1.3; }
   .thead .idx{ font-family:'IBM Plex Mono', monospace; color:var(--sunburst); font-size:13px; }
   .tbody{ max-height:0; overflow:hidden; transition:max-height .4s ease, opacity .3s ease; opacity:0; }
-  .titem.open .tbody{ max-height:220px; opacity:1; }
+  .titem.open .tbody{ max-height:260px; opacity:1; }
   .tbody p{ color:var(--paper-dim); font-size:14.5px; max-width:64ch; margin:14px 0 0; }
+  .see-more{ margin-top:18px; }
+  .see-more a{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono', monospace; font-size:13px;
+    color:var(--acid); text-decoration:none;
+    border-bottom:1px solid transparent;
+    transition:border-color .2s ease, color .2s ease;
+  }
+  .see-more a:hover{ color:var(--paper); border-color:var(--acid); }
   .plus{ font-family:'IBM Plex Mono', monospace; color:var(--paper-dim); transition:transform .3s ease; }
   .titem.open .plus{ transform:rotate(45deg); color:var(--acid); }
 
@@ -806,9 +815,11 @@
         const title = escapeHtml(session.title || 'Session');
         const description = cleanText(session.description || '').slice(0, 220);
         const detail = description ? `${escapeHtml(description)}${description.length >= 220 ? '…' : ''}` : 'A featured talk from the Sessionize speaker profile.';
+        const talkUrl = session.url || session.sessionUrl || session.link || (Array.isArray(session.links) ? session.links[0]?.uri : '');
+        const seeMore = talkUrl ? `<div class="see-more"><a href="${escapeHtml(talkUrl)}" target="_blank" rel="noopener">See more →</a></div>` : '';
         return `<div class="titem glitch-card">
           <div class="thead"><h3>${title}</h3><span class="plus mono">+</span></div>
-          <div class="tbody"><p>${detail}</p></div>
+          <div class="tbody"><p>${detail}</p>${seeMore}</div>
         </div>`;
       }).join('');
       talkList.innerHTML = talkRows || '<div class="titem glitch-card"><div class="thead"><h3>No talks found</h3><span class="plus mono">+</span></div><div class="tbody"><p>The live profile is currently unavailable.</p></div></div>';
@@ -950,7 +961,15 @@
     document.querySelectorAll('.titem').forEach(item => {
       if (item.dataset.talkBound === 'true') return;
       item.dataset.talkBound = 'true';
-      item.addEventListener('click', () => item.classList.toggle('open'));
+      item.addEventListener('click', (event) => {
+        if (event.target.closest('a')) return;
+        item.classList.toggle('open');
+      });
+    });
+    document.querySelectorAll('.see-more a').forEach(link => {
+      if (link.dataset.linkBound === 'true') return;
+      link.dataset.linkBound = 'true';
+      link.addEventListener('click', (event) => event.stopPropagation());
     });
   }
   bindTalkItems();
