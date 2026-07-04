@@ -748,12 +748,13 @@
     const sessions = Array.isArray(data.sessions) ? data.sessions : [];
     const events = Array.isArray(data.events) ? data.events : [];
     const countries = [...new Set(events.map((event) => parseCountry(event.location)).filter(Boolean))];
+    const talkCount = Math.max(sessions.length, events.length);
 
     const heroStats = document.getElementById('heroStats');
     if (heroStats) {
       heroStats.innerHTML = `
         <div class="stat"><div class="num mono">2020</div><div class="label">Speaking since</div></div>
-        <div class="stat"><div class="num mono">${sessions.length || '20+'}</div><div class="label">Talks &amp; workshops</div></div>
+        <div class="stat"><div class="num mono">${talkCount || '20+'}</div><div class="label">Talks &amp; workshops</div></div>
         <div class="stat"><div class="num mono">${countries.length || '06'}</div><div class="label">Countries reached</div></div>`;
     }
 
@@ -781,7 +782,7 @@
         <div class="log-row"><span>Based in</span><span>Gweru, ZW</span></div>
         <div class="log-row"><span>Active since</span><span>2020</span></div>
         <div class="log-row"><span>Latest stage</span><span>${escapeHtml(latestEvent.name || 'Featured events')}</span></div>
-        <div class="log-row"><span>Talk count</span><span>${sessions.length}</span></div>
+        <div class="log-row"><span>Talk count</span><span>${talkCount}</span></div>
         <div class="log-row"><span>Event reach</span><span>${countries.length || 0} countries</span></div>`;
     }
 
