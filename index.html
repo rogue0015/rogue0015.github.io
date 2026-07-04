@@ -281,16 +281,21 @@
   /* ---------- MARQUEE ---------- */
   .marquee{
     position:absolute; left:0; right:0;
-    white-space:nowrap; overflow:hidden;
+    overflow:hidden;
     font-family:'IBM Plex Mono', monospace;
     font-size:13px; letter-spacing:0.08em;
     color:var(--paper-dim);
     border-top:1px solid var(--line); border-bottom:1px solid var(--line);
     padding:10px 0;
   }
-  .marquee span{
-    display:inline-block; padding-right:40px;
+  .marquee-track{
+    display:inline-flex;
+    gap:40px;
     animation:scroll 22s linear infinite;
+    will-change:transform;
+  }
+  .marquee-track span{
+    white-space:nowrap;
   }
   @keyframes scroll{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
 
@@ -519,7 +524,7 @@
   <div class="bar"><i></i></div>
 </div>
 
-<div class="brandmark"><span class="dotlive"></span> BRANDON.T.BANDE // SIGNAL:AFRICA</div>
+<div class="brandmark"><span class="dotlive"></span> BRANDON.T.BANDE // ROGUE0015</div>
 <div class="coord mono" id="coord">19.4500° S 29.8167° E<br>GWERU, ZW</div>
 
 <nav class="sidenav" id="sidenav" aria-label="Section navigation">
@@ -540,15 +545,15 @@
   <section class="panel" id="p0">
     <div class="frame"></div>
     <div class="panel-inner">
-      <div class="tag"><span class="rule"></span> GWERU, ZIMBABWE — TECH COMMUNITY LEAD</div>
+      <div class="tag"><span class="rule"></span> COMMUNITY · TECH · IMPACT — GWERU, ZIMBABWE</div>
       <h1 class="display hero-head">
-        <span class="line"><span>CLOSING</span></span>
-        <span class="line"><span class="accent">AFRICA'S</span></span>
-        <span class="line"><span>AI DIVIDE.</span></span>
+        <span class="line"><span>TECH'ING</span></span>
+        <span class="line"><span class="accent">OVER THE</span></span>
+        <span class="line"><span>TECH DIVIDE.</span></span>
       </h1>
-      <p class="hero-sub">Brandon T. Bande builds and leads tech communities across Southern Africa —
+      <p class="hero-sub">Brandon T. Bande helps to build and lead community, tech, and impact across Southern Africa —
         helping developers, students, and everyday users make AI make sense, even where the
-        signal doesn't quite reach.</p>
+        other speakers doesn't quite reach.</p>
       <div class="stat-row" id="heroStats">
         <div class="stat"><div class="num mono">2020</div><div class="label">Speaking since</div></div>
         <div class="stat"><div class="num mono">20+</div><div class="label">Talks &amp; workshops</div></div>
@@ -580,11 +585,10 @@
             <strong>revitalise Google Developer Groups (GDG) Harare</strong>, mentoring student communities
             through Applied Machine Learning Days Africa and Zindi, and previously serving as a
             <strong>Microsoft Learn Student Ambassador</strong>.</p>
-          <p>His work centres on one problem: AI is advancing fast, but access to it isn't shared evenly.
-            In 2024 he began running language models offline using <strong>Ollama and Gemma</strong>, and
-            now teaches others to build with AI on the tools and networks they actually have.
-            He's currently studying toward a <strong>Master of Commerce in Strategic Management</strong>
-            while working as an ICT Graduate at Midlands State University.</p>
+          <p>His work is powered by a genuine interest in everyone, and by the DBAD principle of doing
+            better and delivering. He is committed to being the help he never had, creating support
+            systems for members who need guidance, encouragement, and real-world outcomes.</p>
+          <p><strong><em>Inspire</em></strong>, <strong><em>inform</em></strong>, and <strong><em>engage</em></strong> are the pillars he uses to build stronger, more inclusive communities.</p>
         </div>
         <div class="log glitch-card" id="transmissionLog">
           <div class="log-title">// transmission log</div>
@@ -658,7 +662,7 @@
         <span class="chip m2 glitch-card">MENTORSHIP</span>
       </div>
     </div>
-    <div class="marquee" style="bottom:60px;"><span>GWERU · HARARE · LUSAKA · KITWE · WINDHOEK · MBARARA · JOHANNESBURG · BONNY ISLAND &nbsp; GWERU · HARARE · LUSAKA · KITWE · WINDHOEK · MBARARA · JOHANNESBURG · BONNY ISLAND &nbsp;</span></div>
+    <div class="marquee" style="bottom:60px;"><div class="marquee-track"><span>GWERU · HARARE · LUSAKA · KITWE · WINDHOEK · MBARARA · JOHANNESBURG · BONNY ISLAND</span><span>GWERU · HARARE · LUSAKA · KITWE · WINDHOEK · MBARARA · JOHANNESBURG · BONNY ISLAND</span></div></div>
   </section>
 
   <!-- PANEL 4 — TALKS -->
@@ -764,7 +768,9 @@
       const shortBio = bio.length > 520 ? `${bio.slice(0, 517)}…` : bio;
       aboutCopy.innerHTML = `
         <p><strong>${escapeHtml(speaker.tagline || 'Tech Community Lead | Speaker | Strategic Manager')}</strong></p>
-        <p>${escapeHtml(shortBio || 'Brandon leads and builds tech communities across Zimbabwe and the wider region.')}</p>`;
+        <p>${escapeHtml(shortBio || 'Brandon leads and builds tech communities across Zimbabwe and the wider region.')}</p>
+        <p><strong>He brings genuine interest in everyone, powered by the DBAD principle of doing better and delivering.</strong> He is committed to being the help he never had and making sure every member feels supported.</p>
+        <p><strong><em>Inspire</em></strong>, <strong><em>inform</em></strong>, and <strong><em>engage</em></strong> are the pillars he uses to build stronger, more inclusive communities.</p>`;
     }
 
     const photo = document.getElementById('speakerPhoto');
