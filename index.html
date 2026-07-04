@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brandon T. Bande — Signal:Africa</title>
+<meta name="description" content="Brandon T. Bande — Tech Community Lead, speaker, and strategic manager based in Gweru, Zimbabwe.">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --void:#08060B;
+    --panel-glass: rgba(10,8,14,0.55);
+    --sunburst:#FF6A1F;
+    --acid:#D4FF3F;
+    --magenta:#FF3D7F;
+    --sigblue:#4DE1FF;
+    --paper:#F5EFDF;
+    --paper-dim: rgba(245,239,223,0.62);
+    --line: rgba(245,239,223,0.16);
+    --line-strong: rgba(245,239,223,0.32);
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; margin:0; background:var(--void); }
+  body{
+    color:var(--paper);
+    font-family:'Space Grotesk', sans-serif;
+    overflow:hidden;
+    cursor:none;
+  }
+  @media (max-width:760px), (hover:none){
+    body{ cursor:auto; }
+    .cursor{ display:none; }
+  }
+  ::selection{ background:var(--acid); color:var(--void); }
+  a{ color:inherit; }
+  :focus-visible{ outline:2px solid var(--acid); outline-offset:3px; }
+
+  h1,h2,h3{ margin:0; font-family:'Space Grotesk', sans-serif; }
+  .display{ font-family:'Anton', sans-serif; font-weight:400; text-transform:uppercase; letter-spacing:0.01em; }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+
+  /* ---------- BACKGROUND CANVAS ---------- */
+  #bg{
+    position:fixed; inset:0;
+    z-index:0;
+    width:100%; height:100%;
+  }
+  .grain{
+    position:fixed; inset:0; z-index:1;
+    pointer-events:none;
+    opacity:0.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- CUSTOM CURSOR ---------- */
+  .cursor{
+    position:fixed; top:0; left:0;
+    width:26px; height:26px;
+    border:1.5px solid var(--acid);
+    border-radius:50%;
+    pointer-events:none;
+    z-index:999;
+    transform:translate(-50%,-50%);
+    transition:width .18s ease, height .18s ease, border-color .18s ease, background .18s ease;
+    mix-blend-mode:difference;
+  }
+  .cursor::before, .cursor::after{
+    content:""; position:absolute; background:var(--acid);
+  }
+  .cursor::before{ width:1px; height:8px; top:-11px; left:50%; transform:translateX(-50%); }
+  .cursor::after{ width:8px; height:1px; left:-11px; top:50%; transform:translateY(-50%); }
+  .cursor.big{ width:56px; height:56px; background:rgba(212,255,63,0.12); }
+
+  /* ---------- SIDE NAV DOTS ---------- */
+  .sidenav{
+    position:fixed; left:50%; bottom:22px; transform:translateX(-50%);
+    z-index:60;
+    display:flex; flex-direction:row; gap:16px;
+    align-items:center;
+  }
+  .sidenav button{
+    width:9px; height:9px; border-radius:50%;
+    background:transparent;
+    border:1.5px solid var(--line-strong);
+    padding:0; cursor:pointer;
+    transition:background .25s, border-color .25s, transform .25s;
+  }
+  .sidenav button.active{
+    background:var(--acid); border-color:var(--acid);
+    transform:scale(1.4);
+  }
+  @media (max-width:640px){ .sidenav{ gap:11px; bottom:14px; } }
+
+  /* top mono brand mark, fixed */
+  .brandmark{
+    position:fixed; top:24px; left:28px; z-index:60;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px; letter-spacing:0.12em;
+    display:flex; align-items:center; gap:8px;
+    color:var(--paper-dim);
+  }
+  .brandmark .dotlive{
+    width:7px; height:7px; border-radius:50%; background:var(--acid);
+    box-shadow:0 0 8px 2px rgba(212,255,63,0.7);
+    animation:blink 1.8s ease-in-out infinite;
+  }
+  @keyframes blink{ 0%,100%{opacity:1;} 50%{opacity:0.25;} }
+
+  .coord{
+    position:fixed; top:24px; right:24px; z-index:60;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; color:var(--paper-dim); letter-spacing:0.06em;
+    text-align:right;
+  }
+  @media (max-width:640px){ .coord{ display:none; } }
+
+  /* ---------- BOOT OVERLAY ---------- */
+  #boot{
+    position:fixed; inset:0; z-index:200;
+    background:var(--void);
+    display:flex; align-items:center; justify-content:center;
+    flex-direction:column; gap:14px;
+    transition:opacity .6s ease, visibility .6s ease;
+  }
+  #boot.hide{ opacity:0; visibility:hidden; pointer-events:none; }
+  #boot p{
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--acid); font-size:14px; letter-spacing:0.06em;
+    min-height:20px;
+  }
+  #boot .bar{
+    width:220px; height:2px; background:rgba(245,239,223,0.15); overflow:hidden;
+  }
+  #boot .bar i{
+    display:block; height:100%; width:0%; background:var(--sunburst);
+    animation:load 1.4s ease forwards;
+  }
+  @keyframes load{ to{ width:100%; } }
+
+  /* ---------- PANELS SCAFFOLD ---------- */
+  .panels{
+    position:relative; z-index:5;
+    height:100vh; height:100dvh;
+    width:100vw;
+    display:flex;
+    flex-direction:row;
+    overflow-x:scroll;
+    overflow-y:hidden;
+    scroll-snap-type:x mandatory;
+    scroll-behavior:smooth;
+    touch-action:pan-x;
+  }
+  .panel{
+    flex:0 0 100vw;
+    height:100vh; height:100dvh;
+    scroll-snap-align:start;
+    scroll-snap-stop:always;
+    position:relative;
+    display:flex; flex-direction:column; justify-content:center;
+    padding:100px 7vw 60px;
+    overflow:hidden;
+  }
+
+  /* ---------- ARROW NAV ---------- */
+  .arrow-nav{
+    position:fixed; top:50%; transform:translateY(-50%);
+    z-index:60;
+    width:46px; height:46px;
+    border:1px solid var(--line-strong);
+    background:rgba(8,6,11,0.45);
+    backdrop-filter:blur(8px);
+    color:var(--paper);
+    font-family:'IBM Plex Mono', monospace; font-size:17px;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    transition:border-color .2s ease, color .2s ease, opacity .2s ease;
+  }
+  .arrow-nav:hover{ border-color:var(--acid); color:var(--acid); }
+  .arrow-nav[disabled]{ opacity:0.2; pointer-events:none; }
+  .arrow-nav.prev{ left:20px; }
+  .arrow-nav.next{ right:20px; }
+  @media (max-width:640px){ .arrow-nav{ display:none; } }
+  .panel-inner{ max-width:1180px; margin:0 auto; width:100%; }
+
+  .frame{
+    position:absolute; inset:18px;
+    border:1px solid var(--line);
+    pointer-events:none;
+  }
+  .frame::before, .frame::after,
+  .frame i::before, .frame i::after{
+    content:""; position:absolute; width:18px; height:18px;
+    border-color:var(--acid); border-style:solid; border-width:0;
+  }
+  .frame::before{ top:-1px; left:-1px; border-top-width:2px; border-left-width:2px; }
+  .frame::after{ bottom:-1px; right:-1px; border-bottom-width:2px; border-right-width:2px; }
+
+  .tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px; letter-spacing:0.16em; text-transform:uppercase;
+    color:var(--sigblue);
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:22px;
+  }
+  .tag .rule{ width:32px; height:1px; background:var(--sigblue); opacity:.7; }
+
+  /* glitch header hover */
+  .glitch{ position:relative; display:inline-block; }
+  .glitch:hover{ animation:glitchshake .18s steps(2) 2; }
+  .glitch:hover::before, .glitch:hover::after{
+    content:attr(data-text); position:absolute; top:0; left:0; width:100%; height:100%;
+    overflow:hidden; opacity:0.8;
+  }
+  .glitch:hover::before{ color:var(--magenta); transform:translate(2px,0); mix-blend-mode:screen; }
+  .glitch:hover::after{ color:var(--sigblue); transform:translate(-2px,0); mix-blend-mode:screen; }
+  @keyframes glitchshake{ 0%{transform:translate(0)} 50%{transform:translate(-1px,1px)} 100%{transform:translate(0)} }
+
+  /* ---------- GLITCH CARD (chips, talk items, log, photo) ---------- */
+  .glitch-card{ position:relative; isolation:isolate; }
+  .glitch-card::before, .glitch-card::after{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    opacity:0; mix-blend-mode:screen; z-index:1;
+  }
+  .glitch-card:hover{ animation:cardshake .22s steps(2) 2; }
+  .glitch-card:hover::before{
+    opacity:0.55;
+    background:linear-gradient(100deg, rgba(255,61,127,0.4), transparent 45%);
+    animation:glitchslice .35s steps(4) 1;
+  }
+  .glitch-card:hover::after{
+    opacity:0.55;
+    background:linear-gradient(260deg, rgba(77,225,255,0.4), transparent 45%);
+    animation:glitchslice2 .35s steps(4) 1;
+  }
+  @keyframes cardshake{ 0%{transform:translate(0)} 50%{transform:translate(-2px,1px)} 100%{transform:translate(0)} }
+  @keyframes glitchslice{
+    0%{ clip-path:inset(0 0 82% 0); transform:translateX(3px); }
+    35%{ clip-path:inset(24% 0 40% 0); transform:translateX(-3px); }
+    70%{ clip-path:inset(62% 0 8% 0); transform:translateX(2px); }
+    100%{ clip-path:inset(0 0 0 0); transform:translateX(0); opacity:0; }
+  }
+  @keyframes glitchslice2{
+    0%{ clip-path:inset(70% 0 0 0); transform:translateX(-3px); }
+    35%{ clip-path:inset(10% 0 55% 0); transform:translateX(3px); }
+    70%{ clip-path:inset(45% 0 20% 0); transform:translateX(-2px); }
+    100%{ clip-path:inset(0 0 0 0); transform:translateX(0); opacity:0; }
+  }
+
+  /* ---------- CLICK RIPPLE ---------- */
+  .ripple{
+    position:fixed; z-index:998; pointer-events:none;
+    width:14px; height:14px; margin:-7px 0 0 -7px;
+    border:1.5px solid var(--acid); border-radius:50%;
+    animation:rippleGrow .65s ease-out forwards;
+  }
+  @keyframes rippleGrow{
+    0%{ transform:scale(0.3); opacity:0.9; border-color:var(--acid); }
+    55%{ opacity:0.55; border-color:var(--sigblue); }
+    100%{ transform:scale(8); opacity:0; border-color:var(--magenta); }
+  }
+
+  /* ---------- MARQUEE ---------- */
+  .marquee{
+    position:absolute; left:0; right:0;
+    white-space:nowrap; overflow:hidden;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px; letter-spacing:0.08em;
+    color:var(--paper-dim);
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    padding:10px 0;
+  }
+  .marquee span{
+    display:inline-block; padding-right:40px;
+    animation:scroll 22s linear infinite;
+  }
+  @keyframes scroll{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+
+  /* ---------- PANEL 0: HERO ---------- */
+  #p0 .hero-head{
+    font-size:clamp(2.6rem, 8vw, 6.6rem);
+    line-height:0.94;
+  }
+  #p0 .hero-head .line{ display:block; overflow:hidden; }
+  #p0 .hero-head .line span{
+    display:inline-block;
+    transform:translateY(110%);
+    transition:transform .8s cubic-bezier(.16,1,.3,1);
+  }
+  #p0.active .hero-head .line span{ transform:translateY(0); }
+  #p0 .hero-head .accent{ color:var(--sunburst); -webkit-text-stroke:0; }
+
+  #p0 .hero-sub{
+    margin-top:28px; max-width:52ch; font-size:17px; color:var(--paper-dim);
+    opacity:0; transform:translateY(14px);
+    transition:opacity .7s ease .5s, transform .7s ease .5s;
+  }
+  #p0.active .hero-sub{ opacity:1; transform:translateY(0); }
+
+  .stat-row{
+    margin-top:40px; display:flex; gap:34px; flex-wrap:wrap;
+    opacity:0; transition:opacity .7s ease .7s;
+  }
+  #p0.active .stat-row{ opacity:1; }
+  .stat{ min-width:120px; }
+  .stat .num{ font-family:'Anton', sans-serif; font-size:2.4rem; color:var(--acid); }
+  .stat .label{ font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--paper-dim); letter-spacing:0.06em; text-transform:uppercase; }
+
+  .scrollcue{
+    position:absolute; bottom:60px; right:7vw;
+    font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.12em;
+    color:var(--paper-dim); display:flex; flex-direction:row-reverse; align-items:center; gap:8px;
+  }
+  .scrollcue .chev{
+    width:26px; height:1px; background:linear-gradient(90deg, var(--acid), transparent);
+    animation:chevmove 1.6s ease-in-out infinite;
+  }
+  @keyframes chevmove{ 0%{ opacity:0; transform:translateX(6px);} 50%{opacity:1;} 100%{ opacity:0; transform:translateX(-6px);} }
+
+  /* ---------- PANEL 1: ABOUT ---------- */
+  .about-grid{ display:grid; grid-template-columns:0.8fr 1.35fr 1fr; gap:36px; align-items:start; }
+  @media (max-width:1000px){ .about-grid{ grid-template-columns:1fr 1fr; } .about-grid .photo-col{ grid-row:1 / 3; } }
+  @media (max-width:700px){ .about-grid{ grid-template-columns:1fr; } .about-grid .photo-col{ grid-row:auto; max-width:200px; margin:0 auto; } }
+
+  .photo-frame{
+    position:relative; width:100%; aspect-ratio:3/4; overflow:hidden;
+    border:1px solid var(--line-strong);
+    opacity:0; transform:translateY(10px);
+    transition:opacity .6s ease, transform .6s ease;
+  }
+  #p1.active .photo-frame{ opacity:1; transform:translateY(0); }
+  .photo-frame img{
+    width:100%; height:100%; object-fit:cover; display:block;
+    filter:grayscale(1) contrast(1.08) brightness(0.85);
+    transition:filter .5s ease;
+  }
+  .photo-frame:hover img{ filter:grayscale(0) contrast(1.05) brightness(1); }
+  .photo-frame::after{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:repeating-linear-gradient(180deg, rgba(212,255,63,0.06) 0 2px, transparent 2px 4px);
+  }
+  .photo-tag{
+    position:absolute; bottom:0; left:0; right:0;
+    background:rgba(8,6,11,0.78); backdrop-filter:blur(4px);
+    padding:8px 10px;
+    font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:0.05em;
+    color:var(--acid);
+  }
+  .photo-frame.noimg{
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg, var(--sunburst), var(--magenta));
+  }
+  .photo-frame.noimg img{ display:none; }
+  .photo-frame.noimg::before{
+    content:"BB"; font-family:'Anton', sans-serif; font-size:3rem; color:var(--void);
+  }
+  .about-grid p{ color:var(--paper-dim); font-size:15.5px; margin:0 0 14px; max-width:56ch;
+    opacity:0; transform:translateY(10px); transition:opacity .6s ease, transform .6s ease; }
+  #p1.active .about-grid p{ opacity:1; transform:translateY(0); }
+  #p1.active .about-grid p:nth-child(1){ transition-delay:.15s; }
+  #p1.active .about-grid p:nth-child(2){ transition-delay:.3s; }
+  .about-grid p strong{ color:var(--paper); font-weight:600; }
+  h2.panel-title{ font-size:clamp(1.9rem,4vw,3rem); margin-bottom:26px; }
+
+  .log{
+    background:var(--panel-glass);
+    backdrop-filter:blur(6px);
+    border:1px solid var(--line);
+    padding:22px 24px;
+  }
+  .log-title{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--sigblue); margin-bottom:14px; }
+  .log-row{ display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-top:1px solid var(--line); font-size:13.5px;
+    opacity:0; transform:translateX(8px); transition:opacity .4s ease, transform .4s ease; }
+  #p1.active .log-row{ opacity:1; transform:translateX(0); }
+  .log-row:first-of-type{ border-top:none; }
+  .log-row span:first-child{ color:var(--paper-dim); }
+  .log-row span:last-child{ font-family:'IBM Plex Mono', monospace; color:var(--acid); text-align:right; }
+
+  /* ---------- PANEL 2: SIGNAL TRAIL ---------- */
+  .trail-wrap{ display:grid; grid-template-columns:1.2fr 0.8fr; gap:40px; align-items:center; }
+  @media (max-width:900px){ .trail-wrap{ grid-template-columns:1fr; } }
+  .netmap{ position:relative; height:340px; }
+  .netmap svg{ width:100%; height:100%; overflow:visible; }
+  .netmap .node{ fill:var(--sunburst); }
+  .netmap .node-lbl{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; fill:var(--paper-dim); }
+  .netmap path.route{
+    fill:none; stroke:var(--sigblue); stroke-width:1.3; opacity:.75;
+    stroke-dasharray:400; stroke-dashoffset:400;
+    transition:stroke-dashoffset 1.8s ease;
+  }
+  #p2.active .netmap path.route{ stroke-dashoffset:0; }
+  .netmap circle.node{ transform-origin:center; transform:scale(0); transition:transform .4s cubic-bezier(.34,1.56,.64,1); }
+  #p2.active .netmap circle.node{ transform:scale(1); }
+  .netmap .n1{ transition-delay:.1s;} .netmap .n2{ transition-delay:.4s;} .netmap .n3{ transition-delay:.7s;}
+  .netmap .n4{ transition-delay:1s;} .netmap .n5{ transition-delay:1.3s;} .netmap .n6{ transition-delay:1.6s;}
+
+  .bars{ display:flex; flex-direction:column; gap:20px; }
+  .bar-item .bl{ display:flex; justify-content:space-between; font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--paper-dim); margin-bottom:6px; }
+  .bar-item .track{ height:6px; background:rgba(245,239,223,0.1); position:relative; overflow:hidden; }
+  .bar-item .fill{ position:absolute; inset:0; width:0%; background:linear-gradient(90deg, var(--sunburst), var(--acid)); transition:width 1.2s cubic-bezier(.16,1,.3,1); }
+  #p2.active .bar-item .fill{ width:var(--w); }
+
+  .expand-btn{
+    margin-top:26px; background:none; border:1px solid var(--line-strong); color:var(--paper);
+    font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.06em;
+    padding:10px 16px; cursor:pointer; transition:border-color .2s, color .2s;
+  }
+  .expand-btn:hover{ border-color:var(--acid); color:var(--acid); }
+  .fulllog{
+    max-height:0; overflow:hidden; transition:max-height .5s ease;
+    margin-top:18px;
+  }
+  .fulllog.open{ max-height:260px; overflow-y:auto; touch-action:pan-y; }
+  .fulllog-row{ display:flex; gap:14px; padding:8px 0; border-top:1px solid var(--line); font-size:12.5px; font-family:'IBM Plex Mono', monospace; }
+  .fulllog-row:first-child{ border-top:none; }
+  .fulllog-row .yr{ color:var(--sunburst); min-width:42px; }
+  .fulllog-row .ev{ color:var(--paper-dim); }
+  .fulllog-row .lo{ margin-left:auto; color:var(--sigblue); white-space:nowrap; }
+
+  /* ---------- PANEL 3: EXPERTISE ---------- */
+  .chip-row{ display:flex; flex-wrap:wrap; gap:12px; margin-top:10px; }
+  .chip{
+    font-family:'IBM Plex Mono', monospace; font-size:13px; padding:10px 16px;
+    border:1px solid var(--line-strong); color:var(--paper);
+    opacity:0; transform:scale(.85); transition:opacity .4s ease, transform .4s cubic-bezier(.34,1.56,.64,1), border-color .2s, color .2s;
+  }
+  #p3.active .chip{ opacity:1; transform:scale(1); }
+  .chip:hover{ border-color:var(--acid); color:var(--acid); }
+  .chip.m2{ border-color:rgba(255,61,127,0.5); }
+  .chip.m3{ border-color:rgba(77,225,255,0.5); }
+
+  /* ---------- PANEL 4: TALKS ---------- */
+  .tlist{ display:flex; flex-direction:column; }
+  .titem{ border-top:1px solid var(--line); padding:22px 0; cursor:pointer; }
+  .titem:last-child{ border-bottom:1px solid var(--line); }
+  .thead{ display:flex; align-items:baseline; gap:18px; justify-content:space-between; }
+  .thead h3{ font-size:clamp(1.1rem,2.4vw,1.6rem); }
+  .thead .idx{ font-family:'IBM Plex Mono', monospace; color:var(--sunburst); font-size:13px; }
+  .tbody{ max-height:0; overflow:hidden; transition:max-height .4s ease; }
+  .titem.open .tbody{ max-height:200px; }
+  .tbody p{ color:var(--paper-dim); font-size:14.5px; max-width:64ch; margin:14px 0 0; }
+  .plus{ font-family:'IBM Plex Mono', monospace; color:var(--paper-dim); transition:transform .3s ease; }
+  .titem.open .plus{ transform:rotate(45deg); color:var(--acid); }
+
+  /* ---------- PANEL 5: CONTACT ---------- */
+  #p5 .cta{ font-size:clamp(2.2rem,7vw,5rem); line-height:0.98; max-width:14ch; }
+  .contact-sub{ margin-top:18px; max-width:50ch; color:var(--paper-dim); font-size:15.5px; }
+  .contact-primary{ margin-top:28px; }
+  .contact-primary a{
+    display:inline-block; padding:15px 28px;
+    border:1.5px solid var(--acid); color:var(--acid);
+    font-family:'IBM Plex Mono', monospace; font-size:13px; letter-spacing:0.08em;
+    text-decoration:none;
+    transition:background .2s ease, color .2s ease;
+  }
+  .contact-primary a:hover{ background:var(--acid); color:var(--void); }
+  .contact-links{ margin-top:22px; display:flex; flex-direction:column; gap:12px; font-family:'IBM Plex Mono', monospace; font-size:14px; }
+  .contact-links a{ text-decoration:none; color:var(--paper-dim); border-bottom:1px solid transparent; display:inline-flex; align-items:center; gap:8px; width:fit-content; transition:color .2s, border-color .2s; }
+  .contact-links a:hover{ color:var(--acid); border-color:var(--acid); }
+  .foot-note{ margin-top:60px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:11.5px; color:var(--paper-dim); font-family:'IBM Plex Mono', monospace; }
+
+  /* ---------- MOBILE TUNING ---------- */
+  @media (max-width:640px){
+    .panel{ padding:86px 6vw 100px; }
+    .frame{ inset:10px; }
+    .brandmark{ top:16px; left:16px; font-size:9.5px; }
+    #p0 .hero-head{ font-size:clamp(2.1rem, 11vw, 3rem); }
+    .hero-sub{ font-size:15.5px; }
+    .stat-row{ gap:22px 26px; }
+    .stat .num{ font-size:1.9rem; }
+    h2.panel-title{ margin-bottom:20px; }
+    .netmap{ height:240px; }
+    .netmap .node-lbl{ font-size:9px; }
+    .marquee{ font-size:11px; }
+    #p5 .cta{ font-size:clamp(1.9rem, 10vw, 3rem); }
+    .scrollcue{ bottom:70px; right:6vw; }
+    .titem .thead h3{ font-size:1.05rem; }
+    .fulllog.open{ max-height:180px; }
+  }
+    *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+<div class="grain"></div>
+<div class="cursor" id="cursor"></div>
+
+<div id="boot">
+  <p id="bootline">ESTABLISHING UPLINK...</p>
+  <div class="bar"><i></i></div>
+</div>
+
+<div class="brandmark"><span class="dotlive"></span> BRANDON.T.BANDE // SIGNAL:AFRICA</div>
+<div class="coord mono" id="coord">19.4500° S 29.8167° E<br>GWERU, ZW</div>
+
+<nav class="sidenav" id="sidenav" aria-label="Section navigation">
+  <button data-i="0" class="active" aria-label="Go to Hero"></button>
+  <button data-i="1" aria-label="Go to About"></button>
+  <button data-i="2" aria-label="Go to Signal Trail"></button>
+  <button data-i="3" aria-label="Go to Expertise"></button>
+  <button data-i="4" aria-label="Go to Talks"></button>
+  <button data-i="5" aria-label="Go to Contact"></button>
+</nav>
+
+<button class="arrow-nav prev" id="arrowPrev" aria-label="Previous section" disabled>←</button>
+<button class="arrow-nav next" id="arrowNext" aria-label="Next section">→</button>
+
+<div class="panels" id="panels">
+
+  <!-- PANEL 0 — HERO -->
+  <section class="panel" id="p0">
+    <div class="frame"></div>
+    <div class="panel-inner">
+      <div class="tag"><span class="rule"></span> GWERU, ZIMBABWE — TECH COMMUNITY LEAD</div>
+      <h1 class="display hero-head">
+        <span class="line"><span>CLOSING</span></span>
+        <span class="line"><span class="accent">AFRICA'S</span></span>
+        <span class="line"><span>AI DIVIDE.</span></span>
+      </h1>
+      <p class="hero-sub">Brandon T. Bande builds and leads tech communities across Southern Africa —
+        helping developers, students, and everyday users make AI make sense, even where the
+        signal doesn't quite reach.</p>
+      <div class="stat-row">
+        <div class="stat"><div class="num mono">2020</div><div class="label">Speaking since</div></div>
+        <div class="stat"><div class="num mono">20+</div><div class="label">Talks &amp; workshops</div></div>
+        <div class="stat"><div class="num mono">06</div><div class="label">Countries reached</div></div>
+      </div>
+    </div>
+    <div class="scrollcue"><span>SCROLL</span><span class="chev"></span></div>
+  </section>
+
+  <!-- PANEL 1 — ABOUT -->
+  <section class="panel" id="p1">
+    <div class="frame"></div>
+    <div class="panel-inner">
+      <div class="tag"><span class="rule"></span> 01 / TRANSMISSION ORIGIN</div>
+      <h2 class="display panel-title glitch" data-text="ABOUT BRANDON">ABOUT BRANDON</h2>
+      <div class="about-grid">
+        <div class="photo-col">
+          <div class="photo-frame glitch-card" id="photoFrame">
+            <img src="https://sessionize.com/image/7434-400o400o2-n3EsHmDLhg6abmEZmGCeyA.jpg"
+                 alt="Brandon T. Bande"
+                 onerror="this.parentElement.classList.add('noimg')">
+            <div class="photo-tag">FIELD ID // 0001 — GWERU, ZW</div>
+          </div>
+        </div>
+        <div>
+          <p>Brandon leads and builds tech communities across Zimbabwe and the wider region — helping
+            <strong>revitalise Google Developer Groups (GDG) Harare</strong>, mentoring student communities
+            through Applied Machine Learning Days Africa and Zindi, and previously serving as a
+            <strong>Microsoft Learn Student Ambassador</strong>.</p>
+          <p>His work centres on one problem: AI is advancing fast, but access to it isn't shared evenly.
+            In 2024 he began running language models offline using <strong>Ollama and Gemma</strong>, and
+            now teaches others to build with AI on the tools and networks they actually have.
+            He's currently studying toward a <strong>Master of Commerce in Strategic Management</strong>
+            while working as an ICT Graduate at Midlands State University.</p>
+        </div>
+        <div class="log glitch-card">
+          <div class="log-title">// transmission log</div>
+          <div class="log-row"><span>Based in</span><span>Gweru, ZW</span></div>
+          <div class="log-row"><span>Active since</span><span>2020</span></div>
+          <div class="log-row"><span>Flagship stage</span><span>TEDxBorrowdale</span></div>
+          <div class="log-row"><span>Core stack</span><span>Python / Gemini</span></div>
+          <div class="log-row"><span>Current study</span><span>M.Com, Strategy</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PANEL 2 — SIGNAL TRAIL -->
+  <section class="panel" id="p2">
+    <div class="frame"></div>
+    <div class="panel-inner">
+      <div class="tag"><span class="rule"></span> 02 / GROUND TRACK</div>
+      <h2 class="display panel-title glitch" data-text="THE SIGNAL TRAIL">THE SIGNAL TRAIL</h2>
+      <div class="trail-wrap">
+        <div class="netmap">
+          <svg viewBox="0 0 420 300">
+            <path class="route" d="M60,230 L150,80 L230,180 L320,60 L370,150 L210,230 L60,230" />
+            <g>
+              <circle class="node n1" cx="60" cy="230" r="5"></circle>
+              <text class="node-lbl" x="60" y="250">GWERU</text>
+              <circle class="node n2" cx="150" cy="80" r="5"></circle>
+              <text class="node-lbl" x="150" y="70">HARARE</text>
+              <circle class="node n3" cx="230" cy="180" r="5"></circle>
+              <text class="node-lbl" x="230" y="200">LUSAKA</text>
+              <circle class="node n4" cx="320" cy="60" r="5"></circle>
+              <text class="node-lbl" x="300" y="45">MBARARA</text>
+              <circle class="node n5" cx="370" cy="150" r="5"></circle>
+              <text class="node-lbl" x="340" y="145">WINDHOEK</text>
+              <circle class="node n6" cx="210" cy="230" r="5"></circle>
+              <text class="node-lbl" x="215" y="250">BONNY ISL.</text>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <div class="bars">
+            <div class="bar-item" style="--w:100%"><div class="bl"><span>TALKS DELIVERED</span><span>20+</span></div><div class="track"><div class="fill"></div></div></div>
+            <div class="bar-item" style="--w:75%"><div class="bl"><span>COUNTRIES REACHED</span><span>06</span></div><div class="track"><div class="fill"></div></div></div>
+            <div class="bar-item" style="--w:90%"><div class="bl"><span>YEARS ACTIVE</span><span>2020–2026</span></div><div class="track"><div class="fill"></div></div></div>
+          </div>
+          <button class="expand-btn mono" id="logBtn">VIEW FULL LOG ▾</button>
+          <div class="fulllog mono" id="fullLog">
+            <div class="fulllog-row"><span class="yr">2026</span><span class="ev">PyCon Namibia</span><span class="lo">Windhoek</span></div>
+            <div class="fulllog-row"><span class="yr">2026</span><span class="ev">AI Literacy Gweru Sessions</span><span class="lo">Gweru</span></div>
+            <div class="fulllog-row"><span class="yr">2025</span><span class="ev">DevFest Mbarara</span><span class="lo">Mbarara</span></div>
+            <div class="fulllog-row"><span class="yr">2025</span><span class="ev">PyCon Africa</span><span class="lo">Johannesburg</span></div>
+            <div class="fulllog-row"><span class="yr">2025</span><span class="ev">GDG Harare DevFest</span><span class="lo">Harare</span></div>
+            <div class="fulllog-row"><span class="yr">2025</span><span class="ev">BuildwithAI Bonny Island</span><span class="lo">Bonny</span></div>
+            <div class="fulllog-row"><span class="yr">2025</span><span class="ev">Keynote: Future of AI</span><span class="lo">Gweru</span></div>
+            <div class="fulllog-row"><span class="yr">2024</span><span class="ev">Deep Learning Indaba X</span><span class="lo">Harare</span></div>
+            <div class="fulllog-row"><span class="yr">2024</span><span class="ev">DevFest Lusaka</span><span class="lo">Lusaka</span></div>
+            <div class="fulllog-row"><span class="yr">2024</span><span class="ev">PyCon Zimbabwe</span><span class="lo">Harare</span></div>
+            <div class="fulllog-row"><span class="yr">2023</span><span class="ev">TEDxBorrowdale</span><span class="lo">Harare</span></div>
+            <div class="fulllog-row"><span class="yr">2023</span><span class="ev">DevFest Zambia</span><span class="lo">Kitwe</span></div>
+            <div class="fulllog-row"><span class="yr">2022</span><span class="ev">DevFest Zimbabwe</span><span class="lo">Harare</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PANEL 3 — EXPERTISE -->
+  <section class="panel" id="p3">
+    <div class="frame"></div>
+    <div class="panel-inner">
+      <div class="tag"><span class="rule"></span> 03 / FREQUENCY</div>
+      <h2 class="display panel-title glitch" data-text="EXPERTISE">EXPERTISE</h2>
+      <div class="chip-row">
+        <span class="chip glitch-card">COMMUNITY BUILDING</span>
+        <span class="chip m2 glitch-card">GENERATIVE AI</span>
+        <span class="chip glitch-card">PYTHON</span>
+        <span class="chip m3 glitch-card">RETRIEVAL-AUGMENTED GEN.</span>
+        <span class="chip glitch-card">GOOGLE GEMINI</span>
+        <span class="chip m2 glitch-card">AI STRATEGY</span>
+        <span class="chip m3 glitch-card">OFFLINE / EDGE AI</span>
+        <span class="chip glitch-card">COMPUTER VISION</span>
+        <span class="chip glitch-card">PUBLIC SPEAKING</span>
+        <span class="chip m2 glitch-card">MENTORSHIP</span>
+      </div>
+    </div>
+    <div class="marquee" style="bottom:60px;"><span>GWERU · HARARE · LUSAKA · KITWE · WINDHOEK · MBARARA · JOHANNESBURG · BONNY ISLAND &nbsp; GWERU · HARARE · LUSAKA · KITWE · WINDHOEK · MBARARA · JOHANNESBURG · BONNY ISLAND &nbsp;</span></div>
+  </section>
+
+  <!-- PANEL 4 — TALKS -->
+  <section class="panel" id="p4">
+    <div class="frame"></div>
+    <div class="panel-inner">
+      <div class="tag"><span class="rule"></span> 04 / TRANSMISSION LOGS</div>
+      <h2 class="display panel-title glitch" data-text="SELECTED TALKS">SELECTED TALKS</h2>
+      <div class="tlist">
+        <div class="titem glitch-card">
+          <div class="thead"><h3>Build WITH AI: a Google toolkit for real scenarios</h3><span class="plus mono">+</span></div>
+          <div class="tbody"><p>A grounded look at what "building with AI" actually means — using Firebase Studio
+            and Gemini Code Assist to ship MVPs, Gemini Deep Research to scope a product properly, and
+            edge/cloud tools like AI Studio, Gemma, and Vertex AI to finish the job.</p></div>
+        </div>
+        <div class="titem glitch-card">
+          <div class="thead"><h3>Tech communities for career growth</h3><span class="plus mono">+</span></div>
+          <div class="tbody"><p>Brandon's own path — from volunteering with GDSC to leading it, then GDG — as a
+            case study for how showing up in tech communities opens doors, personally and professionally.</p></div>
+        </div>
+        <div class="titem glitch-card">
+          <div class="thead"><h3>Easy as A, B, See: Gemini Pro for computer vision</h3><span class="plus mono">+</span></div>
+          <div class="tbody"><p>A live build of an AI-monitored CCTV system in under 30 minutes, showing how far
+            Python and Gemini Pro have lowered the barrier to entry for computer vision.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PANEL 5 — CONTACT -->
+  <section class="panel" id="p5">
+    <div class="frame"></div>
+    <div class="panel-inner">
+      <div class="tag"><span class="rule"></span> 05 / OPEN CHANNEL</div>
+      <h2 class="display cta">LET'S GET IN TOUCH.</h2>
+      <p class="contact-sub">Available for keynotes, workshops, panels, and AI strategy
+        consulting — anywhere the signal needs boosting.</p>
+      <div class="contact-primary">
+        <a href="https://www.linkedin.com/in/brandoebande" target="_blank" rel="noopener">→ MESSAGE ON LINKEDIN</a>
+      </div>
+      <div class="contact-links">
+        <a href="https://www.twitter.com/Rogue0015" target="_blank" rel="noopener">X / TWITTER — @ROGUE0015</a>
+        <a href="https://sessionize.com/brandon-bande/" target="_blank" rel="noopener">SESSIONIZE — SPEAKER PROFILE</a>
+      </div>
+      <div class="foot-note">
+        <span>BRANDON T. BANDE — GWERU, ZIMBABWE</span>
+        <span>TECH COMMUNITY LEAD · SPEAKER · STRATEGIC MANAGER</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // ---------- BOOT SEQUENCE ----------
+  const bootLines = ["ESTABLISHING UPLINK...", "GWERU, ZW → SCANNING...", "SIGNAL LOCKED."];
+  const bootEl = document.getElementById('bootline');
+  let bi = 0;
+  const bootInterval = setInterval(() => {
+    bi++;
+    if (bi < bootLines.length) bootEl.textContent = bootLines[bi];
+  }, 500);
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      clearInterval(bootInterval);
+      document.getElementById('boot').classList.add('hide');
+    }, 1500);
+  });
+
+  // ---------- CUSTOM CURSOR ----------
+  const cursor = document.getElementById('cursor');
+  let mx = innerWidth/2, my = innerHeight/2, cx = mx, cy = my;
+  window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  (function loop(){
+    cx += (mx - cx) * 0.2; cy += (my - cy) * 0.2;
+    cursor.style.transform = `translate(${cx}px, ${cy}px) translate(-50%,-50%)`;
+    requestAnimationFrame(loop);
+  })();
+  document.querySelectorAll('a, button, .chip, .titem').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+  });
+
+  // ---------- PANEL OBSERVER ----------
+  const panels = Array.from(document.querySelectorAll('.panel'));
+  const dots = Array.from(document.querySelectorAll('.sidenav button'));
+  const arrowPrev = document.getElementById('arrowPrev');
+  const arrowNext = document.getElementById('arrowNext');
+  const hues = [22, 28, 195, 320, 18, 330]; // target hue per panel (sunburst/blue/magenta mix)
+  let targetHue = hues[0];
+  let activeIndex = 0;
+
+  function updateUI(idx){
+    activeIndex = idx;
+    dots.forEach((d,i) => d.classList.toggle('active', i === idx));
+    targetHue = hues[idx] ?? hues[0];
+    arrowPrev.disabled = idx === 0;
+    arrowNext.disabled = idx === panels.length - 1;
+  }
+
+  function goToPanel(idx){
+    idx = Math.max(0, Math.min(panels.length - 1, idx));
+    panels[idx].scrollIntoView({ behavior:'smooth', inline:'start', block:'nearest' });
+    updateUI(idx);
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const idx = panels.indexOf(entry.target);
+      if (entry.isIntersecting && entry.intersectionRatio > 0.55) {
+        entry.target.classList.add('active');
+        updateUI(idx);
+      } else {
+        entry.target.classList.remove('active');
+      }
+    });
+  }, { threshold: [0.55] });
+  panels.forEach(p => io.observe(p));
+  // Activate hero immediately
+  panels[0].classList.add('active');
+  updateUI(0);
+
+  dots.forEach(d => {
+    d.addEventListener('click', () => goToPanel(+d.dataset.i));
+  });
+  arrowPrev.addEventListener('click', () => goToPanel(activeIndex - 1));
+  arrowNext.addEventListener('click', () => goToPanel(activeIndex + 1));
+
+  // ---------- KEYBOARD ARROWS ----------
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); goToPanel(activeIndex + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goToPanel(activeIndex - 1); }
+  });
+
+  // ---------- WHEEL → ONE STEP PER GESTURE ----------
+  const panelsEl = document.getElementById('panels');
+  let wheelLock = false;
+  panelsEl.addEventListener('wheel', (e) => {
+    // let internal vertical-scroll areas (like the expanded full log) handle their own scroll
+    if (e.target.closest('.fulllog.open')) return;
+    e.preventDefault();
+    if (wheelLock) return;
+    const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+    if (Math.abs(delta) < 4) return;
+    wheelLock = true;
+    goToPanel(activeIndex + (delta > 0 ? 1 : -1));
+    setTimeout(() => { wheelLock = false; }, 750);
+  }, { passive:false });
+
+  // ---------- EXPAND FULL LOG ----------
+  const logBtn = document.getElementById('logBtn');
+  const fullLog = document.getElementById('fullLog');
+  logBtn.addEventListener('click', () => {
+    fullLog.classList.toggle('open');
+    logBtn.textContent = fullLog.classList.contains('open') ? 'HIDE FULL LOG ▴' : 'VIEW FULL LOG ▾';
+  });
+
+  // ---------- TALK ACCORDION ----------
+  document.querySelectorAll('.titem').forEach(item => {
+    item.addEventListener('click', () => item.classList.toggle('open'));
+  });
+
+  // ---------- ANIMATED GRADIENT MESH BACKGROUND ----------
+  const canvas = document.getElementById('bg');
+  const ctx = canvas.getContext('2d');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---------- CLICK RIPPLE ----------
+  function spawnRipple(x, y){
+    const r = document.createElement('div');
+    r.className = 'ripple';
+    r.style.left = x + 'px';
+    r.style.top = y + 'px';
+    document.body.appendChild(r);
+    r.addEventListener('animationend', () => r.remove());
+  }
+  if (!reduceMotion) {
+    document.addEventListener('pointerdown', (e) => spawnRipple(e.clientX, e.clientY));
+  }
+  let W, H, DPR = Math.min(window.devicePixelRatio || 1, 2);
+  function resize(){
+    W = canvas.width = innerWidth * DPR;
+    H = canvas.height = innerHeight * DPR;
+    canvas.style.width = innerWidth + 'px';
+    canvas.style.height = innerHeight + 'px';
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  let curHue = hues[0];
+  const blobs = [
+    { x:0.2, y:0.3, r:0.45, s:0.00021, phase:0 },
+    { x:0.8, y:0.2, r:0.4,  s:0.00017, phase:2 },
+    { x:0.5, y:0.8, r:0.5,  s:0.00013, phase:4 },
+    { x:0.85,y:0.75,r:0.35, s:0.00025, phase:1 }
+  ];
+
+  function draw(t){
+    curHue += (targetHue - curHue) * 0.01;
+    ctx.fillStyle = '#08060B';
+    ctx.fillRect(0,0,W,H);
+    blobs.forEach((b, i) => {
+      const bx = (b.x + Math.sin(t*b.s + b.phase) * 0.08) * W;
+      const by = (b.y + Math.cos(t*b.s*1.3 + b.phase) * 0.08) * H;
+      const r = b.r * Math.max(W,H);
+      const hue = curHue + i*40;
+      const grad = ctx.createRadialGradient(bx,by,0,bx,by,r);
+      grad.addColorStop(0, `hsla(${hue}, 95%, 58%, 0.35)`);
+      grad.addColorStop(1, 'hsla(0,0%,0%,0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath(); ctx.arc(bx,by,r,0,Math.PI*2); ctx.fill();
+    });
+    if (!reduceMotion) requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+  if (reduceMotion) draw(0);
+</script>
+
+</body>
+</html>
