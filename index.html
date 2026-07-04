@@ -171,12 +171,12 @@
   }
   .panel{
     flex:0 0 100vw;
-    height:100vh; height:100dvh;
+    min-height:100vh; min-height:100dvh;
     scroll-snap-align:start;
     scroll-snap-stop:always;
     position:relative;
     display:flex; flex-direction:column; justify-content:center;
-    padding:100px 7vw 60px;
+    padding:clamp(84px, 8vh, 124px) clamp(20px, 4.2vw, 72px) clamp(88px, 10vh, 120px);
     overflow:hidden;
   }
 
@@ -199,7 +199,7 @@
   .arrow-nav.prev{ left:20px; }
   .arrow-nav.next{ right:20px; }
   @media (max-width:640px){ .arrow-nav{ display:none; } }
-  .panel-inner{ max-width:1180px; margin:0 auto; width:100%; }
+  .panel-inner{ max-width:1180px; margin:0 auto; width:100%; padding:0 clamp(4px, 1.5vw, 20px); }
 
   .frame{
     position:absolute; inset:18px;
@@ -336,7 +336,7 @@
   @keyframes chevmove{ 0%{ opacity:0; transform:translateX(6px);} 50%{opacity:1;} 100%{ opacity:0; transform:translateX(-6px);} }
 
   /* ---------- PANEL 1: ABOUT ---------- */
-  .about-grid{ display:grid; grid-template-columns:0.8fr 1.35fr 1fr; gap:36px; align-items:start; }
+  .about-grid{ display:grid; grid-template-columns:0.8fr 1.35fr 1fr; gap:clamp(24px, 3vw, 42px); align-items:start; }
   @media (max-width:1000px){ .about-grid{ grid-template-columns:1fr 1fr; } .about-grid .photo-col{ grid-row:1 / 3; } }
   @media (max-width:700px){ .about-grid{ grid-template-columns:1fr; } .about-grid .photo-col{ grid-row:auto; max-width:200px; margin:0 auto; } }
 
@@ -395,7 +395,7 @@
   .log-row span:last-child{ font-family:'IBM Plex Mono', monospace; color:var(--acid); text-align:right; }
 
   /* ---------- PANEL 2: SIGNAL TRAIL ---------- */
-  .trail-wrap{ display:grid; grid-template-columns:1.2fr 0.8fr; gap:40px; align-items:center; }
+  .trail-wrap{ display:grid; grid-template-columns:1.2fr 0.8fr; gap:clamp(24px, 3vw, 40px); align-items:center; }
   @media (max-width:900px){ .trail-wrap{ grid-template-columns:1fr; } }
   .netmap{ position:relative; height:340px; }
   .netmap svg{ width:100%; height:100%; overflow:visible; }
@@ -479,7 +479,8 @@
 
   /* ---------- MOBILE TUNING ---------- */
   @media (max-width:640px){
-    .panel{ padding:86px 6vw 100px; }
+    .panel{ padding:84px 18px 96px; }
+    .panel-inner{ padding:0 2px; }
     .frame{ inset:10px; }
     .brandmark{ top:16px; left:16px; font-size:9.5px; }
     #p0 .hero-head{ font-size:clamp(2.1rem, 11vw, 3rem); }
@@ -495,7 +496,14 @@
     .titem .thead h3{ font-size:1.05rem; }
     .fulllog.open{ max-height:180px; }
   }
-    *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
+
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{
+      animation-duration:0.01ms !important;
+      animation-iteration-count:1 !important;
+      transition-duration:0.01ms !important;
+      scroll-behavior:auto !important;
+    }
   }
 </style>
 </head>
@@ -540,7 +548,7 @@
       <p class="hero-sub">Brandon T. Bande builds and leads tech communities across Southern Africa —
         helping developers, students, and everyday users make AI make sense, even where the
         signal doesn't quite reach.</p>
-      <div class="stat-row">
+      <div class="stat-row" id="heroStats">
         <div class="stat"><div class="num mono">2020</div><div class="label">Speaking since</div></div>
         <div class="stat"><div class="num mono">20+</div><div class="label">Talks &amp; workshops</div></div>
         <div class="stat"><div class="num mono">06</div><div class="label">Countries reached</div></div>
@@ -558,13 +566,15 @@
       <div class="about-grid">
         <div class="photo-col">
           <div class="photo-frame glitch-card" id="photoFrame">
-            <img src="https://sessionize.com/image/7434-400o400o2-n3EsHmDLhg6abmEZmGCeyA.jpg"
+            <img id="speakerPhoto" src="https://sessionize.com/image/7434-400o400o2-n3EsHmDLhg6abmEZmGCeyA.jpg"
                  alt="Brandon T. Bande"
+                 loading="lazy"
+                 decoding="async"
                  onerror="this.parentElement.classList.add('noimg')">
-            <div class="photo-tag">FIELD ID // 0001 — GWERU, ZW</div>
+            <div class="photo-tag">SESSIONIZE // LIVE PROFILE</div>
           </div>
         </div>
-        <div>
+        <div id="aboutCopy">
           <p>Brandon leads and builds tech communities across Zimbabwe and the wider region — helping
             <strong>revitalise Google Developer Groups (GDG) Harare</strong>, mentoring student communities
             through Applied Machine Learning Days Africa and Zindi, and previously serving as a
@@ -575,7 +585,7 @@
             He's currently studying toward a <strong>Master of Commerce in Strategic Management</strong>
             while working as an ICT Graduate at Midlands State University.</p>
         </div>
-        <div class="log glitch-card">
+        <div class="log glitch-card" id="transmissionLog">
           <div class="log-title">// transmission log</div>
           <div class="log-row"><span>Based in</span><span>Gweru, ZW</span></div>
           <div class="log-row"><span>Active since</span><span>2020</span></div>
@@ -621,19 +631,7 @@
           </div>
           <button class="expand-btn mono" id="logBtn">VIEW FULL LOG ▾</button>
           <div class="fulllog mono" id="fullLog">
-            <div class="fulllog-row"><span class="yr">2026</span><span class="ev">PyCon Namibia</span><span class="lo">Windhoek</span></div>
-            <div class="fulllog-row"><span class="yr">2026</span><span class="ev">AI Literacy Gweru Sessions</span><span class="lo">Gweru</span></div>
-            <div class="fulllog-row"><span class="yr">2025</span><span class="ev">DevFest Mbarara</span><span class="lo">Mbarara</span></div>
-            <div class="fulllog-row"><span class="yr">2025</span><span class="ev">PyCon Africa</span><span class="lo">Johannesburg</span></div>
-            <div class="fulllog-row"><span class="yr">2025</span><span class="ev">GDG Harare DevFest</span><span class="lo">Harare</span></div>
-            <div class="fulllog-row"><span class="yr">2025</span><span class="ev">BuildwithAI Bonny Island</span><span class="lo">Bonny</span></div>
-            <div class="fulllog-row"><span class="yr">2025</span><span class="ev">Keynote: Future of AI</span><span class="lo">Gweru</span></div>
-            <div class="fulllog-row"><span class="yr">2024</span><span class="ev">Deep Learning Indaba X</span><span class="lo">Harare</span></div>
-            <div class="fulllog-row"><span class="yr">2024</span><span class="ev">DevFest Lusaka</span><span class="lo">Lusaka</span></div>
-            <div class="fulllog-row"><span class="yr">2024</span><span class="ev">PyCon Zimbabwe</span><span class="lo">Harare</span></div>
-            <div class="fulllog-row"><span class="yr">2023</span><span class="ev">TEDxBorrowdale</span><span class="lo">Harare</span></div>
-            <div class="fulllog-row"><span class="yr">2023</span><span class="ev">DevFest Zambia</span><span class="lo">Kitwe</span></div>
-            <div class="fulllog-row"><span class="yr">2022</span><span class="ev">DevFest Zimbabwe</span><span class="lo">Harare</span></div>
+            <div class="fulllog-row"><span class="yr">…</span><span class="ev">Loading speaker events…</span><span class="lo">…</span></div>
           </div>
         </div>
       </div>
@@ -668,22 +666,10 @@
     <div class="panel-inner">
       <div class="tag"><span class="rule"></span> 04 / TRANSMISSION LOGS</div>
       <h2 class="display panel-title glitch" data-text="SELECTED TALKS">SELECTED TALKS</h2>
-      <div class="tlist">
+      <div class="tlist" id="talkList">
         <div class="titem glitch-card">
-          <div class="thead"><h3>Build WITH AI: a Google toolkit for real scenarios</h3><span class="plus mono">+</span></div>
-          <div class="tbody"><p>A grounded look at what "building with AI" actually means — using Firebase Studio
-            and Gemini Code Assist to ship MVPs, Gemini Deep Research to scope a product properly, and
-            edge/cloud tools like AI Studio, Gemma, and Vertex AI to finish the job.</p></div>
-        </div>
-        <div class="titem glitch-card">
-          <div class="thead"><h3>Tech communities for career growth</h3><span class="plus mono">+</span></div>
-          <div class="tbody"><p>Brandon's own path — from volunteering with GDSC to leading it, then GDG — as a
-            case study for how showing up in tech communities opens doors, personally and professionally.</p></div>
-        </div>
-        <div class="titem glitch-card">
-          <div class="thead"><h3>Easy as A, B, See: Gemini Pro for computer vision</h3><span class="plus mono">+</span></div>
-          <div class="tbody"><p>A live build of an AI-monitored CCTV system in under 30 minutes, showing how far
-            Python and Gemini Pro have lowered the barrier to entry for computer vision.</p></div>
+          <div class="thead"><h3>Loading Sessionize talks…</h3><span class="plus mono">+</span></div>
+          <div class="tbody"><p>Pulling in the latest speaker sessions from the live API.</p></div>
         </div>
       </div>
     </div>
@@ -729,6 +715,138 @@
     }, 1500);
   });
 
+  // ---------- SESSIONIZE DATA (lazy loaded) ----------
+  const speakerApiUrl = 'https://sessionize.com/api/speaker/json/4rpwcz49bg';
+  const dataState = { pending:false, data:null };
+
+  function escapeHtml(value = '') {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/\"/g, '&quot;');
+  }
+
+  function cleanText(value = '') {
+    return String(value || '')
+      .replace(/\r\n/g, '\n')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function parseCountry(location = '') {
+    if (!location) return '';
+    const parts = location.split(',').map((p) => p.trim()).filter(Boolean);
+    return parts[parts.length - 1] || '';
+  }
+
+  function renderSpeakerData(data) {
+    if (!data) return;
+
+    const speaker = data.speaker || {};
+    const sessions = Array.isArray(data.sessions) ? data.sessions : [];
+    const events = Array.isArray(data.events) ? data.events : [];
+    const countries = [...new Set(events.map((event) => parseCountry(event.location)).filter(Boolean))];
+
+    const heroStats = document.getElementById('heroStats');
+    if (heroStats) {
+      heroStats.innerHTML = `
+        <div class="stat"><div class="num mono">2020</div><div class="label">Speaking since</div></div>
+        <div class="stat"><div class="num mono">${sessions.length || '20+'}</div><div class="label">Talks &amp; workshops</div></div>
+        <div class="stat"><div class="num mono">${countries.length || '06'}</div><div class="label">Countries reached</div></div>`;
+    }
+
+    const aboutCopy = document.getElementById('aboutCopy');
+    if (aboutCopy) {
+      const bio = cleanText(speaker.bio || '');
+      const shortBio = bio.length > 520 ? `${bio.slice(0, 517)}…` : bio;
+      aboutCopy.innerHTML = `
+        <p><strong>${escapeHtml(speaker.tagline || 'Tech Community Lead | Speaker | Strategic Manager')}</strong></p>
+        <p>${escapeHtml(shortBio || 'Brandon leads and builds tech communities across Zimbabwe and the wider region.')}</p>`;
+    }
+
+    const photo = document.getElementById('speakerPhoto');
+    if (photo) {
+      photo.src = speaker.photoLargeUrl || speaker.photoUrl || photo.src;
+      photo.alt = `${speaker.firstName || 'Brandon'} ${speaker.lastName || 'Bande'}`.trim();
+      photo.parentElement.classList.remove('noimg');
+    }
+
+    const transmissionLog = document.getElementById('transmissionLog');
+    if (transmissionLog) {
+      const latestEvent = events[0] || {};
+      transmissionLog.innerHTML = `
+        <div class="log-title">// transmission log</div>
+        <div class="log-row"><span>Based in</span><span>Gweru, ZW</span></div>
+        <div class="log-row"><span>Active since</span><span>2020</span></div>
+        <div class="log-row"><span>Latest stage</span><span>${escapeHtml(latestEvent.name || 'Featured events')}</span></div>
+        <div class="log-row"><span>Talk count</span><span>${sessions.length}</span></div>
+        <div class="log-row"><span>Event reach</span><span>${countries.length || 0} countries</span></div>`;
+    }
+
+    const fullLog = document.getElementById('fullLog');
+    if (fullLog) {
+      const eventRows = events.slice(0, 12).map((event) => {
+        const year = event.eventStartDate ? new Date(event.eventStartDate).getFullYear() : '—';
+        const name = escapeHtml(event.name || 'Featured event');
+        const location = escapeHtml(event.location || 'TBC');
+        return `<div class="fulllog-row"><span class="yr">${year}</span><span class="ev">${name}</span><span class="lo">${location}</span></div>`;
+      }).join('');
+      fullLog.innerHTML = eventRows || '<div class="fulllog-row"><span class="yr">—</span><span class="ev">No event data available yet.</span><span class="lo">TBC</span></div>';
+    }
+
+    const talkList = document.getElementById('talkList');
+    if (talkList) {
+      const talkRows = sessions.slice(0, 4).map((session) => {
+        const title = escapeHtml(session.title || 'Session');
+        const description = cleanText(session.description || '').slice(0, 220);
+        const detail = description ? `${escapeHtml(description)}${description.length >= 220 ? '…' : ''}` : 'A featured talk from the Sessionize speaker profile.';
+        return `<div class="titem glitch-card">
+          <div class="thead"><h3>${title}</h3><span class="plus mono">+</span></div>
+          <div class="tbody"><p>${detail}</p></div>
+        </div>`;
+      }).join('');
+      talkList.innerHTML = talkRows || '<div class="titem glitch-card"><div class="thead"><h3>No talks found</h3><span class="plus mono">+</span></div><div class="tbody"><p>The live profile is currently unavailable.</p></div></div>';
+    }
+
+    bindTalkItems();
+    bindHoverTargets();
+  }
+
+  async function loadSpeakerData() {
+    if (dataState.pending || dataState.data) return;
+    dataState.pending = true;
+    try {
+      const response = await fetch(speakerApiUrl, { headers: { Accept: 'application/json' } });
+      if (!response.ok) throw new Error(`Request failed with ${response.status}`);
+      const data = await response.json();
+      dataState.data = data;
+      renderSpeakerData(data);
+    } catch (error) {
+      console.warn('Sessionize profile failed to load, keeping static fallback content.', error);
+    } finally {
+      dataState.pending = false;
+    }
+  }
+
+  const dataObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        loadSpeakerData();
+        observer.disconnect();
+      }
+    });
+  }, { rootMargin: '220px 0px', threshold: 0.2 });
+
+  const dataTarget = document.getElementById('p1');
+  if (dataTarget) dataObserver.observe(dataTarget);
+
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      if (!dataState.data && !dataState.pending) loadSpeakerData();
+    }, 1200);
+  });
+
   // ---------- CUSTOM CURSOR ----------
   const cursor = document.getElementById('cursor');
   let mx = innerWidth/2, my = innerHeight/2, cx = mx, cy = my;
@@ -738,10 +856,16 @@
     cursor.style.transform = `translate(${cx}px, ${cy}px) translate(-50%,-50%)`;
     requestAnimationFrame(loop);
   })();
-  document.querySelectorAll('a, button, .chip, .titem').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('big'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
-  });
+
+  function bindHoverTargets(){
+    document.querySelectorAll('a, button, .chip, .titem').forEach(el => {
+      if (el.dataset.hoverBound === 'true') return;
+      el.dataset.hoverBound = 'true';
+      el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+    });
+  }
+  bindHoverTargets();
 
   // ---------- PANEL OBSERVER ----------
   const panels = Array.from(document.querySelectorAll('.panel'));
@@ -817,10 +941,14 @@
     logBtn.textContent = fullLog.classList.contains('open') ? 'HIDE FULL LOG ▴' : 'VIEW FULL LOG ▾';
   });
 
-  // ---------- TALK ACCORDION ----------
-  document.querySelectorAll('.titem').forEach(item => {
-    item.addEventListener('click', () => item.classList.toggle('open'));
-  });
+  function bindTalkItems(){
+    document.querySelectorAll('.titem').forEach(item => {
+      if (item.dataset.talkBound === 'true') return;
+      item.dataset.talkBound = 'true';
+      item.addEventListener('click', () => item.classList.toggle('open'));
+    });
+  }
+  bindTalkItems();
 
   // ---------- ANIMATED GRADIENT MESH BACKGROUND ----------
   const canvas = document.getElementById('bg');
