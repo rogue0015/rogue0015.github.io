@@ -749,13 +749,12 @@
     const events = Array.isArray(data.events) ? data.events : [];
     const countries = [...new Set(events.map((event) => parseCountry(event.location)).filter(Boolean))];
     const talkCount = Math.max(sessions.length, events.length);
-    const talkLabel = talkCount >= 20 ? '20+' : talkCount || '20+';
 
     const heroStats = document.getElementById('heroStats');
     if (heroStats) {
       heroStats.innerHTML = `
         <div class="stat"><div class="num mono">2020</div><div class="label">Speaking since</div></div>
-        <div class="stat"><div class="num mono">${talkLabel}</div><div class="label">Talks &amp; workshops</div></div>
+        <div class="stat"><div class="num mono">${talkCount}</div><div class="label">Talks &amp; workshops</div></div>
         <div class="stat"><div class="num mono">${countries.length || '06'}</div><div class="label">Countries reached</div></div>`;
     }
 
