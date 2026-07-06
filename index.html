@@ -285,10 +285,10 @@
 
   .tag{
     font-family:'IBM Plex Mono', monospace;
-    font-size:12px; letter-spacing:0.16em; text-transform:uppercase;
+    font-size:9px; letter-spacing:0.16em; text-transform:uppercase;
     color:var(--sigblue);
     display:flex; align-items:center; gap:10px;
-    margin-bottom:22px;
+    margin-bottom:16.5px;
   }
   .tag .rule{ width:32px; height:1px; background:var(--sigblue); opacity:.7; }
 
@@ -370,7 +370,7 @@
 
   /* ---------- PANEL 0: HERO ---------- */
   #p0 .hero-head{
-    font-size:clamp(2.6rem, 8vw, 6.6rem);
+    font-size:clamp(1.95rem, 6vw, 4.95rem);
     line-height:0.94;
   }
   #p0 .hero-head .line{ display:block; overflow:hidden; }
@@ -383,21 +383,21 @@
   #p0 .hero-head .accent{ color:var(--sunburst); -webkit-text-stroke:0; }
 
   #p0 .hero-sub{
-    margin-top:28px; max-width:52ch; font-size:17px; color:var(--paper-dim);
+    margin-top:21px; max-width:52ch; font-size:13px; color:var(--paper-dim);
     opacity:0; transform:translateY(14px);
     transition:opacity .7s ease .5s, transform .7s ease .5s;
   }
   #p0.active .hero-sub{ opacity:1; transform:translateY(0); }
 
   .hero-cta{
-    margin-top:32px; display:flex; gap:14px; flex-wrap:wrap;
+    margin-top:24px; display:flex; gap:14px; flex-wrap:wrap;
     opacity:0; transform:translateY(12px);
     transition:opacity .7s ease .65s, transform .7s ease .65s;
   }
   #p0.active .hero-cta{ opacity:1; transform:translateY(0); }
   .hero-cta a{
-    display:inline-block; padding:14px 26px;
-    font-family:'IBM Plex Mono', monospace; font-size:13px; letter-spacing:0.08em;
+    display:inline-block; padding:10.5px 19.5px;
+    font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:0.08em;
     text-decoration:none;
     transition:background .2s ease, color .2s ease, border-color .2s ease;
   }
@@ -407,13 +407,13 @@
   .hero-cta .cta-ghost:hover{ border-color:var(--sunburst); color:var(--sunburst); }
 
   .stat-row{
-    margin-top:40px; display:flex; gap:34px; flex-wrap:wrap;
+    margin-top:30px; display:flex; gap:34px; flex-wrap:wrap;
     opacity:0; transition:opacity .7s ease .85s;
   }
   #p0.active .stat-row{ opacity:1; }
   .stat{ min-width:120px; }
-  .stat .num{ font-family:'Anton', sans-serif; font-size:2.4rem; color:var(--acid); }
-  .stat .label{ font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--paper-dim); letter-spacing:0.06em; text-transform:uppercase; }
+  .stat .num{ font-family:'Anton', sans-serif; font-size:1.8rem; color:var(--acid); }
+  .stat .label{ font-family:'IBM Plex Mono', monospace; font-size:8.25px; color:var(--paper-dim); letter-spacing:0.06em; text-transform:uppercase; }
 
   .scrollcue{
     position:absolute; bottom:60px; right:7vw;
@@ -572,7 +572,8 @@
     transition:background .2s ease, color .2s ease;
   }
   .contact-primary a:hover{ background:var(--acid); color:var(--void); }
-  .contact-links{ margin-top:22px; display:flex; flex-direction:column; gap:12px; font-family:'IBM Plex Mono', monospace; font-size:14px; }
+  .contact-links{ margin-top:22px; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:14px 28px; font-family:'IBM Plex Mono', monospace; font-size:14px; }
+  @media (max-width:900px){ .contact-links{ grid-template-columns:repeat(2, minmax(0,1fr)); } }
   .contact-links a{ text-decoration:none; color:var(--paper-dim); border-bottom:1px solid transparent; display:inline-flex; align-items:center; gap:8px; width:fit-content; transition:color .2s, border-color .2s; }
   .contact-links a:hover{ color:var(--acid); border-color:var(--acid); }
   .foot-note{ margin-top:60px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:11.5px; color:var(--paper-dim); font-family:'IBM Plex Mono', monospace; }
@@ -597,6 +598,7 @@
     .titem .thead h3{ font-size:1.05rem; }
     .fulllog.open{ max-height:220px; }
     .tbody p{ font-size:14px; }
+    .contact-links{ grid-template-columns:1fr; gap:12px; }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -681,9 +683,8 @@
           </div>
         </div>
         <div id="aboutCopy">
-          <p>Brandon builds and leads purpose-driven <strong>AI and developer communities</strong> across <strong>Zimbabwe</strong> and <strong>Africa</strong>, grounded in the DBAD principle of doing better and delivering. He brings inclusive <strong>Generative AI</strong>, mentorship and practical innovation to developers, students and everyday users.</p>
-          <p>He is the <strong>Google Developer Groups Harare</strong> organiser, a <strong>Young AI Leaders</strong> lead, and <strong>Zindi</strong>'s Zimbabwe ambassador — championing responsible Gen AI adoption and homegrown African tech innovation.</p>
-          <p><strong><em>Inspire</em></strong>, <strong><em>inform</em></strong>, and <strong><em>engage</em></strong> are the pillars behind every community, workshop and keynote.</p>
+          <p>Brandon builds and leads <strong>AI and developer communities</strong> across <strong>Zimbabwe</strong> and <strong>Africa</strong> — bringing inclusive <strong>Generative AI</strong>, mentorship and practical innovation to developers, students and everyday users.</p>
+          <p><strong>Google Developer Groups Harare</strong> organiser, <strong>Young AI Leaders</strong> lead, and <strong>Zindi</strong> Zimbabwe ambassador — championing responsible Gen AI and homegrown African innovation. Every workshop and keynote is built to <strong><em>inspire</em></strong>, <strong><em>inform</em></strong> and <strong><em>engage</em></strong>.</p>
         </div>
         <div class="log glitch-card" id="transmissionLog">
           <div class="log-title">// transmission log</div>
