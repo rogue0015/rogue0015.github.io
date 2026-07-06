@@ -6,3 +6,6 @@ docs/
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Local-only agent memory notes
+memory/
