@@ -1,0 +1,8 @@
+# Local-only project files (never published)
+CLAUDE.md
+docs/
+
+# Editor / OS noise
+.vscode/
+.DS_Store
+Thumbs.db
