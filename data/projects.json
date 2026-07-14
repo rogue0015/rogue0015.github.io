@@ -6,33 +6,9 @@
     "rationale": "The project exists to turn scattered local signals into one coherent field of trust, collaboration, and momentum."
   },
   {
-    "projectName": "Broken Dreams Lab",
+    "projectName": "Signal Atlas",
     "year": 2025,
-    "abstract": "A conceptual studio for turning failed ideas into sharp, public-facing prototypes that reveal what learning actually feels like.",
-    "rationale": "Rethinking failure as a signal makes the work more honest, more human, and more useful for the next iteration."
-  },
-  {
-    "projectName": "The Boulevard Brief",
-    "year": 2024,
-    "abstract": "A narrative-first digital archive that pairs long-form reflection with interactive storytelling and project context.",
-    "rationale": "The story behind a build matters as much as the build itself, especially when the work lives in motion."
-  },
-  {
-    "projectName": "Night Shift Studio",
-    "year": 2023,
-    "abstract": "A late-night prototype playground where concepts are tested in public and shaped by the feedback of the people who actually use them.",
-    "rationale": "The best ideas often arrive when the room is quiet and the pressure is low enough to let them breathe."
-  },
-  {
-    "projectName": "Echo Thread",
-    "year": 2022,
-    "abstract": "A modular storytelling system that threads together talks, notes, and experiments into one coherent public record.",
-    "rationale": "A project should keep its memory alive even after the spotlight moves on."
-  },
-  {
-    "projectName": "Void Compass",
-    "year": 2021,
-    "abstract": "An exploratory framework that helps communities locate the next useful opportunity in the middle of uncertainty and noise.",
-    "rationale": "Direction is often built by noticing patterns before the world names them."
+    "abstract": "A map of community-led AI initiatives that makes it easier to discover, connect, and build across Southern Africa.",
+    "rationale": "The project exists to turn scattered local signals into one coherent field of trust, collaboration, and momentum."
   }
 ]

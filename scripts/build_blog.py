@@ -52,11 +52,26 @@ def parse_front_matter(text, path):
 
 CODE_SPAN = re.compile(r"`([^`]+)`")
 
+def _rel(url):
+    """Rewrite root-absolute internal URLs relative to blogs/ so pages also work
+    when previewed from file:// (where "/" is the drive root, not the site)."""
+    if url.startswith(SITE):
+        url = url[len(SITE):] or "/"
+    if url == "/" or url.startswith("/#"):
+        return "../index.html" + url[1:]
+    if url == "/blogs/" or url == "/blogs":
+        return "index.html"
+    if url.startswith("/blogs/"):
+        return url[len("/blogs/"):]
+    if url.startswith("/"):
+        return ".." + url
+    return url
+
 def _link(m):
     text, url = m.group(1), m.group(2)
     external = url.startswith("http") and not url.startswith(SITE)
     attrs = ' target="_blank" rel="noopener"' if external else ""
-    return f'<a href="{url}"{attrs}>{text}</a>'
+    return f'<a href="{_rel(url)}"{attrs}>{text}</a>'
 
 def inline(text):
     spans = []
@@ -65,7 +80,8 @@ def inline(text):
         return f"\x00{len(spans) - 1}\x00"
     text = CODE_SPAN.sub(stash, text)
     text = html.escape(text, quote=False)
-    text = re.sub(r"!\[([^\]]*)\]\(([^)\s]+)\)", r'<img src="\2" alt="\1" loading="lazy">', text)
+    text = re.sub(r"!\[([^\]]*)\]\(([^)\s]+)\)",
+                  lambda m: f'<img src="{_rel(m.group(2))}" alt="{m.group(1)}" loading="lazy">', text)
     text = re.sub(r"\[([^\]]+)\]\(([^)\s]+)\)", _link, text)
     text = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", text)
     text = re.sub(r"(?<!\*)\*([^*\n]+)\*(?!\*)", r"<em>\1</em>", text)
@@ -137,19 +153,19 @@ def md_to_html(md):
 # ------------------------------------------------------------------ templates
 
 HEADER = """<header class="site-head">
-  <a class="brand mono" href="/"><span class="dotlive"></span> BRANDON.T.BANDE // ROGUE0015</a>
+  <a class="brand mono" href="../index.html"><span class="dotlive"></span> BRANDON.T.BANDE // ROGUE0015</a>
   <nav class="site-nav mono" aria-label="Site navigation">
-    <a href="/">HOME</a>
-    <a href="/#p4">TALKS</a>
-    <a href="/blogs/" aria-current="true">THOUGHTS</a>
-    <a href="/#p5">CONTACT</a>
+    <a href="../index.html">HOME</a>
+    <a href="../index.html#p4">TALKS</a>
+    <a href="index.html" aria-current="true">THOUGHTS</a>
+    <a href="../index.html#p5">CONTACT</a>
   </nav>
 </header>"""
 
 FOOTER = """<footer class="site-foot mono">
   <span>BRANDON T. BANDE — GWERU, ZIMBABWE</span>
   <span>
-    <a href="/">HOME</a> · <a href="/blogs/">THOUGHTS</a> · <a href="/#p4">TALKS</a> ·
+    <a href="../index.html">HOME</a> · <a href="index.html">THOUGHTS</a> · <a href="../index.html#p4">TALKS</a> ·
     <a href="https://twitter.com/Rogue0015" target="_blank" rel="noopener">X</a> ·
     <a href="https://www.linkedin.com/in/brandoebande" target="_blank" rel="noopener">LINKEDIN</a> ·
     <a href="https://sessionize.com/brandon-bande/" target="_blank" rel="noopener">SESSIONIZE</a>
@@ -184,7 +200,7 @@ $article_tags<meta name="twitter:card" content="summary">
 <meta name="twitter:creator" content="@Rogue0015">
 <meta name="twitter:title" content="$title_attr">
 <meta name="twitter:description" content="$desc_attr">
-<link rel="stylesheet" href="/blogs/blog.css">
+<link rel="stylesheet" href="blog.css">
 <script type="application/ld+json">
 $jsonld
 </script>
@@ -196,7 +212,7 @@ $header
 <main>
   <article class="post" itemscope itemtype="https://schema.org/BlogPosting">
     <header class="post-head">
-      <p class="crumbs mono"><a href="/">HOME</a> / <a href="/blogs/">THOUGHTS</a></p>
+      <p class="crumbs mono"><a href="../index.html">HOME</a> / <a href="index.html">THOUGHTS</a></p>
       <h1 itemprop="headline">$title_esc</h1>
       <p class="post-meta mono">
         <time datetime="$date_iso" itemprop="datePublished">$date_disp</time>
@@ -214,8 +230,8 @@ $pager
   <aside class="post-cta">
     <p class="mono">// KEEP THE SIGNAL GOING</p>
     <div class="cta-row">
-      <a class="btn solid" href="/blogs/">→ ALL THOUGHTS</a>
-      <a class="btn ghost" href="/#p4">→ VIEW MY TALKS</a>
+      <a class="btn solid" href="index.html">→ ALL THOUGHTS</a>
+      <a class="btn ghost" href="../index.html#p4">→ VIEW MY TALKS</a>
       <a class="btn ghost" href="https://www.linkedin.com/in/brandoebande" target="_blank" rel="noopener">→ CONNECT ON LINKEDIN</a>
     </div>
   </aside>
@@ -252,7 +268,7 @@ INDEX_TEMPLATE = Template("""<!DOCTYPE html>
 <meta name="twitter:site" content="@Rogue0015">
 <meta name="twitter:title" content="Thoughts — Blog by Brandon T. Bande (ROGUE0015)">
 <meta name="twitter:description" content="Thoughts on AI, tech community building, and strategy from Brandon T. Bande.">
-<link rel="stylesheet" href="/blogs/blog.css">
+<link rel="stylesheet" href="blog.css">
 <script type="application/ld+json">
 $jsonld
 </script>
@@ -265,8 +281,8 @@ $header
   <div class="index-tag mono"><span class="rule"></span> 06 / FIELD NOTES</div>
   <h1>Thoughts.</h1>
   <p class="index-intro">Signals from the ground — notes on AI, community building, and
-    strategy from <a href="/">Brandon T. Bande</a>, written between
-    <a href="/#p4">talks and workshops</a> across Southern Africa.</p>
+    strategy from <a href="../index.html">Brandon T. Bande</a>, written between
+    <a href="../index.html#p4">talks and workshops</a> across Southern Africa.</p>
 
   <ul class="post-list">
 $cards  </ul>
@@ -299,11 +315,33 @@ def truncate(s, limit=158):
 
 # ---------------------------------------------------------------------- build
 
+def check_post(path, slug, meta):
+    """Enforce the blogs/_post-template.md rules. Hard-fail on structure,
+    warn on SEO length targets."""
+    if not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", slug):
+        sys.exit(f"ERROR: {path.name}: slug must be lowercase-with-hyphens "
+                 "(no dates, underscores, or uppercase). Copy blogs/_post-template.md.")
+    if not meta.get("description"):
+        sys.exit(f"ERROR: {path.name}: front matter needs a 'description' "
+                 "(140-160 chars). Copy blogs/_post-template.md.")
+    if not meta["tags"]:
+        sys.exit(f"ERROR: {path.name}: front matter needs 'tags: [..]'. "
+                 "Copy blogs/_post-template.md.")
+    if "Primary Keyword Up Front" in meta["title"] or "reason to click" in meta.get("description", ""):
+        sys.exit(f"ERROR: {path.name}: still contains template placeholder text.")
+    if not 20 <= len(meta["title"]) <= 60:
+        print(f"  WARN   {path.name}: title is {len(meta['title'])} chars (target 50-60).")
+    if not 140 <= len(meta["description"]) <= 160:
+        print(f"  WARN   {path.name}: description is {len(meta['description'])} chars (target 140-160).")
+
 def load_posts():
     posts = []
     for path in sorted(BLOGS.glob("*.md")):
+        if path.name.startswith("_"):  # _post-template.md and friends — never build
+            continue
         meta, body = parse_front_matter(path.read_text(encoding="utf-8"), path)
         slug = path.stem
+        check_post(path, slug, meta)
         content = md_to_html(body)
         desc = meta.get("description") or truncate(first_paragraph(content))
         posts.append({
@@ -315,7 +353,7 @@ def load_posts():
             "tags": meta["tags"],
             "content": content,
             "url": f"{SITE}/blogs/{slug}.html",
-            "href": f"/blogs/{slug}.html",
+            "href": f"{slug}.html",
             "words": len(plain_words(content)),
         })
     posts.sort(key=lambda p: (p["date"], p["slug"]))  # oldest → newest
