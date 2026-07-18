@@ -1,14 +1,32 @@
 [
   {
-    "projectName": "Signal Atlas",
+    "projectName": "StudyBuddy",
     "year": 2026,
-    "abstract": "A map of community-led AI initiatives that makes it easier to discover, connect, and build across Southern Africa.",
-    "rationale": "The project exists to turn scattered local signals into one coherent field of trust, collaboration, and momentum."
+    "abstract": "Student-centric, AI-powered learning platform built for learners in low-resource environments. Built on open-weight large language models, it delivers a personalised, contextualised education experience shaped around each student.",
+    "rationale": "Quality, personalised education should not depend on bandwidth or budget. StudyBuddy exists to put an adaptive tutor in the hands of every learner, built on open models so it stays affordable, transparent, and grounded in local context."
   },
   {
-    "projectName": "Signal Atlas",
-    "year": 2025,
-    "abstract": "A map of community-led AI initiatives that makes it easier to discover, connect, and build across Southern Africa.",
-    "rationale": "The project exists to turn scattered local signals into one coherent field of trust, collaboration, and momentum."
+    "projectName": "Fung.ai",
+    "year": 2026,
+    "abstract": "Agentic AI automation and compliance engine for enterprise operations, engineered around data residency and sovereignty. It aligns AI governance, data residence, and enterprise objectives for secure automation and AI integration.",
+    "rationale": "Enterprises want AI in their operations without surrendering control of their data. Fung.ai exists to make automation and compliance the same motion — agents that move work forward while data stays where regulation, sovereignty, and strategy say it must."
+  },
+  {
+    "projectName": "HermeSphere",
+    "year": 2026,
+    "abstract": "WhatsApp-first, centralised event management platform for personal and organisational events — handling Call for Proposals management, payments, and event reporting from a single hub.",
+    "rationale": "Communities already organise on WhatsApp; their event tooling should live there too. HermeSphere exists to meet organisers where they are, replacing scattered forms, spreadsheets, and payment threads with one coherent pipeline from proposal to report."
+  },
+  {
+    "projectName": "Mukando",
+    "year": 2022,
+    "abstract": "Bank-backed stokvel platform for resource pooling, designed for SMEs across Africa — turning informal savings circles into structured financial infrastructure.",
+    "rationale": "African SMEs have always pooled resources; the infrastructure just never caught up. Mukando set out to formalise that tradition with novel, bank-backed rails for financial planning and collective capital, anchored in networks of entrepreneurship."
+  },
+  {
+    "projectName": "A+",
+    "year": 2020,
+    "abstract": "Online examination platform enabling students to sit university exams remotely at accredited regional centres.",
+    "rationale": "When COVID-19 made exam halls impossible, assessment could not simply stop. Born for the Hult Prize Regional Finals, A+ reimagined the university exam as something students could take close to home — secure, supervised, and within reach."
   }
 ]

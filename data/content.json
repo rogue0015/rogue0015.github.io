@@ -1,0 +1,80 @@
+{
+  "_comment": "Editable page copy for index.html — edit here, then run `python scripts/update_index.py` to sync the static SEO HTML (the page also hydrates from this file at runtime, so a plain refresh previews changes instantly). Hero stats, the transmission log, the full event log, and the talks list hydrate live from Sessionize (data/speaker.json + API) and are NOT controlled by this file. Projects live in data/projects.json.",
+  "brand": {
+    "mark": "BRANDON.T.BANDE // ROGUE0015",
+    "coordinates": ["19.4500° S 29.8167° E", "GWERU, ZW"]
+  },
+  "hero": {
+    "tag": "GEN AI · GEN Z · INNOVATION — GWERU, ZIMBABWE",
+    "headline": [
+      { "text": "TECH'ING" },
+      { "text": "OVER THE", "accent": true },
+      { "text": "TECH DIVIDE." }
+    ],
+    "subtitle": "Brandon T. Bande builds and leads AI and developer communities across Zimbabwe and Africa — helping developers, students, and everyday users turn Generative AI into real-world innovation, even where the other speakers don't quite reach.",
+    "ctas": [
+      { "label": "→ VIEW MY TALKS", "href": "#p4" },
+      { "label": "→ READ MY THOUGHTS", "href": "blogs/index.html" }
+    ]
+  },
+  "about": {
+    "tag": "01 / ------",
+    "title": "ABOUT BRANDON",
+    "photoCaption": "SESSIONIZE // LIVE PROFILE",
+    "paragraphs": [
+      "Brandon T. Bande is a Developer Advocate, Technical Strategist, and community leader dedicated to driving African tech innovation. As a Google Developer Groups Harare organizer, Young AI Leaders lead, and Zindi Ambassador, he champions responsible Generative AI adoption across the continent.",
+      "Since 2020, Brandon has delivered electrifying keynotes, panels, and workshops to diverse local and international audiences at events. Driven by the pillars of inspiring, informing, and engaging, Brandon translates complex technical concepts into byte-size insights for any audience"
+    ]
+  },
+  "signalTrail": {
+    "tag": "02 / GROUND TRACK",
+    "title": "IMPACT",
+    "bars": [
+      { "label": "TALKS DELIVERED", "value": "20+", "width": "100%" },
+      { "label": "COUNTRIES REACHED", "value": "06", "width": "75%" },
+      { "label": "YEARS ACTIVE", "value": "2020–2026", "width": "90%" }
+    ]
+  },
+  "expertise": {
+    "tag": "03 / FREQUENCY",
+    "title": "EXPERTISE",
+    "skills": [
+      { "label": " TECH COMMUNITY BUILDING" },
+      { "label": "GENERATIVE AI", "variant": "m2" },
+      { "label": "AI INNOVATION" },
+      { "label": "AI STRATEGY", "variant": "m2" },
+      { "label": "OFFLINE / EDGE AI", "variant": "m3" },
+      { "label": "COMPUTER VISION" },
+      { "label": "PUBLIC SPEAKING" },
+      { "label": "MENTORSHIP", "variant": "m2" }
+    ],
+    "affiliationsTag": "AFFILIATIONS & COMMUNITIES",
+    "affiliations": [
+      { "label": "GOOGLE DEVELOPER GROUPS HARARE — ORGANISER", "href": "https://gdg.community.dev/gdg-harare/" },
+      { "label": "YOUNG AI LEADERS — LEAD", "href": "https://aiforgood.itu.int/young-ai-leaders-community/", "variant": "m2" },
+      { "label": "ZINDI — FORMER ZIMBABWE AMBASSADOR", "href": "https://zindi.africa/", "variant": "m3" }
+    ],
+    "marquee": "GWERU · HARARE · LUSAKA · KITWE · WINDHOEK · MBARARA · JOHANNESBURG · BONNY ISLAND"
+  },
+  "talks": {
+    "tag": "04 / TRANSMISSION LOGS",
+    "title": "SELECTED TALKS"
+  },
+  "contact": {
+    "tag": "05 / OPEN CHANNEL",
+    "heading": "LET'S GET IN TOUCH.",
+    "subtitle": "Available for keynotes, workshops, panels, and AI strategy consulting.",
+    "primaryCta": { "label": "→ MESSAGE ON LINKEDIN", "href": "https://www.linkedin.com/in/brandoebande" },
+    "links": [
+      { "label": "THOUGHTS — READ THE BLOG", "href": "blogs/index.html" },
+      { "label": "X / TWITTER — @ROGUE0015", "href": "https://www.twitter.com/Rogue0015" },
+      { "label": "SESSIONIZE — SPEAKER PROFILE", "href": "https://sessionize.com/brandon-bande/" }
+    ],
+    "footNote": "LEADING THE NEXT GEN IN TECH"
+  },
+  "boulevard": {
+    "tag": "06 / BOULEVARD OF BROKEN DREAMS",
+    "title": "BEYOND THE PORTFOLIO",
+    "intro": "You have gone beyond the portfolio. Now you are in the boulevard of my broken dreams — a field of unfinished experiments, haunted prototypes, and the projects that learned something before they became polished."
+  }
+}
