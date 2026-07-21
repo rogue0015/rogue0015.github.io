@@ -209,6 +209,10 @@ POST_TEMPLATE = Template("""<!DOCTYPE html>
 <meta property="og:url" content="$url">
 <meta property="og:site_name" content="ROGUE0015">
 <meta property="og:locale" content="en_ZW">
+<meta property="og:image" content="$image_url">
+<meta property="og:image:width" content="400">
+<meta property="og:image:height" content="400">
+<meta property="og:image:alt" content="Brandon T. Bande — AI and developer community lead, Zimbabwe">
 <meta property="article:published_time" content="$date_iso">
 <meta property="article:author" content="Brandon T. Bande">
 $article_tags<meta name="twitter:card" content="summary">
@@ -216,6 +220,7 @@ $article_tags<meta name="twitter:card" content="summary">
 <meta name="twitter:creator" content="@Rogue0015">
 <meta name="twitter:title" content="$title_attr">
 <meta name="twitter:description" content="$desc_attr">
+<meta name="twitter:image" content="$image_url">
 <link rel="stylesheet" href="blog.css">
 <script type="application/ld+json">
 $jsonld
@@ -283,10 +288,15 @@ INDEX_TEMPLATE = Template("""<!DOCTYPE html>
 <meta property="og:url" content="$site/blogs/">
 <meta property="og:site_name" content="ROGUE0015">
 <meta property="og:locale" content="en_ZW">
+<meta property="og:image" content="$site/assets/brandon-bande.jpg">
+<meta property="og:image:width" content="400">
+<meta property="og:image:height" content="400">
+<meta property="og:image:alt" content="Brandon T. Bande — AI and developer community lead, Zimbabwe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="@Rogue0015">
 <meta name="twitter:title" content="Thoughts — Blog by Brandon T. Bande (ROGUE0015)">
 <meta name="twitter:description" content="Thoughts on AI, tech community building, and strategy from Brandon T. Bande.">
+<meta name="twitter:image" content="$site/assets/brandon-bande.jpg">
 <link rel="stylesheet" href="blog.css">
 <script type="application/ld+json">
 $jsonld
@@ -409,6 +419,7 @@ def build_post(post, older, newer):
                 "@id": f"{post['url']}#post",
                 "headline": post["title"],
                 "description": post["description"],
+                "image": f"{SITE}/assets/brandon-bande.jpg",
                 "url": post["url"],
                 "datePublished": post["date"].isoformat(),
                 "dateModified": post["modified"],
@@ -465,6 +476,7 @@ def build_post(post, older, newer):
         desc_attr=attr(post["description"]),
         keywords_attr=attr(", ".join(post["tags"] + ["Brandon T. Bande", "ROGUE0015", "Zimbabwe"])),
         url=post["url"],
+        image_url=f"{SITE}/assets/brandon-bande.jpg",
         date_iso=post["date"].isoformat(),
         date_disp=post["date"].strftime("%b %d, %Y"),
         minutes=post["words"] // 180 + 1,
