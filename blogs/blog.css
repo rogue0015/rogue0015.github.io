@@ -140,7 +140,6 @@ h1{ font-size:clamp(2rem, 6vw, 3.4rem); }
 .post-head{ border-bottom:1px solid var(--line); padding-bottom:28px; }
 .post-meta{ margin:16px 0 0; font-size:12px; letter-spacing:0.08em; color:var(--paper-dim); }
 .post-meta time{ color:var(--sunburst); }
-.post-meta iframe{ vertical-align:middle; }
 
 .post-body{ margin-top:36px; }
 .post-body h2{ font-size:clamp(1.35rem, 3.6vw, 1.9rem); margin:44px 0 14px; }

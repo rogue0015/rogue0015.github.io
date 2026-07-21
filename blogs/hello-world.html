@@ -155,17 +155,19 @@
   </span>
 </footer>
 
-<script id="goatcounter-script" data-goatcounter="https://rogue0015.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script id="goatcounter-script" data-goatcounter="https://rogue0015.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 <script>
 document.getElementById('goatcounter-script').addEventListener('load', function () {
   var vc = document.getElementById('view-count');
-  if (vc && window.goatcounter && window.goatcounter.visit_count) {
-    window.goatcounter.visit_count({
-      append: '#view-count', type: 'html', no_branding: true,
-      attr: {width: '92', height: '18'},
-      style: 'background:transparent;border:0;font:11px "IBM Plex Mono",monospace;color:#D4FF3F'
-    });
-  }
+  if (!vc) return;
+  fetch('https://rogue0015.goatcounter.com/counter/' + location.pathname + '.json')
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (data) {
+      if (!data) return;
+      console.log('Page views:', data.count);
+      vc.textContent = data.count + ' VIEWS';
+    })
+    .catch(function () {});
 });
 </script>
 
