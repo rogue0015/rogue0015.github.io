@@ -172,6 +172,20 @@ FOOTER = """<footer class="site-foot mono">
   </span>
 </footer>"""
 
+ANALYTICS = """<script id="goatcounter-script" data-goatcounter="https://rogue0015.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>
+document.getElementById('goatcounter-script').addEventListener('load', function () {
+  var vc = document.getElementById('view-count');
+  if (vc && window.goatcounter && window.goatcounter.visit_count) {
+    window.goatcounter.visit_count({
+      append: '#view-count', type: 'html', no_branding: true,
+      attr: {width: '92', height: '18'},
+      style: 'background:transparent;border:0;font:11px "IBM Plex Mono",monospace;color:#D4FF3F'
+    });
+  }
+});
+</script>"""
+
 POST_TEMPLATE = Template("""<!DOCTYPE html>
 <!-- GENERATED FILE — do not edit. Source: blogs/$slug.md. Rebuild: python scripts/build_blog.py -->
 <html lang="en">
@@ -217,6 +231,7 @@ $header
       <p class="post-meta mono">
         <time datetime="$date_iso" itemprop="datePublished">$date_disp</time>
         · $minutes MIN READ
+        · <span id="view-count" class="mono" aria-label="Page views"></span>
         · <span itemprop="author">BRANDON T. BANDE</span>
       </p>
 $tag_chips    </header>
@@ -238,6 +253,8 @@ $pager
 </main>
 
 $footer
+
+$analytics
 
 </body>
 </html>
@@ -284,11 +301,33 @@ $header
     strategy from <a href="../index.html">Brandon T. Bande</a>, written between
     <a href="../index.html#p4">talks and workshops</a> across Southern Africa.</p>
 
+  <div class="tag-filter-row">
+    <label class="mono" for="tag-filter">FILTER BY TAG</label>
+    <select id="tag-filter" class="mono">
+      <option value="">All posts</option>
+$tag_options    </select>
+  </div>
+
   <ul class="post-list">
 $cards  </ul>
 </main>
 
 $footer
+
+$analytics
+<script>
+(function () {
+  var sel = document.getElementById('tag-filter');
+  var items = document.querySelectorAll('.post-list > li');
+  sel.addEventListener('change', function () {
+    var tag = sel.value;
+    items.forEach(function (li) {
+      var tags = (li.getAttribute('data-tags') || '').split(' ');
+      li.style.display = (!tag || tags.indexOf(tag) !== -1) ? '' : 'none';
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
@@ -431,6 +470,7 @@ def build_post(post, older, newer):
         jsonld=jsonld,
         header=HEADER,
         footer=FOOTER,
+        analytics=ANALYTICS,
         tag_chips=tag_chips,
         content=post["content"],
         pager=pager,
@@ -440,7 +480,7 @@ def build_index(posts):
     newest_first = list(reversed(posts))
     cards = ""
     for p in newest_first:
-        cards += f"""    <li>
+        cards += f"""    <li data-tags="{attr(' '.join(p['tags']))}">
       <a class="post-card" href="{p['href']}">
         <span class="date mono"><time datetime="{p['date'].isoformat()}">{p['date'].strftime('%b %d, %Y').upper()}</time></span>
         <h2>{esc(p['title'])}</h2>
@@ -449,6 +489,10 @@ def build_index(posts):
       </a>
     </li>
 """
+    unique_tags = sorted({t for p in posts for t in p["tags"]})
+    tag_options = "".join(
+        f'      <option value="{attr(t)}">{esc(t)}</option>\n' for t in unique_tags
+    )
     jsonld = json.dumps({
         "@context": "https://schema.org",
         "@type": "Blog",
@@ -470,7 +514,10 @@ def build_index(posts):
             for p in newest_first
         ],
     }, ensure_ascii=False, indent=2)
-    return INDEX_TEMPLATE.substitute(site=SITE, jsonld=jsonld, header=HEADER, footer=FOOTER, cards=cards)
+    return INDEX_TEMPLATE.substitute(
+        site=SITE, jsonld=jsonld, header=HEADER, footer=FOOTER, analytics=ANALYTICS,
+        cards=cards, tag_options=tag_options,
+    )
 
 def build_sitemap(posts):
     today = date.today().isoformat()

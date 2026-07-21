@@ -106,6 +106,7 @@
       <p class="post-meta mono">
         <time datetime="2026-07-18" itemprop="datePublished">Jul 18, 2026</time>
         · 4 MIN READ
+        · <span id="view-count" class="mono" aria-label="Page views"></span>
         · <span itemprop="author">BRANDON T. BANDE</span>
       </p>
       <ul class="tags" aria-label="Tags"><li class="mono">personal</li><li class="mono">branding</li><li class="mono">life</li></ul>
@@ -153,6 +154,20 @@
     <a href="https://sessionize.com/brandon-bande/" target="_blank" rel="noopener">SESSIONIZE</a>
   </span>
 </footer>
+
+<script id="goatcounter-script" data-goatcounter="https://rogue0015.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>
+document.getElementById('goatcounter-script').addEventListener('load', function () {
+  var vc = document.getElementById('view-count');
+  if (vc && window.goatcounter && window.goatcounter.visit_count) {
+    window.goatcounter.visit_count({
+      append: '#view-count', type: 'html', no_branding: true,
+      attr: {width: '92', height: '18'},
+      style: 'background:transparent;border:0;font:11px "IBM Plex Mono",monospace;color:#D4FF3F'
+    });
+  }
+});
+</script>
 
 </body>
 </html>

@@ -68,12 +68,22 @@
 <main>
   <div class="index-tag mono"><span class="rule"></span> 06 / FIELD NOTES</div>
   <h1>Thoughts.</h1>
-  <p class="index-intro">Notes and thoughts notes on AI, community building, and
-    strategy from <a href="../index.html">Brandon T. Bande</a>, written in-between
-    <a href="../index.html#p4">talks and workshops</a> </p>
+  <p class="index-intro">Signals from the ground — notes on AI, community building, and
+    strategy from <a href="../index.html">Brandon T. Bande</a>, written between
+    <a href="../index.html#p4">talks and workshops</a> across Southern Africa.</p>
+
+  <div class="tag-filter-row">
+    <label class="mono" for="tag-filter">FILTER BY TAG</label>
+    <select id="tag-filter" class="mono">
+      <option value="">All posts</option>
+      <option value="branding">branding</option>
+      <option value="life">life</option>
+      <option value="personal">personal</option>
+    </select>
+  </div>
 
   <ul class="post-list">
-    <li>
+    <li data-tags="personal branding life">
       <a class="post-card" href="hello-world.html">
         <span class="date mono"><time datetime="2026-07-18">JUL 18, 2026</time></span>
         <h2>Hello World</h2>
@@ -93,6 +103,33 @@
     <a href="https://sessionize.com/brandon-bande/" target="_blank" rel="noopener">SESSIONIZE</a>
   </span>
 </footer>
+
+<script id="goatcounter-script" data-goatcounter="https://rogue0015.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>
+document.getElementById('goatcounter-script').addEventListener('load', function () {
+  var vc = document.getElementById('view-count');
+  if (vc && window.goatcounter && window.goatcounter.visit_count) {
+    window.goatcounter.visit_count({
+      append: '#view-count', type: 'html', no_branding: true,
+      attr: {width: '92', height: '18'},
+      style: 'background:transparent;border:0;font:11px "IBM Plex Mono",monospace;color:#D4FF3F'
+    });
+  }
+});
+</script>
+<script>
+(function () {
+  var sel = document.getElementById('tag-filter');
+  var items = document.querySelectorAll('.post-list > li');
+  sel.addEventListener('change', function () {
+    var tag = sel.value;
+    items.forEach(function (li) {
+      var tags = (li.getAttribute('data-tags') || '').split(' ');
+      li.style.display = (!tag || tags.indexOf(tag) !== -1) ? '' : 'none';
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
