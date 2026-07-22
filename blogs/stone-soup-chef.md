@@ -28,14 +28,14 @@ _In this blog post , I will be writing about the personal reasons behind my invo
 When they said never meet your heroes - they had a point. The heartbreak that usually follows when you realise how flawed your idols are , is something I am still recovering from. And then I realise that I too , am one of them. And that disappoints me further.
 
 ## Breaking the veil
-'He is cooking.' , I have lost count of the number of times I have heard those words. On LinkedIn. In front of an audience. Or in some rooms that I never imagined I would even get in. One would think I'm Ramsey Gordon - but I am not. Far from it. I am just the embodiement of the story about stone soup. 
+'He is cooking.' , I have lost count of the number of times I have heard those words. On LinkedIn. In front of an audience. Or in some rooms that I never imagined I would even get in. One would think I'm Gordon Ramsay - but I am not. Far from it. I am just the embodiment of the story about stone soup. 
 
 ## Stone Soup story...
-Here is my summarisation of the story , long ago a hungry traveller came across a village where there was hunger. All the villagers all had something different , but it wasn't adequate enough to feed their family. Let alone , the hungry villager too. Being cunning ,the villager told evryone that he was going to make stone soup (I think that is the original scam, lol). So he lit a fire , filled a pot with water and started stirring. Everyone gathered around to see the madness and after a while , the stranger was like , 'hey guys , soon my soup will be ready , can someone give me some salt?'. Out of curiosity somebody did , and maybe some spice too. And I guess they might have asked for a few things too. 
+Here is my summarisation of the story , long ago a hungry traveller came across a village where there was hunger. All the villagers all had something different , but it wasn't adequate enough to feed their family. Let alone , the hungry villager too. Being cunning ,the villager told everyone that he was going to make stone soup (I think that is the original scam, lol). So he lit a fire , filled a pot with water and started stirring. Everyone gathered around to see the madness and after a while , the stranger was like , 'hey guys , soon my soup will be ready , can someone give me some salt?'. Out of curiosity somebody did , and maybe some spice too. And I guess they might have asked for a few things too. 
 
 Until one thing happened. Someone was like , 'Umm buddy , this looks promising - can I add my carrots too , and then we could maybe share the soup?' . Another did the same with tomatoes , another with onions and within some time the entire village was contributing something.... And the soup they made was enough to feed everyone.
 
-## The parralels
+## The parallels
 When I started my journey in tech communities , I had nothing. And all that I became - was because of the combined efforts of so many people I worked with , initiatives we jumped on and the support that we gave each other. 
 
 Over time , I got active within the different communities , giving my all and a bit more because I believed that together we would eat. Twenty ideas would always be better than one. Fifty minds would dwarf efforts of a genius. And one big family would always have a chance against whatever disadvantaged us..
@@ -44,7 +44,7 @@ So over time , I did my part. I stirred , I begged and I got a few people intere
 
 > _The game gave me relevance , I gave it servitude._
 
-Time and time again , I have always reminded everyone that there is nothing special about me. I am not a 10x developer , I am not the greatest speaker there ever was. But I am always there to make sure we all eat. Ochestration. That's my role.
+Time and time again , I have always reminded everyone that there is nothing special about me. I am not a 10x developer , I am not the greatest speaker there ever was. But I am always there to make sure we all eat. Orchestration. That's my role.
 
 So if you ever meet me , don't be disappointed. And surely don't be in awe . I. Am. Just. Like. You. If not worse - simply a kid that is still stirring. Even long after everyone else has gone.
 

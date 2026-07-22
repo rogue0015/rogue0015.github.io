@@ -14,7 +14,7 @@
 # sitemap.xml).
 # ============================================================================
 title: "Hello World"
-description: "I don't know how many times I have re introduced myself. But with growth , I often feel the need to. So some time ago , I made a decision - to pause posting on LinkedIn. This was not the first time - I did so in 2023 and 2024...."
+description: "I don't know how many times I have reintroduced myself. But with growth , I often feel the need to. So some time ago , I made a decision - to pause posting on LinkedIn. This was not the first time - I did so in 2023 and 2024...."
 date: 2026-07-18
 tags: [personal , branding , life]
 ---
@@ -23,22 +23,22 @@ Hi,
 
 I'm Brandon.
 
-I don't know how many times I have re introduced myself. But with growth , I often feel the need to. So some time ago , I made a decision - to pause posting on LinkedIn. This was not the first time - I did so in 2023 and 2024. This time it was different - more like a nail in the coffin. Somehow , there is a rude awakening for me : I might still have to stick around. Like LinkedIn still has domain authority, so as long as I still wanna be visible - I have to post those I am thrilled content.
+I don't know how many times I have reintroduced myself. But with growth , I often feel the need to. So some time ago , I made a decision - to pause posting on LinkedIn. This was not the first time - I did so in 2023 and 2024. This time it was different - more like a nail in the coffin. Somehow , there is a rude awakening for me : I might still have to stick around. Like LinkedIn still has domain authority, so as long as I still wanna be visible - I have to post those I am thrilled content.
 
 ## The major reason behind the shift
-One of the things that I have prided myself is was my authenticity. And it was more than just my voice , but openly sharing my thoughts , my flaws and my experiences. At times , even belitling my wins when they were not all that - a trend that bothers my mates at the pedestals that we are placed on. Now growing into different environments - it's becoming a problem especially when your thoughts appear frequently on the feeds of the people that to some extent have power to squash my growth . To avoid frequently antagonising people , I find myself here and the only way to get here is if you make the choice to press click 😏
+One of the things that I have prided myself is was my authenticity. And it was more than just my voice , but openly sharing my thoughts , my flaws and my experiences. At times , even belittling my wins when they were not all that - a trend that bothers my mates at the pedestals that we are placed on. Now growing into different environments - it's becoming a problem especially when your thoughts appear frequently on the feeds of the people that to some extent have power to squash my growth . To avoid frequently antagonising people , I find myself here and the only way to get here is if you make the choice to press click 😏
 
 ## Also SEO
 Then there is this crazy idea - with AI , automation and stuff I believe a personal portfolio and blogs will do more good to me than LinkedIn will. This blog becomes the single point where information about Brandon T. Bande or rogue0015 is read by both human and machine. For the machines - at least I control the narrative , for the humans , you get to hear my side of the story too. I have used sessionize for my talks , medium for my thoughts and LinkedIn for my brand image. This portfolio will bring it all together in one place. 
 
 ## No more signups to read my thoughts
-What good is writing , if no one reads what you write? Well , for someone whose thoughts attracts audiences ( whether its for good reasons or otherwise ) , the option to create an acont to read does not sit well with me. But a blog , is just like putting it in plain sight (and you can also Google me and come to this directly ). 
+What good is writing , if no one reads what you write? Well , for someone whose thoughts attracts audiences ( whether its for good reasons or otherwise ) , the option to create an account to read does not sit well with me. But a blog , is just like putting it in plain sight (and you can also Google me and come to this directly ). 
 
 ## The no AI-pledge
 In a sea of voices , the desire to stand out has made me do the unthinkable - resort to AI 😭 . Not saying that AI is bad , but when you have something too real to share there are a lot of trade offs to make. Keywords. Tone . Tags .  Then AI asks to tighten certain expressions , optimize for impact etc. Once done , you would realise that it feels way different than the original piece.
 
 ## Messing with markdown 
-Haha , so as a way to decompress I write these article......in markdown. Then use a script to optimise it for SEO and staff. But tnose minutes , typing in content in raw markdown ... are a necessary distraction. As a crazy , imaginative person this is the modern day equivalence to burning the midnight oil connecting my brain to the quil
+Haha , so as a way to decompress I write these article......in markdown. Then use a script to optimise it for SEO and stuff. But those minutes , typing in content in raw markdown ... are a necessary distraction. As a crazy , imaginative person this is the modern day equivalence to burning the midnight oil connecting my brain to the quill
 
 So.on a final note. Welcome to my little corner on the internet. In this corner , expect to see genius takes next to what a certain pal at a conference termed 'interestingly intelligent ignorance' .Let's chat , connect and share crazy ideas. Always feel free to connect via different platforms. I look forward to hearing from you.
 
