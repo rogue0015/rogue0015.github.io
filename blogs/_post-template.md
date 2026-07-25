@@ -12,11 +12,27 @@
 #
 # and commit the .md plus ALL generated files (.html, blogs/index.html,
 # sitemap.xml).
+#
+# STANDARD KEYWORD SET — pick 2-4 tags from this list, verbatim, for every
+# post. Reusing the same tokens (not synonyms) keeps the blog index tag
+# filter clean and keeps each topic cluster strong for SEO instead of
+# splintering into one-off variants. Only add a new tag if a post truly
+# doesn't fit any of these. Single token per tag, hyphenate multi-word ones
+# (no spaces — the tag filter splits on whitespace).
+#
+#   ai                  — AI/GenAI, LLMs, applied AI, AI strategy
+#   tech-community       — community building, GDG/Zindi, organizing, events
+#   developers            — developer ecosystem, tooling, dev experience
+#   speaking                — talks, conferences, public speaking craft
+#   leadership                — strategy, management, decision-making
+#   personal-branding          — career reflections, visibility, personal brand
+#   zimbabwe                     — Zimbabwe-specific angle
+#   africa                         — pan-African tech/community angle
 # ============================================================================
 title: "Primary Keyword Up Front — Rest of Title, 50 to 60 Chars"
 description: "One sentence of 140 to 160 characters with the keyword near the start. This exact text is the Google snippet, so write it as the reason to click."
 date: 2026-01-01
-tags: [ai, community, zimbabwe]
+tags: [ai, tech-community]
 ---
 Opening paragraph. State the core idea in the first two sentences — this is
 what readers, crawlers, and social previews see first. Work the primary

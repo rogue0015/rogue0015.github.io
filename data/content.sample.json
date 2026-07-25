@@ -1,0 +1,70 @@
+{
+  "_comment": "STRUCTURE-ONLY SAMPLE — shows the shape data/content.json must have. data/content.json itself is gitignored (local only); copy this file to data/content.json and fill in real copy to reproduce the live override.",
+  "brand": {
+    "mark": "YOUR NAME // HANDLE",
+    "coordinates": ["LAT, LON", "CITY, COUNTRY"]
+  },
+  "hero": {
+    "tag": "SHORT ALL-CAPS TAGLINE",
+    "headline": [
+      { "text": "LINE ONE" },
+      { "text": "LINE TWO", "accent": true },
+      { "text": "LINE THREE" }
+    ],
+    "subtitle": "One or two sentences introducing who you are and what you do.",
+    "ctas": [
+      { "label": "→ PRIMARY CTA", "href": "#p4" },
+      { "label": "→ SECONDARY CTA", "href": "blogs/index.html" }
+    ]
+  },
+  "about": {
+    "tag": "01 / ------",
+    "title": "ABOUT SECTION TITLE",
+    "photoCaption": "CAPTION UNDER PHOTO",
+    "paragraphs": [
+      "First about paragraph.",
+      "Second about paragraph."
+    ]
+  },
+  "signalTrail": {
+    "tag": "02 / SECTION TAG",
+    "title": "SECTION TITLE",
+    "bars": [
+      { "label": "STAT LABEL", "value": "00+", "width": "100%" },
+      { "label": "STAT LABEL", "value": "00", "width": "75%" },
+      { "label": "STAT LABEL", "value": "0000–0000", "width": "90%" }
+    ]
+  },
+  "expertise": {
+    "tag": "03 / SECTION TAG",
+    "title": "EXPERTISE",
+    "skills": [
+      { "label": "SKILL ONE" },
+      { "label": "SKILL TWO", "variant": "m2" }
+    ],
+    "affiliationsTag": "AFFILIATIONS & COMMUNITIES",
+    "affiliations": [
+      { "label": "ORGANIZATION — ROLE", "href": "https://example.org/", "variant": "m2" }
+    ],
+    "marquee": "CITY · CITY · CITY"
+  },
+  "talks": {
+    "tag": "04 / SECTION TAG",
+    "title": "SELECTED TALKS"
+  },
+  "contact": {
+    "tag": "05 / SECTION TAG",
+    "heading": "CONTACT HEADING.",
+    "subtitle": "What you're available for.",
+    "primaryCta": { "label": "→ PRIMARY CONTACT CTA", "href": "https://example.com" },
+    "links": [
+      { "label": "LINK LABEL", "href": "blogs/index.html" }
+    ],
+    "footNote": "CLOSING NOTE"
+  },
+  "boulevard": {
+    "tag": "06 / SECTION TAG",
+    "title": "SECTION TITLE",
+    "intro": "Intro copy for this section."
+  }
+}

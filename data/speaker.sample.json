@@ -1,0 +1,32 @@
+{
+  "_comment": "STRUCTURE-ONLY SAMPLE — shows the shape data/speaker.json must have. data/speaker.json itself is gitignored (local only); it's a cached fallback snapshot of the Sessionize API response, refreshed by re-saving that API's JSON here.",
+  "speaker": {
+    "firstName": "First",
+    "lastName": "Last",
+    "tagline": "Role | Role | Role",
+    "bio": "Speaker bio text.",
+    "speakerProfileUrl": "https://sessionize.com/your-handle",
+    "photoUrl": "https://cdn.sessionize.com/image/example-small.jpg",
+    "photoLargeUrl": "https://cdn.sessionize.com/image/example-large.jpg"
+  },
+  "sessions": [
+    {
+      "id": 0,
+      "title": "Example session title",
+      "description": "Example session description.",
+      "sessionUrl": "https://sessionize.com/s/your-handle/example-session",
+      "languageCode": "en-US",
+      "language": "English"
+    }
+  ],
+  "events": [
+    {
+      "id": 0,
+      "name": "Example Event Name",
+      "eventStartDate": "2026-01-01T00:00:00Z",
+      "eventEndDate": "2026-01-02T00:00:00Z",
+      "location": "City, Country",
+      "website": "https://example.org/"
+    }
+  ]
+}
