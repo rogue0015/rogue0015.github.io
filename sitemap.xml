@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://rogue0015.github.io/</loc><lastmod>2026-08-02</lastmod><priority>1.0</priority></url>
-  <url><loc>https://rogue0015.github.io/blogs/</loc><lastmod>2026-08-02</lastmod><priority>0.8</priority></url>
+  <url><loc>https://rogue0015.github.io/</loc><lastmod>2026-08-10</lastmod><priority>1.0</priority></url>
+  <url><loc>https://rogue0015.github.io/blogs/</loc><lastmod>2026-08-09</lastmod><priority>0.8</priority></url>
+  <url><loc>https://rogue0015.github.io/blogs/page2.html</loc><lastmod>2026-08-09</lastmod><priority>0.5</priority></url>
+  <url><loc>https://rogue0015.github.io/blogs/alignment-connecting-the-dots.html</loc><lastmod>2026-08-09</lastmod><priority>0.7</priority></url>
   <url><loc>https://rogue0015.github.io/blogs/ego-or-instinct.html</loc><lastmod>2026-08-02</lastmod><priority>0.7</priority></url>
   <url><loc>https://rogue0015.github.io/blogs/volunteering-again.html</loc><lastmod>2026-07-31</lastmod><priority>0.7</priority></url>
   <url><loc>https://rogue0015.github.io/blogs/aura-over-authority.html</loc><lastmod>2026-07-22</lastmod><priority>0.7</priority></url>
