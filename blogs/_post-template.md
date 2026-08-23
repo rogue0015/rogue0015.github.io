@@ -34,37 +34,15 @@ description: "One sentence of 140 to 160 characters with the keyword near the st
 date: 2026-01-01
 tags: [ai, tech-community]
 ---
-Opening paragraph. State the core idea in the first two sentences — this is
-what readers, crawlers, and social previews see first. Work the primary
-keyword in naturally.
+Hi,
 
-## First Section Heading (H2, Keyword-Bearing)
+I'm Brandon.
 
-Body copy in short paragraphs. Supported Markdown only: `##`/`###` headings,
-**bold**, *italic*, `inline code`, fenced code blocks, links, images,
-single-level `-` / `1.` lists, `>` blockquotes, and `---` rules. Nothing else.
+---
 
-- Keep lists single level
-- One idea per bullet
-
-## Second Section Heading
-
-> Pull-quote or key line worth remembering — the transmission voice.
-
-Every post MUST contain, somewhere in the body, all three of these links
-(edit the targets, keep the coverage):
-
-1. One link to another post, like [the previous transmission](/blogs/teching-over-the-tech-divide.html)
-2. One link home or to the talks panel, like [my talks and workshops](/#p4)
-3. One outbound link to an authoritative source, like [Google DeepMind](https://deepmind.google/)
-
-Write internal links root-absolute exactly as above (`/blogs/...`, `/`,
-`/#p4`, `/#p5`) — the build rewrites them to relative paths automatically.
-
-## Closing Section
-
-End with a forward-looking line and the signal sign-off. The build appends
-the ALL THOUGHTS / VIEW MY TALKS / LINKEDIN call-to-action block for you — do
-not write your own.
-
-The signal is locked.
+Let's connect via the following platforms:
+[LinkedIn](https://www.linkedin.com/in/brandoebande), on
+[X as @Rogue0015](https://twitter.com/Rogue0015), or check the
+[Sessionize speaker profile](https://sessionize.com/brandon-bande/) if you want this
+signal live on your stage. And if you're new here, start with
+[the talks](/#p4) — this blog is their echo.
