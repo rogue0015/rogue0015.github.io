@@ -126,7 +126,7 @@
 <ol><li>The approach to just get data, extract the info and then tabulate it is not as simple as A, B, C</li><li>If I had known the different ways of scraping data, I wouldn't have spent a few days learning Selenium and how to extract from WordPress</li></ol>
 <p>I have always prided myself in being self-taught. Then I coined the term '<a href="artist-captured-in-his-own-painting.html">short-cut developer</a>' to describe myself. I am proud that with no academic or guided foundation, I got on the internet and taught myself to code. But I am also aware of my limitation that things should not just work. They should work effectively, efficiently, accurately and a bunch of other important words if a system is to serve its purpose. <em>Back to the story.</em></p>
 <h2>ETL vs ELT</h2>
-<p>Extract. Load. Transform.</p>
+<p>Extract. Transform. Load.</p>
 <p>I had heard about the abbreviations before. I had a rough idea, but I didn't know where they applied. I guess <em>booksmart is not really street smart.</em> In my flow it was something like this:</p>
 <ul><li>Getting page content about a job from the internet (5 seconds)</li><li>Extracting the actual fields needed using an LLM on my machine (2-6 minutes and totally offline)</li><li>Writing to my local database (~1 second)</li></ul>
 <p>So initially I would get what I want after a few minutes. <em>That worked!!!</em> Now imagine this at scale. To cycle through 16000 jobs would take about 533 to 1600 hours of continuous compute. That is like 22 continuous days at least. The process where I obtained the page, extracted the info (transformed it) and then left it for my colleague to load it, is ETL.</p>
