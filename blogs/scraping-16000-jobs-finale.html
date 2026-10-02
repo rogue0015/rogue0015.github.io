@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Scraping 16,000 Jobs: ETL vs ELT and Lessons Learnt, Finale | Brandon T. Bande</title>
 <meta name="title" content="Scraping 16,000 Jobs: ETL vs ELT and Lessons Learnt, Finale">
-<meta name="description" content="What scraping 18,693 Zimbabwean job posts taught me: why the basics matter, ETL vs ELT, and the limits of being a self-taught short-cut developer. The finale.">
+<meta name="description" content="To wrap up the series, I will be talking less about the hands-on tech stuff and reflecting on the lessons learnt. The basics matter. ETL vs ELT.">
 <meta name="author" content="Brandon T. Bande">
 <meta name="keywords" content="developers, zimbabwe, Brandon T. Bande, ROGUE0015, Zimbabwe">
 <meta name="robots" content="index, follow, max-image-preview:large">
@@ -15,7 +15,7 @@
 <link rel="canonical" href="https://rogue0015.github.io/blogs/scraping-16000-jobs-finale.html">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Scraping 16,000 Jobs: ETL vs ELT and Lessons Learnt, Finale">
-<meta property="og:description" content="What scraping 18,693 Zimbabwean job posts taught me: why the basics matter, ETL vs ELT, and the limits of being a self-taught short-cut developer. The finale.">
+<meta property="og:description" content="To wrap up the series, I will be talking less about the hands-on tech stuff and reflecting on the lessons learnt. The basics matter. ETL vs ELT.">
 <meta property="og:url" content="https://rogue0015.github.io/blogs/scraping-16000-jobs-finale.html">
 <meta property="og:site_name" content="ROGUE0015">
 <meta property="og:locale" content="en_ZW">
@@ -31,7 +31,7 @@
 <meta name="twitter:site" content="@Rogue0015">
 <meta name="twitter:creator" content="@Rogue0015">
 <meta name="twitter:title" content="Scraping 16,000 Jobs: ETL vs ELT and Lessons Learnt, Finale">
-<meta name="twitter:description" content="What scraping 18,693 Zimbabwean job posts taught me: why the basics matter, ETL vs ELT, and the limits of being a self-taught short-cut developer. The finale.">
+<meta name="twitter:description" content="To wrap up the series, I will be talking less about the hands-on tech stuff and reflecting on the lessons learnt. The basics matter. ETL vs ELT.">
 <meta name="twitter:image" content="https://rogue0015.github.io/assets/brandon-bande.jpg">
 <link rel="stylesheet" href="blog.css">
 <script type="application/ld+json">
@@ -42,14 +42,14 @@
       "@type": "BlogPosting",
       "@id": "https://rogue0015.github.io/blogs/scraping-16000-jobs-finale.html#post",
       "headline": "Scraping 16,000 Jobs: ETL vs ELT and Lessons Learnt, Finale",
-      "description": "What scraping 18,693 Zimbabwean job posts taught me: why the basics matter, ETL vs ELT, and the limits of being a self-taught short-cut developer. The finale.",
+      "description": "To wrap up the series, I will be talking less about the hands-on tech stuff and reflecting on the lessons learnt. The basics matter. ETL vs ELT.",
       "image": "https://rogue0015.github.io/assets/brandon-bande.jpg",
       "url": "https://rogue0015.github.io/blogs/scraping-16000-jobs-finale.html",
       "datePublished": "2026-10-02",
       "dateModified": "2026-10-02",
       "inLanguage": "en",
       "keywords": "developers, zimbabwe",
-      "wordCount": 825,
+      "wordCount": 831,
       "isPartOf": {
         "@id": "https://rogue0015.github.io/blogs/#blog"
       },
@@ -120,28 +120,28 @@
     <div class="post-body" itemprop="articleBody">
 <p>Hi,</p>
 <p>I'm Brandon.</p>
-<p><em>In <a href="scraping-16000-jobs.html">Part 1</a> and <a href="scraping-16000-jobs-part-2.html">Part 2</a>, I went on about the thought process and the hands-on application of the concepts I ended up adopting. To wrap up the series, I will talk less about the hands-on tech stuff and reflect on the lessons learnt.</em></p>
+<p>In the past two articles (<a href="scraping-16000-jobs.html">Part 1</a> and <a href="scraping-16000-jobs-part-2.html">Part 2</a>), I have been going on about the thought process and the hands-on application of the concepts I ended up adopting. To wrap up the series, I will be talking less about the hands-on tech stuff and reflecting on the lessons learnt.</p>
 <h2>The basics matter</h2>
 <p>In two cases, my work would have been easier if I had known the basics. To be specific:</p>
-<ol><li>The approach of just getting the data, extracting the info and then tabulating it is not as simple as A, B, C.</li><li>If I had known the different ways of scraping data, I wouldn't have spent a few days learning Selenium and how to extract from WordPress.</li></ol>
-<p>I have always prided myself on being self-taught. At some point, I coined the term <em>short-cut developer</em> to describe myself. I am proud that, with no academic or guided foundation, I got on the internet and taught myself to code. But I am also aware of my limitations: things should not just work. They should work effectively, efficiently, accurately and a bunch of other important words if a system is to serve its purpose. (Funny, coming from the guy who <a href="artist-captured-in-his-own-painting.html">over-engineers everything</a>.) <em>Back to the story.</em></p>
+<ol><li>The approach to just get data, extract the info and then tabulate it is not as simple as A, B, C</li><li>If I had known the different ways of scraping data, I wouldn't have spent a few days learning Selenium and how to extract from WordPress</li></ol>
+<p>I have always prided myself in being self-taught. Then I coined the term '<a href="artist-captured-in-his-own-painting.html">short-cut developer</a>' to describe myself. I am proud that with no academic or guided foundation, I got on the internet and taught myself to code. But I am also aware of my limitation that things should not just work. They should work effectively, efficiently, accurately and a bunch of other important words if a system is to serve its purpose. <em>Back to the story.</em></p>
 <h2>ETL vs ELT</h2>
-<p>Extract. Transform. Load.</p>
-<p>I had heard the abbreviations before. I had a rough idea, but I didn't know where they applied. I guess <em>book smart is not really street smart.</em> In my flow, it was something like this:</p>
-<ul><li>Getting the page content about a job from the internet (~5 seconds)</li><li>Extracting the actual fields needed using an LLM on my machine (2–6 minutes, totally offline)</li><li>Writing to my local database (~1 second)</li></ul>
-<p>So initially, I would get what I wanted after a few minutes. <em>That worked!!!</em> Now imagine this at scale. Cycling through 16,000 jobs would take about 533 to 1,600 hours of continuous compute. That is at least 22 days straight. The process where I obtained the page, extracted the info (transformed it) and only then loaded it for my colleague is ETL.</p>
+<p>Extract. Load. Transform.</p>
+<p>I had heard about the abbreviations before. I had a rough idea, but I didn't know where they applied. I guess <em>booksmart is not really street smart.</em> In my flow it was something like this:</p>
+<ul><li>Getting page content about a job from the internet (5 seconds)</li><li>Extracting the actual fields needed using an LLM on my machine (2-6 minutes and totally offline)</li><li>Writing to my local database (~1 second)</li></ul>
+<p>So initially I would get what I want after a few minutes. <em>That worked!!!</em> Now imagine this at scale. To cycle through 16000 jobs would take about 533 to 1600 hours of continuous compute. That is like 22 continuous days at least. The process where I obtained the page, extracted the info (transformed it) and then left it for my colleague to load it, is ETL.</p>
 <h2>The cure to my pain</h2>
-<p>Hidden in plain sight was a principle that applies when you have exactly this problem. I could just store as many jobs as possible on my personal computer and then do the transformation in my own time. That is what <a href="https://en.wikipedia.org/wiki/Extract,_load,_transform" target="_blank" rel="noopener">ELT</a> does. In my case, it was the best approach because:</p>
-<ol><li>If my internet went down, work could still go on.</li><li>I could provide up-to-date data to my colleague at regular intervals.</li></ol>
-<p>To top it off, I could run a few things at the same time. To achieve that, I ended up indexing all the pages that had job listings. Then, following that index, I could load page by page into my local dump of raw job text. At times, using concepts like threading, I was able to speed that up. Meanwhile, the transformation would be taking place in the background.</p>
-<p>Another thing that came to mind: if, in the future, I realised I had missed something key, I could still go back to the raw dump and transform it again. (<em>I did exactly that, and interestingly, I could expand on the already loaded data.</em>)</p>
+<p>Hidden from my plain sight was a principle that applies when you have such a problem. I could just store as many jobs as possible on my personal computer and then do the transformation at my own time. That is what <a href="https://en.wikipedia.org/wiki/Extract,_load,_transform" target="_blank" rel="noopener">ELT</a> does. In my case that was the best approach because:</p>
+<ol><li>If my internet went down - work could still go on</li><li>I could provide up-to-date data to my colleague at regular intervals</li></ol>
+<p>To top it off, I could run a few things at the same time. To achieve that, I ended up indexing all the pages that had job listings. Then following that index, I could load page by page to my local dump for the raw job text. At times, using concepts like threading, I was able to achieve that. Then in the background the transformation would be taking place.</p>
+<p>Another thing that came to mind is the fact that maybe in the future, if I realise that I missed something key, I could still get the raw dump and transform it again. (<em>I did that, interestingly, I could expand on the already loaded data</em>)</p>
 <h2>Disclaimer</h2>
-<p>One might argue that what I did is still ETL. Technically, depending on where you draw the boundaries between extraction and transformation, they could be right. But the important difference for me was what happened after I received the data.</p>
-<p>Instead of transforming every job immediately, I extracted the raw content, loaded it locally and transformed it later.</p>
+<p>One might argue that what I did is still ETL. Technically, depending on where you draw the boundaries of extraction and transformation, they could be right. But the important difference for me was what happened after I received the data.</p>
+<p>Instead of transforming every job immediately, I extracted the raw content, loaded it locally, and transformed it later.</p>
 <p>Extract. Load. Transform. ELT.</p>
 <h2>A bit about scraping</h2>
-<p>In <a href="scraping-16000-jobs.html">the first article</a>, I talked about the different approaches I adopted through trial and error. The key takeaway was different strokes for different folks, I guess. Another thing I should address is whether this was done the right way. There is a lot of grey area when it comes to scraping content in the public domain. I did this as educational research, and the data is not for commercial use. I also practised respectful scraping to avoid flooding the sources with requests. And I am open to discussing methods of <a href="https://www.rfc-editor.org/rfc/rfc9309" target="_blank" rel="noopener">respectful scraping</a> that I can adopt in the future.</p>
-<p>Writing this series is not merely about documenting my <em>"genius moments"</em>, but about sharing the realisation that being a short-cut developer has its limits. Building something real exposes your shortfalls, and at times eating your shoe, admitting and acknowledging your limits, is the only way to grow. Looking back, the dots <a href="alignment-connecting-the-dots.html">connect</a>. And <em>aha</em>, I now know where ETL fits and where it doesn't. 18,693 job posts say so :)</p>
+<p>I think in the <a href="scraping-16000-jobs.html">first article</a>, I talked about the different approaches that I adopted as trial and error. And the key takeaway was that different strokes for different folks, I guess. Another thing that I should address is whether this was done the right way. There are a lot of grey areas when it comes to scraping content that is in the public domain. I did this under the guise of educational research and the data is not for commercial use. I also adopted respectful scraping to avoid flooding the sources with multiple requests. And I am also open to discussing methods of <a href="https://www.rfc-editor.org/rfc/rfc9309" target="_blank" rel="noopener">respectful scraping</a> that I can adopt in the future.</p>
+<p>Writing this series is not merely about documenting my <em>"genius moments"</em>, but sharing the realisation that being a short-cut developer has its own limits. Building something real makes you realise the shortfalls and at times eating your shoe, <a href="ego-or-instinct.html">admitting and acknowledging your limits</a> is the only way to grow. And <em>aha</em>, I now know where to use ETL. 18,693 job posts say so :)</p>
 <p><em>Finale. Curtains close.</em></p>
 <hr>
 <p>Let's connect via the following platforms: <a href="https://www.linkedin.com/in/brandoebande" target="_blank" rel="noopener">LinkedIn</a>, on <a href="https://twitter.com/Rogue0015" target="_blank" rel="noopener">X as @Rogue0015</a>, or check the <a href="https://sessionize.com/brandon-bande/" target="_blank" rel="noopener">Sessionize speaker profile</a> if you want this signal live on your stage. And if you're new here, start with <a href="../index.html#p4">the talks</a> — this blog is their echo.</p>
