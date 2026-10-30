@@ -16,7 +16,7 @@ blogs/*.md
 !blogs/_post-template.md
 
 # Build tooling stays local — only its generated output is published.
-scripts/
+
 
 # Editable content data with a safe static-HTML fallback stays local.
 # data/projects.json is NOT listed here — it's the live, no-fallback source

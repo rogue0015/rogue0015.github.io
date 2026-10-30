@@ -48,6 +48,15 @@
   "blogPost": [
     {
       "@type": "BlogPosting",
+      "headline": "Around and Back",
+      "url": "https://rogue0015.github.io/blogs/around-and-back.html",
+      "datePublished": "2026-10-28",
+      "author": {
+        "@id": "https://rogue0015.github.io/#brandon"
+      }
+    },
+    {
+      "@type": "BlogPosting",
       "headline": "No Data, No Problem",
       "url": "https://rogue0015.github.io/blogs/no-data-no-problem.html",
       "datePublished": "2026-10-03",
@@ -208,6 +217,7 @@
     <label class="mono" for="tag-filter">FILTER BY TAG</label>
     <select id="tag-filter" class="mono">
       <option value="">All posts</option>
+      <option value="africa">africa</option>
       <option value="ai">ai</option>
       <option value="developers">developers</option>
       <option value="leadership">leadership</option>
@@ -220,6 +230,14 @@
   </div>
 
   <ul class="post-list">
+    <li data-tags="tech-community zimbabwe africa">
+      <a class="post-card" href="around-and-back.html">
+        <span class="date mono"><time datetime="2026-10-28">OCT 28, 2026</time></span>
+        <h2>Around and Back</h2>
+        <p>In the past two weeks, I have travelled to Cape Town for PyCon ZA, where I gave a talk around the 16,000 jobs trilogy. Then I was organising Zimbabwe's biggest tech conference (De…</p>
+        <span class="read mono">READ POST →</span>
+      </a>
+    </li>
     <li data-tags="ai zimbabwe tech-community">
       <a class="post-card" href="no-data-no-problem.html">
         <span class="date mono"><time datetime="2026-10-03">OCT 03, 2026</time></span>
@@ -252,19 +270,11 @@
         <span class="read mono">READ POST →</span>
       </a>
     </li>
-    <li data-tags="ai personal">
-      <a class="post-card" href="back-again.html">
-        <span class="date mono"><time datetime="2026-09-26">SEP 26, 2026</time></span>
-        <h2>Back Again</h2>
-        <p>And you last heard from me 20 days ago (been a while). However, I am back again. I have a couple of articles stuck in draft mode that I could not wrap up...</p>
-        <span class="read mono">READ POST →</span>
-      </a>
-    </li>
   </ul>
 
   <nav class="index-pager" aria-label="Blog pagination">
     <span class="pager-spacer"></span>
-    <span class="pager-pages mono"><span class="pager-page" aria-current="page">1</span><a class="pager-page" href="page2.html">2</a><a class="pager-page" href="page3.html">3</a></span>
+    <span class="pager-pages mono"><span class="pager-page" aria-current="page">1</span><a class="pager-page" href="page2.html">2</a><a class="pager-page" href="page3.html">3</a><a class="pager-page" href="page4.html">4</a></span>
     <a class="pager-btn next" href="page2.html" rel="next"><span class="mono">OLDER →</span></a>
   </nav>
 </main>
