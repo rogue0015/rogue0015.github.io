@@ -14,7 +14,8 @@
     "subtitle": "One or two sentences introducing who you are and what you do.",
     "ctas": [
       { "label": "→ PRIMARY CTA", "href": "#p4" },
-      { "label": "→ SECONDARY CTA", "href": "blogs/index.html" }
+      { "label": "→ SECONDARY CTA", "href": "blogs/index.html" },
+      { "label": "→ THIRD CTA", "href": "tools/" }
     ]
   },
   "about": {
