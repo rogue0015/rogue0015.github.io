@@ -337,25 +337,55 @@ $header
       <option value="">All posts</option>
 $tag_options    </select>
   </div>
+  <p class="filter-note mono" id="filter-note" hidden></p>
 
   <ul class="post-list">
 $cards  </ul>
+  <template id="all-posts">
+$all_cards  </template>
 $index_pager</main>
 
 $footer
 
 $analytics
 <script>
+// Tag filter: shows every matching post from all pages in one list, hides the
+// page numbers, and keeps the tag in the URL (?tag=) so the view can be shared.
 (function () {
   var sel = document.getElementById('tag-filter');
-  var items = document.querySelectorAll('.post-list > li');
-  sel.addEventListener('change', function () {
-    var tag = sel.value;
-    items.forEach(function (li) {
-      var tags = (li.getAttribute('data-tags') || '').split(' ');
-      li.style.display = (!tag || tags.indexOf(tag) !== -1) ? '' : 'none';
+  var list = document.querySelector('.post-list');
+  var all = document.getElementById('all-posts').content.children;
+  var note = document.getElementById('filter-note');
+  var pager = document.querySelector('.index-pager');
+  var pageCards = Array.prototype.slice.call(list.children);
+  var pagePath = location.pathname;
+  function setUrl(url) {
+    try { history.replaceState(null, '', url); } catch (e) { /* file:// previews */ }
+  }
+  function apply(tag) {
+    list.textContent = '';
+    if (!tag) {
+      pageCards.forEach(function (li) { list.appendChild(li); });
+      if (pager) pager.style.display = '';
+      note.hidden = true;
+      setUrl(pagePath);
+      return;
+    }
+    var hits = Array.prototype.filter.call(all, function (li) {
+      return (li.getAttribute('data-tags') || '').split(' ').indexOf(tag) !== -1;
     });
-  });
+    hits.forEach(function (li) { list.appendChild(li.cloneNode(true)); });
+    if (pager) pager.style.display = 'none';
+    note.textContent = hits.length + (hits.length === 1 ? ' post' : ' posts') + ' tagged ' + tag;
+    note.hidden = false;
+    setUrl('index.html?tag=' + encodeURIComponent(tag));
+  }
+  sel.addEventListener('change', function () { apply(sel.value); });
+  var wanted = new URLSearchParams(location.search).get('tag');
+  if (wanted && Array.prototype.some.call(sel.options, function (o) { return o.value === wanted; })) {
+    sel.value = wanted;
+    apply(wanted);
+  }
 })();
 </script>
 
@@ -580,10 +610,8 @@ def build_index_pages(posts):
         for n, chunk in enumerate(chunks, start=1)
     }
 
-def build_index(page_posts, newest_first, n, total):
-    cards = ""
-    for p in page_posts:
-        cards += f"""    <li data-tags="{attr(' '.join(p['tags']))}">
+def post_card(p):
+    return f"""    <li data-tags="{attr(' '.join(p['tags']))}">
       <a class="post-card" href="{p['href']}">
         <span class="date mono"><time datetime="{p['date'].isoformat()}">{p['date'].strftime('%b %d, %Y').upper()}</time></span>
         <h2>{esc(p['title'])}</h2>
@@ -592,6 +620,10 @@ def build_index(page_posts, newest_first, n, total):
       </a>
     </li>
 """
+
+def build_index(page_posts, newest_first, n, total):
+    cards = "".join(post_card(p) for p in page_posts)
+    all_cards = "".join(post_card(p) for p in newest_first)  # the tag filter searches these
     unique_tags = sorted({t for p in newest_first for t in p["tags"]})
     tag_options = "".join(
         f'      <option value="{attr(t)}">{esc(t)}</option>\n' for t in unique_tags
@@ -632,7 +664,7 @@ def build_index(page_posts, newest_first, n, total):
         rel_links += f'<link rel="next" href="{page_url(n + 1)}">\n'
     return INDEX_TEMPLATE.substitute(
         site=SITE, jsonld=jsonld, header=HEADER, footer=FOOTER, analytics=ANALYTICS,
-        cards=cards, tag_options=tag_options, page_title=page_title, page_desc=page_desc,
+        cards=cards, all_cards=all_cards, tag_options=tag_options, page_title=page_title, page_desc=page_desc,
         page_url=page_url(n), rel_links=rel_links, index_pager=build_index_pager(n, total),
     )
 
