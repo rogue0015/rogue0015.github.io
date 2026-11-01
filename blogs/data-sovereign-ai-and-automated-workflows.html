@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<!-- GENERATED FILE — do not edit. Source: blogs/data-sovereign-ai-and-automated-workflows.md. Rebuild: python scripts/build_blog.py -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data-Sovereign AI and Automated Workflows: Building Fung.ai | Brandon T. Bande</title>
+<meta name="title" content="Data-Sovereign AI and Automated Workflows: Building Fung.ai">
+<meta name="description" content="Data-sovereign AI without handing your data to someone else&#x27;s computer: how I built Fung.ai, a private AI worker on open-weight, tool-calling LLMs.">
+<meta name="author" content="Brandon T. Bande">
+<meta name="keywords" content="ai, developers, zimbabwe, Brandon T. Bande, ROGUE0015, Zimbabwe">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#08060B">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://rogue0015.github.io/blogs/data-sovereign-ai-and-automated-workflows.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Data-Sovereign AI and Automated Workflows: Building Fung.ai">
+<meta property="og:description" content="Data-sovereign AI without handing your data to someone else&#x27;s computer: how I built Fung.ai, a private AI worker on open-weight, tool-calling LLMs.">
+<meta property="og:url" content="https://rogue0015.github.io/blogs/data-sovereign-ai-and-automated-workflows.html">
+<meta property="og:site_name" content="ROGUE0015">
+<meta property="og:locale" content="en_ZW">
+<meta property="og:image" content="https://rogue0015.github.io/assets/brandon-bande.jpg">
+<meta property="og:image:width" content="400">
+<meta property="og:image:height" content="400">
+<meta property="og:image:alt" content="Brandon T. Bande — AI and developer community lead, Zimbabwe">
+<meta property="article:published_time" content="2026-11-01">
+<meta property="article:author" content="Brandon T. Bande">
+<meta property="article:tag" content="ai">
+<meta property="article:tag" content="developers">
+<meta property="article:tag" content="zimbabwe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@Rogue0015">
+<meta name="twitter:creator" content="@Rogue0015">
+<meta name="twitter:title" content="Data-Sovereign AI and Automated Workflows: Building Fung.ai">
+<meta name="twitter:description" content="Data-sovereign AI without handing your data to someone else&#x27;s computer: how I built Fung.ai, a private AI worker on open-weight, tool-calling LLMs.">
+<meta name="twitter:image" content="https://rogue0015.github.io/assets/brandon-bande.jpg">
+<link rel="stylesheet" href="blog.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://rogue0015.github.io/blogs/data-sovereign-ai-and-automated-workflows.html#post",
+      "headline": "Data-Sovereign AI and Automated Workflows: Building Fung.ai",
+      "description": "Data-sovereign AI without handing your data to someone else's computer: how I built Fung.ai, a private AI worker on open-weight, tool-calling LLMs.",
+      "image": "https://rogue0015.github.io/assets/brandon-bande.jpg",
+      "url": "https://rogue0015.github.io/blogs/data-sovereign-ai-and-automated-workflows.html",
+      "datePublished": "2026-11-01",
+      "dateModified": "2026-11-01",
+      "inLanguage": "en",
+      "keywords": "ai, developers, zimbabwe",
+      "wordCount": 1216,
+      "isPartOf": {
+        "@id": "https://rogue0015.github.io/blogs/#blog"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://rogue0015.github.io/blogs/data-sovereign-ai-and-automated-workflows.html"
+      },
+      "author": {
+        "@id": "https://rogue0015.github.io/#brandon"
+      },
+      "publisher": {
+        "@id": "https://rogue0015.github.io/#brandon"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://rogue0015.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Thoughts",
+          "item": "https://rogue0015.github.io/blogs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Data-Sovereign AI and Automated Workflows: Building Fung.ai",
+          "item": "https://rogue0015.github.io/blogs/data-sovereign-ai-and-automated-workflows.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-head">
+  <a class="brand mono" href="../index.html"><span class="dotlive"></span> BRANDON.T.BANDE // ROGUE0015</a>
+  <nav class="site-nav mono" aria-label="Site navigation">
+    <a href="../index.html">HOME</a>
+    <a href="../index.html#p4">TALKS</a>
+    <a href="index.html" aria-current="true">THOUGHTS</a>
+    <a href="../index.html#p5">CONTACT</a>
+  </nav>
+</header>
+
+<main>
+  <article class="post" itemscope itemtype="https://schema.org/BlogPosting">
+    <header class="post-head">
+      <p class="crumbs mono"><a href="../index.html">HOME</a> / <a href="index.html">THOUGHTS</a></p>
+      <h1 itemprop="headline">Data-Sovereign AI and Automated Workflows: Building Fung.ai</h1>
+      <p class="post-meta mono">
+        <time datetime="2026-11-01" itemprop="datePublished">Nov 01, 2026</time>
+        · 7 MIN READ
+        · <span id="view-count" class="mono" aria-label="Page views"></span>
+        · <span itemprop="author">BRANDON T. BANDE</span>
+      </p>
+      <ul class="tags" aria-label="Tags"><li class="mono">ai</li><li class="mono">developers</li><li class="mono">zimbabwe</li></ul>
+    </header>
+
+    <div class="post-body" itemprop="articleBody">
+<p>Hey,</p>
+<p>I'm Bee.</p>
+<p>When your worker starts snooping on your personal mail and sharing your details, you don't stop the work that they do, nor do you keep acting as if nothing happened. You look for another worker, one that you can trust to do the job well without sharing your sensitive data. These maids, butlers, henchmen or whatever title they hold become key to your operations and over time you rely more and more on them.</p>
+<h2>Sovereignty as an infrastructure problem</h2>
+<p>In the age of AI, a lot of data is shared as people try to integrate AI (<em>Key word - try</em>) within their day to day work. In minutes, tasks that took hours will be done and dusted. As we try to make sure that work is done faster and better, we add more information to the AIs that we use. For context. For reference. And for experimentation. Where does this information go? Who has access to it? And what do they eventually do with it?</p>
+<p>Without being paranoid, these questions are asked when you deal with sensitive data, with secrets, strategies and personal data on a day to day basis. With <a href="https://zimlii.org/akn/zw/act/2021/5" target="_blank" rel="noopener">legislation</a> that exists, your customers even ask you what you do with their data and you have to get consent to do certain things with their data. Blah, Blah, Blah. In other words, you need control over what happens to the data and where it goes. For government, the health industry and many other industries, this means that somehow you limit how AI is used. And in <em>big 2026</em>, saying no AI instead of more AI is shooting yourself in the foot. Firstly, your own team will still use AI whenever they can (<em>The AI craze has swept wider and faster than Bieber fever ever did</em>), and you risk being labeled backwards and anti-progress.</p>
+<h2>..... so how do we get AI without losing control?</h2>
+<p>We want to protect data. Data is shared via the internet. And stored on the internet. Then processed on the internet. Then the internet is mainly cloud something - cloud computing, cloud storage, etc. And cloud is <a href="https://fsfe.org/contribute/spreadtheword.html#nocloud" target="_blank" rel="noopener">someone else's computer</a> (<em>popular programmer joke</em>). Whoever owns the computer or can access the data as it is transported invades our privacy, secrecy or our contract to preserve the clients' confidentiality. The problem was also highlighted by Paul Everitt at <a href="around-and-back.html">PyCon ZA</a> (<em>interestingly, I have also been pointing this out since 2024</em>). AI over the internet exposes data and anyone responsible for the data is at the mercy of consequence. Another thing that also happens is jurisdiction over data issues. If the data is out of Zimbabwe, there is little that Zimbabwean courts can do to protect your data. And for an individual like me, that's scary.</p>
+<h2>.... breaking down the chain</h2>
+<p>So two surfaces that expose the data - AI and the internet. For each, we can do something. With the internet, we can host our apps and services locally. Some institutions do. The data, networks and gateways to the internet are something that we control. With providers like Google and AWS, you can even set Virtual Private Networks. However, this is only part of the equation. What use would it be to do all that and still surrender the data willingly because we want to use AI? Which is where the second part comes in, using open-weight models that power different AIs out there. Instead of using Google AIs, you can use their model <a href="https://blog.google/technology/developers/gemma-open-models/" target="_blank" rel="noopener">Gemma</a> - which is built from the same research as Gemini. Pretty cool, right? And that was the direction we were taking with <a href="../index.html#p6">Fung.ai</a>.</p>
+<h2>....enter Fung.ai</h2>
+<p>Fungai means think. Something that I was trying to create. An artificial brain that is able to execute tasks without relying on external AI providers. The idea behind it was that:</p>
+<ol><li>It should be hosted on a private network/ server (blackboxed)</li><li>It should execute tasks that let business operate autonomously and efficiently</li><li>It should be easily integrable with any system.</li></ol>
+<p>This is one digital worker whom you could put within your system and it would give you AI services without sharing your data. <em>It worked on my PC</em>, with a dynamic Data Analyst persona (skills + tools) that could take any dataset no matter how large, look at it, clean it and then visualise and interpret the data. I even tried it with a 40MB CSV; my machine froze a bit, but it worked.</p>
+<h2>...ripping apart the brain</h2>
+<p>With an LLM, we had something that could get text and give related text back as output. A parrot, as others would say. However, looking at recent LLMs, they are past parrot territory. More of monkey see, monkey do. Realising this, I knew that I could give it exhaustive instructions and it would try to produce text that followed suit. It kinda worked.</p>
+<p>...... until I realised that for so many ops, I had to create very large prompts and then feed in step by step procedures to be followed. And that was too much, especially if I wanted to create so many automated operations. That is when I looked for a specific kind of model - <em>tool-calling Large Language Models</em>. My street explanation is that these are models that can get a list of instructions (tools or functions) and given some input they would choose the right one(s) for the context. This allowed me to now create a tool for each individual operation I wanted and even chain some and at the end of the day, the <a href="https://qwenlm.github.io/blog/qwen2.5/" target="_blank" rel="noopener">model</a> that I chose did great (<em>Thanks Qwen2.5</em>).</p>
+<p>With so many tools, I now had to define which role uses which tools and at the end of the day, as someone who wanted to automate so many business functions, I ended up creating skills - which bore instructions on what tools could be used and the tone and context for replies given for different ops. Which created a new thing for me. A persona. The skill(s) + relevant tools. This allowed me to execute a couple of operations <a href="https://youtu.be/79w3aUmloqg" target="_blank" rel="noopener">autonomously</a>. Given the fact that this was all done on a personal PC and without live data, I am cautious about claiming that this is a groundbreaking revelation.</p>
+<p>I still seek opportunities to test this out to see the eventual performance in real life and real time settings. But what I am proud of is the fact that for a proof of concept, it works.</p>
+<h2>.... so what does it mean?</h2>
+<p>For me, this closed a concept I have always thought of. Owning the means of transferring data, blackboxing access to it and integrating AI meaningfully. Under demo settings, it works. And as a proof-of-concept I aim to close off the POC and maybe resurrect it in the future for research or improvement as a hobby thingie.</p>
+<p>So this kinda wraps up my technical session on my blog and proceeding from this, I will be writing about anything and everything. Can't wait to see you next time.</p>
+<p>Sincerely,</p>
+<p>Yours truly</p>
+<hr>
+<p>Let's connect via the following platforms: <a href="https://www.linkedin.com/in/brandoebande" target="_blank" rel="noopener">LinkedIn</a>, on <a href="https://twitter.com/Rogue0015" target="_blank" rel="noopener">X as @Rogue0015</a>, or check the <a href="https://sessionize.com/brandon-bande/" target="_blank" rel="noopener">Sessionize speaker profile</a> if you want this signal live on your stage. And if you're new here, start with <a href="../index.html#p4">the talks</a> — this blog is their echo.</p>
+    </div>
+  </article>
+
+  <nav class="post-pager" aria-label="More posts">
+    <a class="pager-link" href="designing-vision-sl.html" rel="prev"><span class="mono">← OLDER</span><strong>Designing Vision-SL: A preview into what we considered</strong></a>
+  </nav>
+
+  <aside class="post-cta">
+    <p class="mono">// KEEP THE SIGNAL GOING</p>
+    <div class="cta-row">
+      <a class="btn solid" href="index.html">→ ALL THOUGHTS</a>
+      <a class="btn ghost" href="../index.html#p4">→ VIEW MY TALKS</a>
+      <a class="btn ghost" href="https://www.linkedin.com/in/brandoebande" target="_blank" rel="noopener">→ CONNECT ON LINKEDIN</a>
+    </div>
+  </aside>
+</main>
+
+<footer class="site-foot mono">
+  <span>BRANDON T. BANDE — GWERU, ZIMBABWE</span>
+  <span>
+    <a href="../index.html">HOME</a> · <a href="index.html">THOUGHTS</a> · <a href="../index.html#p4">TALKS</a> ·
+    <a href="https://twitter.com/Rogue0015" target="_blank" rel="noopener">X</a> ·
+    <a href="https://www.linkedin.com/in/brandoebande" target="_blank" rel="noopener">LINKEDIN</a> ·
+    <a href="https://sessionize.com/brandon-bande/" target="_blank" rel="noopener">SESSIONIZE</a>
+  </span>
+</footer>
+
+<script id="goatcounter-script" data-goatcounter="https://rogue0015.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<script>
+document.getElementById('goatcounter-script').addEventListener('load', function () {
+  var vc = document.getElementById('view-count');
+  if (!vc) return;
+  fetch('https://rogue0015.goatcounter.com/counter/' + location.pathname + '.json')
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (data) {
+      if (!data) return;
+      console.log('Page views:', data.count);
+      vc.textContent = data.count + ' VIEWS';
+    })
+    .catch(function () {});
+});
+</script>
+
+</body>
+</html>
