@@ -6,6 +6,11 @@ static HTML page, regenerates the paginated blog index (blogs/index.html,
 blogs/page2.html, ...) and regenerates sitemap.xml. Standard library only —
 no installs, no Jekyll.
 
+The sitemap also lists the /tools apps, which are published from the separate
+rogue0015/tools repo: the build reads their list from the live /tools page and
+dates each one by its last commit there. Offline, it keeps the /tools entries
+from the previous sitemap. The homepage is dated by its last git commit.
+
 Post sources are local-only, so already-published posts are read back from
 their generated blogs/<slug>.html when no blogs/<slug>.md exists. A .md
 always wins over its .html, so to edit an old post, recreate its .md.
@@ -16,8 +21,11 @@ Usage:  python scripts/build_blog.py
 import html
 import json
 import re
+import subprocess
 import sys
+import urllib.request
 from datetime import date
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 from string import Template
 
@@ -27,6 +35,10 @@ SITE = "https://rogue0015.github.io"
 AUTHOR_ID = f"{SITE}/#brandon"
 BLOG_ID = f"{SITE}/blogs/#blog"
 PER_PAGE = 5
+# The homepage is index.html plus the project cards it loads from this file.
+HOME_SOURCES = ("index.html", "data/projects.json")
+TOOLS_URL = f"{SITE}/tools/"
+TOOLS_REPO = "rogue0015/tools"
 
 # ---------------------------------------------------------------- front matter
 
@@ -624,16 +636,69 @@ def build_index(page_posts, newest_first, n, total):
         page_url=page_url(n), rel_links=rel_links, index_pager=build_index_pager(n, total),
     )
 
+def homepage_lastmod(today):
+    """Last commit date of the homepage sources, or today if they have uncommitted edits."""
+    def git(*args):
+        return subprocess.run(["git", *args, "--", *HOME_SOURCES], cwd=ROOT,
+                              capture_output=True, text=True, check=True).stdout.strip()
+    try:
+        if git("status", "--porcelain"):
+            return today
+        return git("log", "-1", "--format=%cs") or today
+    except (OSError, subprocess.CalledProcessError):
+        print("  WARN   git unavailable; homepage lastmod set to today.")
+        return today
+
+def _fetch(url):
+    req = urllib.request.Request(url, headers={"User-Agent": "rogue0015-build-blog"})
+    with urllib.request.urlopen(req, timeout=15) as r:
+        return r.read().decode("utf-8"), r.headers.get("Last-Modified")
+
+def tools_rows(previous):
+    """(url, lastmod) for the /tools landing page and every app in its APPS list,
+    each dated by its last commit in the tools repo. If the live page can't be
+    reached, the /tools rows of the previous sitemap are kept instead of dropped."""
+    try:
+        page, deployed = _fetch(TOOLS_URL)
+    except OSError as e:
+        kept = [(u, m) for u, m in previous.items() if u.startswith(TOOLS_URL)]
+        print(f"  WARN   couldn't reach {TOOLS_URL} ({e}); kept {len(kept)} /tools URL(s) from the last sitemap.")
+        return kept
+    fallback = parsedate_to_datetime(deployed).date().isoformat() if deployed else date.today().isoformat()
+    apps = [h for h in re.findall(r'\bhref:\s*"([^"]+)"', page) if not re.match(r"[a-z]+:|/", h)]
+    rows = []
+    for href in [""] + apps:
+        folder = href.removesuffix("index.html")  # "qr/index.html" -> "qr/"
+        repo_path = folder.rstrip("/") or "index.html"
+        try:
+            commits = json.loads(_fetch(
+                f"https://api.github.com/repos/{TOOLS_REPO}/commits?path={repo_path}&per_page=1")[0])
+        except (OSError, ValueError):  # offline, rate-limited, or bad JSON
+            commits = None
+        if commits == []:
+            print(f"  WARN   /tools lists {href}, but {TOOLS_REPO} has no {repo_path}; left out of the sitemap.")
+            continue
+        url = TOOLS_URL + folder
+        if isinstance(commits, list):
+            rows.append((url, commits[0]["commit"]["committer"]["date"][:10]))
+        else:
+            rows.append((url, previous.get(url, fallback)))
+    return rows
+
 def build_sitemap(posts, page_count):
     today = date.today().isoformat()
     newest = max((p["modified"] for p in posts), default=today)
+    old = ROOT / "sitemap.xml"
+    previous = {html.unescape(u): m for u, m in re.findall(
+        r"<loc>([^<]+)</loc><lastmod>([^<]+)</lastmod>", old.read_text(encoding="utf-8"))} if old.exists() else {}
     urls = [
-        (f"{SITE}/", today, "1.0"),
+        (f"{SITE}/", homepage_lastmod(today), "1.0"),
         (f"{SITE}/blogs/", newest, "0.8"),
     ] + [(page_url(n), newest, "0.5") for n in range(2, page_count + 1)] \
-      + [(p["url"], p["modified"], "0.7") for p in reversed(posts)]
+      + [(p["url"], p["modified"], "0.7") for p in reversed(posts)] \
+      + [(u, m, "0.6" if u == TOOLS_URL else "0.5") for u, m in tools_rows(previous)]
     rows = "\n".join(
-        f"  <url><loc>{u}</loc><lastmod>{m}</lastmod><priority>{pr}</priority></url>"
+        f"  <url><loc>{html.escape(u)}</loc><lastmod>{m}</lastmod><priority>{pr}</priority></url>"
         for u, m, pr in urls
     )
     return ('<?xml version="1.0" encoding="UTF-8"?>\n'
