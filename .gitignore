@@ -18,9 +18,3 @@ blogs/*.md
 # Build tooling stays local — only its generated output is published.
 
 
-# Editable content data with a safe static-HTML fallback stays local.
-# data/projects.json is NOT listed here — it's the live, no-fallback source
-# for the Projects panel and must stay tracked. content.sample.json and
-# speaker.sample.json (structure-only) are still committed as reference.
-data/content.json
-data/speaker.json

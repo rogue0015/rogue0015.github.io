@@ -1038,6 +1038,10 @@
   // The static HTML below stays the crawlable SEO fallback — after editing
   // the JSON, run `python scripts/update_index.py` to sync the static HTML.
   const contentUrl = './data/content.json';
+  // data/content.json and data/speaker.json are gitignored, so they only exist
+  // on a local copy. The live site already has their content baked into the
+  // HTML (scripts/update_index.py), so skip the requests there to avoid 404s.
+  const isLocalSite = location.protocol === 'file:' || ['localhost', '127.0.0.1', ''].includes(location.hostname);
 
   function setTag(el, text) {
     if (el && text) el.innerHTML = `<span class="rule"></span> ${escapeHtml(text)}`;
@@ -1145,7 +1149,7 @@
     bindHoverTargets();
   }
 
-  (async () => {
+  if (isLocalSite) (async () => {
     try {
       const response = await fetch(contentUrl, { headers: { Accept: 'application/json' } });
       if (!response.ok) throw new Error(`Content request failed with ${response.status}`);
@@ -1488,7 +1492,7 @@
 
     // 2) Otherwise paint from the committed same-origin snapshot (/data/speaker.json)
     //    — fastest first render, no third-party round trip.
-    if (!dataState.data) {
+    if (!dataState.data && isLocalSite) {
       try {
         const snap = await fetch(speakerSnapshotUrl);
         if (snap.ok) {
