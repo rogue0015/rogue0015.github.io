@@ -221,6 +221,10 @@ POST_TEMPLATE = Template("""<!DOCTYPE html>
 <meta name="theme-color" content="#08060B">
 <meta name="color-scheme" content="dark">
 <link rel="canonical" href="$url">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <meta property="og:type" content="article">
 <meta property="og:title" content="$title_attr">
 <meta property="og:description" content="$desc_attr">
@@ -300,6 +304,10 @@ INDEX_TEMPLATE = Template("""<!DOCTYPE html>
 <meta name="theme-color" content="#08060B">
 <meta name="color-scheme" content="dark">
 <link rel="canonical" href="$page_url">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 $rel_links<meta property="og:type" content="website">
 <meta property="og:title" content="$page_title">
 <meta property="og:description" content="$page_desc">

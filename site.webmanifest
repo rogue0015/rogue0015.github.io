@@ -1,0 +1,11 @@
+{
+  "name": "Brandon T. Bande",
+  "short_name": "BRANDON",
+  "icons": [
+    { "src": "/assets/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#08060B",
+  "background_color": "#08060B",
+  "display": "browser"
+}
