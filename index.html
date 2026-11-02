@@ -497,19 +497,24 @@
   .trail-wrap{ display:grid; grid-template-columns:1.2fr 0.8fr; gap:clamp(24px, 3vw, 40px); align-items:center; }
   @media (max-width:900px){ .trail-wrap{ grid-template-columns:1fr; } }
   .netmap{ position:relative; height:340px; }
-  .netmap svg{ width:100%; height:100%; overflow:visible; }
-  .netmap .node{ fill:var(--sunburst); }
-  .netmap .node-lbl{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; fill:var(--paper-dim); }
-  .netmap path.route{
-    fill:none; stroke:var(--sigblue); stroke-width:1.3; opacity:.75;
-    stroke-dasharray:400; stroke-dashoffset:400;
-    transition:stroke-dashoffset 1.8s ease;
+  .netmap svg{ width:100%; height:calc(100% - 22px); display:block;
+    -webkit-mask-image:linear-gradient(to right, transparent, #000 6%, #000 94%, transparent), linear-gradient(to bottom, transparent, #000 7%, #000 93%, transparent);
+    -webkit-mask-composite:source-in; mask-image:linear-gradient(to right, transparent, #000 6%, #000 94%, transparent), linear-gradient(to bottom, transparent, #000 7%, #000 93%, transparent); mask-composite:intersect; }
+  .netmap .land{ fill:rgba(245,239,223,0.05); stroke:rgba(245,239,223,0.2); stroke-width:.6; vector-effect:non-scaling-stroke; }
+  .netmap .land.visited{ fill:rgba(77,225,255,0.13); stroke:rgba(77,225,255,0.5); }
+  .netmap .ring{ fill:none; stroke:rgba(245,239,223,0.16); stroke-width:1; stroke-dasharray:2 4; vector-effect:non-scaling-stroke; }
+  .netmap .ring-lbl{ font-family:'IBM Plex Mono', monospace; fill:rgba(245,239,223,0.4); }
+  .netmap .node-lbl{ font-family:'IBM Plex Mono', monospace; fill:var(--paper); letter-spacing:.04em; }
+  .netmap .node-km{ font-family:'IBM Plex Mono', monospace; fill:var(--sigblue); }
+  .netmap .route{
+    fill:none; stroke:var(--sigblue); stroke-width:1.3; opacity:.75; vector-effect:non-scaling-stroke;
+    stroke-dasharray:1; stroke-dashoffset:1; transition:stroke-dashoffset 1.4s ease;
   }
-  #p2.active .netmap path.route{ stroke-dashoffset:0; }
-  .netmap circle.node{ transform-origin:center; transform:scale(0); transition:transform .4s cubic-bezier(.34,1.56,.64,1); }
-  #p2.active .netmap circle.node{ transform:scale(1); }
-  .netmap .n1{ transition-delay:.1s;} .netmap .n2{ transition-delay:.4s;} .netmap .n3{ transition-delay:.7s;}
-  .netmap .n4{ transition-delay:1s;} .netmap .n5{ transition-delay:1.3s;} .netmap .n6{ transition-delay:1.6s;}
+  #p2.active .netmap .route{ stroke-dashoffset:0; }
+  .netmap .node{ fill:var(--sunburst); transform-box:fill-box; transform-origin:center; transform:scale(0); transition:transform .4s cubic-bezier(.34,1.56,.64,1); }
+  .netmap .node.home{ fill:var(--acid); }
+  #p2.active .netmap .node{ transform:scale(1); }
+  .netmap .map-note{ margin-top:8px; font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:.06em; color:var(--paper-dim); }
 
   .bars{ display:flex; flex-direction:column; gap:20px; }
   .bar-item .bl{ display:flex; justify-content:space-between; font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--paper-dim); margin-bottom:6px; }
@@ -718,8 +723,8 @@
     .stat-row{ gap:22px 26px; }
     .stat .num{ font-size:1.9rem; }
     h2.panel-title{ margin-bottom:20px; }
-    .netmap{ height:240px; }
-    .netmap .node-lbl{ font-size:9px; }
+    .netmap{ height:300px; }
+    .netmap .map-note{ font-size:9px; }
     .marquee{ font-size:11px; }
     #p5 .cta{ font-size:clamp(1.9rem, 10vw, 3rem); }
     .scrollcue{ bottom:70px; right:6vw; }
@@ -837,30 +842,15 @@
       <div class="tag"><span class="rule"></span> 02 / GROUND TRACK</div>
       <h2 class="display panel-title glitch" data-text="IMPACT">IMPACT</h2>
       <div class="trail-wrap">
-        <div class="netmap">
-          <svg viewBox="0 0 420 300">
-            <path class="route" d="M60,230 L150,80 L230,180 L320,60 L370,150 L210,230 L60,230" />
-            <g>
-              <circle class="node n1" cx="60" cy="230" r="5"></circle>
-              <text class="node-lbl" x="60" y="250">GWERU</text>
-              <circle class="node n2" cx="150" cy="80" r="5"></circle>
-              <text class="node-lbl" x="150" y="70">HARARE</text>
-              <circle class="node n3" cx="230" cy="180" r="5"></circle>
-              <text class="node-lbl" x="230" y="200">LUSAKA</text>
-              <circle class="node n4" cx="320" cy="60" r="5"></circle>
-              <text class="node-lbl" x="300" y="45">MBARARA</text>
-              <circle class="node n5" cx="370" cy="150" r="5"></circle>
-              <text class="node-lbl" x="340" y="145">WINDHOEK</text>
-              <circle class="node n6" cx="210" cy="230" r="5"></circle>
-              <text class="node-lbl" x="215" y="250">BONNY ISL.</text>
-            </g>
-          </svg>
+        <div class="netmap" id="impactMap">
+          <svg id="impactSvg" role="img" aria-label="Map of cities where Brandon has spoken, with distances from Gweru"></svg>
+          <div class="map-note" id="impactMapNote">DISTANCES FROM GWERU · GREAT-CIRCLE KM</div>
         </div>
         <div>
           <div class="bars">
-            <div class="bar-item" style="--w:100%"><div class="bl"><span>TALKS DELIVERED</span><span>20+</span></div><div class="track"><div class="fill"></div></div></div>
-            <div class="bar-item" style="--w:75%"><div class="bl"><span>COUNTRIES REACHED</span><span>06</span></div><div class="track"><div class="fill"></div></div></div>
-            <div class="bar-item" style="--w:90%"><div class="bl"><span>YEARS ACTIVE</span><span>2020–2026</span></div><div class="track"><div class="fill"></div></div></div>
+            <div class="bar-item" style="--w:100%"><div class="bl"><span>TALKS DELIVERED</span><span id="statTalks">20+</span></div><div class="track"><div class="fill"></div></div></div>
+            <div class="bar-item" style="--w:75%"><div class="bl"><span>COUNTRIES REACHED</span><span id="statCountries">06</span></div><div class="track"><div class="fill"></div></div></div>
+            <div class="bar-item" style="--w:90%"><div class="bl"><span>YEARS ACTIVE</span><span id="statYears">2020–2026</span></div><div class="track"><div class="fill"></div></div></div>
           </div>
           <button class="expand-btn mono" id="logBtn">VIEW FULL LOG ▾</button>
           <div class="fulllog mono" id="fullLog">
@@ -894,7 +884,7 @@
         <a class="chip m3 glitch-card" href="https://zindi.africa/" target="_blank" rel="noopener">ZINDI — FORMER ZIMBABWE AMBASSADOR</a>
       </div>
     </div>
-    <div class="marquee" style="bottom:60px;"><div class="marquee-track"><span>GWERU · HARARE · LUSAKA · KITWE · WINDHOEK · MBARARA · JOHANNESBURG · BONNY ISLAND</span><span>GWERU · HARARE · LUSAKA · KITWE · WINDHOEK · MBARARA · JOHANNESBURG · BONNY ISLAND</span></div></div>
+    <div class="marquee" style="bottom:60px;"><div class="marquee-track" id="cityMarquee"><span>GWERU · HARARE · LUSAKA · KITWE · WINDHOEK · MBARARA · JOHANNESBURG · BONNY ISLAND</span><span>GWERU · HARARE · LUSAKA · KITWE · WINDHOEK · MBARARA · JOHANNESBURG · BONNY ISLAND</span></div></div>
   </section>
 
   <!-- PANEL 4 — TALKS -->
@@ -945,46 +935,76 @@
           <i class="holo" aria-hidden="true"></i>
           <i class="holo-tear" aria-hidden="true"></i>
           <div class="proj-meta">PROJECT 01 · 2026</div>
+          <h3 class="display proj-title">QR Code Generator</h3>
+          <div class="proj-label">Abstract</div>
+          <p class="proj-copy">Browser-based QR code maker for links, emails, phone numbers and text, with custom colours, corner styles, an optional centre logo, and PNG, SVG or clipboard export. It reads its own code back after every change and flags any design that won't scan.</p>
+          <div class="proj-label">Rationale</div>
+          <p class="proj-copy">Most free QR tools trade your data for convenience, or let you style a code until it quietly stops working. This one runs offline, uploads nothing, and checks itself, so a branded code is still a working code. Part of Brandon's Small Apps.</p>
+        </article>
+        <article class="project-card glitch-card" data-side="right" style="--holo:227">
+          <i class="holo" aria-hidden="true"></i>
+          <i class="holo-tear" aria-hidden="true"></i>
+          <div class="proj-meta">PROJECT 02 · 2026</div>
+          <h3 class="display proj-title">Cover Page Maker</h3>
+          <div class="proj-label">Abstract</div>
+          <p class="proj-copy">Offline tool that builds A4 university assignment cover pages in the standard bold, capitalised Times New Roman format, for one student or a group of up to 25, with a live preview and PDF or Word export.</p>
+          <div class="proj-label">Rationale</div>
+          <p class="proj-copy">Every student loses time fighting margins and fonts on a cover page that always follows the same rules. The Cover Page Maker fills in the format for them, warns when content won't fit, and won't export until the preview has been checked. Part of Brandon's Small Apps.</p>
+        </article>
+        <article class="project-card glitch-card" data-side="left" style="--holo:294">
+          <i class="holo" aria-hidden="true"></i>
+          <i class="holo-tear" aria-hidden="true"></i>
+          <div class="proj-meta">PROJECT 03 · 2026</div>
+          <h3 class="display proj-title">Business Card Maker</h3>
+          <div class="proj-label">Abstract</div>
+          <p class="proj-copy">Print-ready business card designer with ten front templates, four matching back designs with a scan-tested QR code, and exports as 600 DPI PNGs, a two-page PDF, or an A4 sheet of ten cards with cut marks and optional 3 mm bleed.</p>
+          <div class="proj-label">Rationale</div>
+          <p class="proj-copy">A good business card shouldn't need a designer, a subscription, or an account. This app takes someone from blank to print-shop-ready files in the browser, with nothing uploaded or stored. Part of Brandon's Small Apps.</p>
+        </article>
+        <article class="project-card glitch-card" data-side="right" style="--holo:1">
+          <i class="holo" aria-hidden="true"></i>
+          <i class="holo-tear" aria-hidden="true"></i>
+          <div class="proj-meta">PROJECT 04 · 2026</div>
           <h3 class="display proj-title">StudyBuddy</h3>
           <div class="proj-label">Abstract</div>
           <p class="proj-copy">Student-centric, AI-powered learning platform built for learners in low-resource environments. Built on open-weight large language models, it delivers a personalised, contextualised education experience shaped around each student.</p>
           <div class="proj-label">Rationale</div>
           <p class="proj-copy">Quality, personalised education should not depend on bandwidth or budget. StudyBuddy exists to put an adaptive tutor in the hands of every learner, built on open models so it stays affordable, transparent, and grounded in local context.</p>
         </article>
-        <article class="project-card glitch-card" data-side="right" style="--holo:227">
+        <article class="project-card glitch-card" data-side="left" style="--holo:68">
           <i class="holo" aria-hidden="true"></i>
           <i class="holo-tear" aria-hidden="true"></i>
-          <div class="proj-meta">PROJECT 02 · 2026</div>
+          <div class="proj-meta">PROJECT 05 · 2026</div>
           <h3 class="display proj-title">Fung.ai</h3>
           <div class="proj-label">Abstract</div>
           <p class="proj-copy">Agentic AI automation and compliance engine for enterprise operations, engineered around data residency and sovereignty. It aligns AI governance, data residence, and enterprise objectives for secure automation and AI integration.</p>
           <div class="proj-label">Rationale</div>
           <p class="proj-copy">Enterprises want AI in their operations without surrendering control of their data. Fung.ai exists to make automation and compliance the same motion — agents that move work forward while data stays where regulation, sovereignty, and strategy say it must.</p>
         </article>
-        <article class="project-card glitch-card" data-side="left" style="--holo:294">
+        <article class="project-card glitch-card" data-side="right" style="--holo:135">
           <i class="holo" aria-hidden="true"></i>
           <i class="holo-tear" aria-hidden="true"></i>
-          <div class="proj-meta">PROJECT 03 · 2026</div>
+          <div class="proj-meta">PROJECT 06 · 2026</div>
           <h3 class="display proj-title">HermeSphere</h3>
           <div class="proj-label">Abstract</div>
           <p class="proj-copy">WhatsApp-first, centralised event management platform for personal and organisational events — handling Call for Proposals management, payments, and event reporting from a single hub.</p>
           <div class="proj-label">Rationale</div>
           <p class="proj-copy">Communities already organise on WhatsApp; their event tooling should live there too. HermeSphere exists to meet organisers where they are, replacing scattered forms, spreadsheets, and payment threads with one coherent pipeline from proposal to report.</p>
         </article>
-        <article class="project-card glitch-card" data-side="right" style="--holo:1">
+        <article class="project-card glitch-card" data-side="left" style="--holo:202">
           <i class="holo" aria-hidden="true"></i>
           <i class="holo-tear" aria-hidden="true"></i>
-          <div class="proj-meta">PROJECT 04 · 2022</div>
+          <div class="proj-meta">PROJECT 07 · 2022</div>
           <h3 class="display proj-title">Mukando</h3>
           <div class="proj-label">Abstract</div>
           <p class="proj-copy">Bank-backed stokvel platform for resource pooling, designed for SMEs across Africa — turning informal savings circles into structured financial infrastructure.</p>
           <div class="proj-label">Rationale</div>
           <p class="proj-copy">African SMEs have always pooled resources; the infrastructure just never caught up. Mukando set out to formalise that tradition with novel, bank-backed rails for financial planning and collective capital, anchored in networks of entrepreneurship.</p>
         </article>
-        <article class="project-card glitch-card" data-side="left" style="--holo:68">
+        <article class="project-card glitch-card" data-side="right" style="--holo:269">
           <i class="holo" aria-hidden="true"></i>
           <i class="holo-tear" aria-hidden="true"></i>
-          <div class="proj-meta">PROJECT 05 · 2020</div>
+          <div class="proj-meta">PROJECT 08 · 2020</div>
           <h3 class="display proj-title">A+</h3>
           <div class="proj-label">Abstract</div>
           <p class="proj-copy">Online examination platform enabling students to sit university exams remotely at accredited regional centres.</p>
@@ -1424,6 +1444,9 @@
         <div class="log-row"><span>Communities</span><span>GDG Harare · YAL</span></div>`;
     }
 
+    setImpactEvents(events);
+    updateImpactStats(events, talkCount);
+
     const fullLog = document.getElementById('fullLog');
     if (fullLog) {
       const eventRows = events.slice(0, 12).map((event) => {
@@ -1492,6 +1515,196 @@
       dataState.pending = false;
     }
   }
+
+  // ---------- IMPACT MAP ----------
+  // Built from the Sessionize event list. Uses an azimuthal equidistant
+  // projection centred on Gweru: every straight line from Gweru is the true
+  // shortest route and its length is the true distance, so the rings and the
+  // km labels are accurate. Country outlines live in data/africa-map.json.
+  const MAP_HOME = { name: 'Gweru', country: 'Zimbabwe', lat: -19.45, lon: 29.82 };
+  // City -> [lat, lon]. Add a city here when a new event location appears.
+  const CITY_COORDS = {
+    'gweru': [-19.45, 29.82], 'harare': [-17.83, 31.05], 'bulawayo': [-20.15, 28.58],
+    'mutare': [-18.97, 32.67], 'masvingo': [-20.07, 30.83], 'victoria falls': [-17.93, 25.84],
+    'lusaka': [-15.39, 28.32], 'kitwe': [-12.80, 28.21], 'ndola': [-12.96, 28.64], 'livingstone': [-17.85, 25.86],
+    'windhoek': [-22.56, 17.08], 'gaborone': [-24.65, 25.91], 'maputo': [-25.97, 32.57],
+    'lilongwe': [-13.96, 33.79], 'blantyre': [-15.79, 35.01],
+    'johannesburg': [-26.20, 28.05], 'pretoria': [-25.75, 28.19], 'cape town': [-33.92, 18.42], 'durban': [-29.86, 31.02],
+    'mbarara': [-0.61, 30.65], 'kampala': [0.35, 32.58], 'nairobi': [-1.29, 36.82], 'kigali': [-1.95, 30.06],
+    'dar es salaam': [-6.79, 39.21], 'arusha': [-3.39, 36.68], 'addis ababa': [9.03, 38.74],
+    'kinshasa': [-4.32, 15.31], 'lubumbashi': [-11.66, 27.48], 'luanda': [-8.84, 13.23],
+    'bonny': [4.43, 7.17], 'lagos': [6.52, 3.38], 'abuja': [9.08, 7.40], 'onitsha': [6.15, 6.79], 'port harcourt': [4.82, 7.05],
+    'accra': [5.60, -0.19], 'kumasi': [6.69, -1.62], 'dakar': [14.72, -17.47], 'cairo': [30.04, 31.24],
+    'casablanca': [33.57, -7.59], 'tunis': [36.81, 10.18]
+  };
+  // Shown until the live data arrives.
+  const MAP_FALLBACK_EVENTS = [
+    ['2026-10-12', 'Cape Town, South Africa'], ['2026-02-23', 'Windhoek, Namibia'], ['2026-02-11', 'Gweru, Zimbabwe'],
+    ['2025-11-15', 'Mbarara, Uganda'], ['2025-10-25', 'Harare, Zimbabwe'], ['2025-10-09', 'Johannesburg, South Africa'],
+    ['2025-05-16', 'Bonny, Nigeria'], ['2024-12-13', 'Lusaka, Zambia'], ['2024-10-11', 'Bulawayo, Zimbabwe'],
+    ['2023-12-22', 'Kitwe, Zambia'], ['2022-12-17', 'Harare, Zimbabwe']
+  ].map(([d, l]) => ({ eventStartDate: d, location: l, name: '' }));
+
+  const mapState = { events: MAP_FALLBACK_EVENTS, shapes: null };
+  const R_EARTH = 6371;
+  const rad = (d) => d * Math.PI / 180;
+
+  function aeqd(lat, lon) {
+    const p0 = rad(MAP_HOME.lat), p = rad(lat), dl = rad(lon - MAP_HOME.lon);
+    const cosc = Math.sin(p0) * Math.sin(p) + Math.cos(p0) * Math.cos(p) * Math.cos(dl);
+    const c = Math.acos(Math.max(-1, Math.min(1, cosc)));
+    const k = c === 0 ? 1 : c / Math.sin(c);
+    const x = R_EARTH * k * Math.cos(p) * Math.sin(dl);
+    const y = R_EARTH * k * (Math.cos(p0) * Math.sin(p) - Math.sin(p0) * Math.cos(p) * Math.cos(dl));
+    return { x, y: -y, km: R_EARTH * c };
+  }
+
+  function mapPlaces(events) {
+    const places = new Map();
+    events.forEach((event) => {
+      const loc = String(event.location || '').trim();
+      if (!loc) return;
+      const city = loc.split(',')[0].trim();
+      const key = city.toLowerCase();
+      const coords = CITY_COORDS[key];
+      if (!coords) { console.warn('Impact map: no coordinates for', loc); return; }
+      const place = places.get(key) || { city, country: parseCountry(loc), lat: coords[0], lon: coords[1], events: [] };
+      place.events.push(event);
+      places.set(key, place);
+    });
+    return [...places.values()];
+  }
+
+  function renderImpactMap() {
+    const svg = document.getElementById('impactSvg');
+    if (!svg) return;
+    const places = mapPlaces(mapState.events || []);
+    if (!places.some((p) => p.city.toLowerCase() === MAP_HOME.name.toLowerCase())) {
+      places.push({ city: MAP_HOME.name, country: MAP_HOME.country, lat: MAP_HOME.lat, lon: MAP_HOME.lon, events: [] });
+    }
+    places.forEach((p) => Object.assign(p, aeqd(p.lat, p.lon)));
+    const home = places.find((p) => p.km <= 1);
+    const others = places.filter((p) => p !== home).sort((a, b) => b.km - a.km);
+
+    // Fit the view to the points, matching the box's shape.
+    const boxW = svg.clientWidth || 420, boxH = svg.clientHeight || 340;
+    let minX = Math.min(...places.map((p) => p.x)), maxX = Math.max(...places.map((p) => p.x));
+    let minY = Math.min(...places.map((p) => p.y)), maxY = Math.max(...places.map((p) => p.y));
+    const span = Math.max(maxX - minX, maxY - minY, 800);
+    minX -= span * 0.14; maxX += span * 0.26; minY -= span * 0.12; maxY += span * 0.2;
+    let w = maxX - minX, h = maxY - minY;
+    if (w / h < boxW / boxH) { const nw = h * boxW / boxH; minX -= (nw - w) / 2; w = nw; }
+    else { const nh = w * boxH / boxW; minY -= (nh - h) / 2; h = nh; }
+    const u = w / boxW; // km per screen pixel
+    svg.setAttribute('viewBox', `${minX.toFixed(0)} ${minY.toFixed(0)} ${w.toFixed(0)} ${h.toFixed(0)}`);
+
+    const visited = new Set(places.filter((p) => p.events.length).map((p) => p.country));
+    const fs = (px) => (px * u).toFixed(1);
+    let out = '';
+
+    // Country outlines
+    const shapes = mapState.shapes || {};
+    Object.keys(shapes).forEach((name) => {
+      out += `<path class="land${visited.has(name) ? ' visited' : ''}" d="${shapes[name]}"><title>${escapeHtml(name)}</title></path>`;
+    });
+
+    // Distance rings (true km from Gweru)
+    const maxKm = Math.max(...places.map((p) => p.km));
+    const step = maxKm > 2600 ? 1000 : 500;
+    const ringBoxes = [];
+    for (let r = step; r <= maxKm + step * 0.6; r += step) {
+      const rl = `${r.toLocaleString('en-US')} KM`;
+      const rw = rl.length * 8.5 * 0.62 * u, rh = 10 * u;
+      out += `<circle class="ring" cx="0" cy="0" r="${r}"></circle>`;
+      const spot = [[0.707, 0.707], [0.707, -0.707], [1, 0], [-0.707, 0.707], [-0.707, -0.707]]
+        .map(([cx, cy]) => ({ x: r * cx + (cx < 0 ? -rw - 3 * u : 3 * u), y: r * cy - rh / 2, w: rw, h: rh }))
+        .find((b) => b.x >= minX && b.x + b.w <= minX + w && b.y >= minY && b.y + b.h <= minY + h);
+      if (!spot) continue;
+      out += `<text class="ring-lbl" x="${spot.x.toFixed(0)}" y="${(spot.y + 8.5 * u).toFixed(0)}" font-size="${fs(8.5)}">${rl}</text>`;
+      ringBoxes.push(spot);
+    }
+    const note = document.getElementById('impactMapNote');
+    if (note) note.textContent = `DISTANCES FROM GWERU · GREAT-CIRCLE KM · RINGS EVERY ${step.toLocaleString('en-US')} KM`;
+
+    // Routes from Gweru: straight lines are true great-circle paths on this projection.
+    others.forEach((p, i) => {
+      out += `<path class="route" pathLength="1" style="transition-delay:${(0.15 + i * 0.12).toFixed(2)}s" d="M0 0L${p.x.toFixed(0)} ${p.y.toFixed(0)}"></path>`;
+    });
+
+    // Nodes, sized by number of events
+    const nodeR = (p) => (3.5 + Math.min(p.events.length, 8) * 0.5) * u;
+    [...others, home].forEach((p, i) => {
+      const list = p.events.map((e) => `${(e.eventStartDate || '').slice(0, 4)} ${e.name || ''}`.trim()).join('\n');
+      const tip = `${p.city}, ${p.country}${p === home ? ' · home base' : ` · ${Math.round(p.km).toLocaleString('en-US')} km from Gweru`}${list ? '\n' + list : ''}`;
+      out += `<circle class="node${p === home ? ' home' : ''}" cx="${p.x.toFixed(0)}" cy="${p.y.toFixed(0)}" r="${nodeR(p).toFixed(1)}" style="transition-delay:${(0.3 + i * 0.12).toFixed(2)}s"><title>${escapeHtml(tip)}</title></circle>`;
+    });
+
+    // Labels: try spots around each node and keep the first that doesn't overlap.
+    const placed = places.map((p) => ({ x: p.x - nodeR(p), y: p.y - nodeR(p), w: nodeR(p) * 2, h: nodeR(p) * 2 })).concat(ringBoxes);
+    const lblPx = 10, kmPx = 9;
+    const overlaps = (b) => placed.some((o) => b.x < o.x + o.w && b.x + b.w > o.x && b.y < o.y + o.h && b.y + b.h > o.y);
+    // keep labels clear of the faded edges
+    const inView = (b) => b.x >= minX + w * 0.06 && b.x + b.w <= minX + w * 0.94 && b.y >= minY + h * 0.07 && b.y + b.h <= minY + h * 0.93;
+    [home, ...others.slice().reverse()].forEach((p) => {
+      const name = p.city.toUpperCase();
+      const sub = p === home ? 'HOME BASE' : `${Math.round(p.km).toLocaleString('en-US')} KM`;
+      const bw = Math.max(name.length * lblPx, sub.length * kmPx) * 0.62 * u;
+      const bh = (lblPx + kmPx + 3) * u;
+      const gap = nodeR(p) + 4 * u;
+      let box = null;
+      for (const d of [1, 2, 3, 4.2]) {
+        const g = gap * d;
+        // 8 directions, the one pointing away from Gweru first
+        const out0 = p === home ? Math.PI / 4 : Math.atan2(p.y, p.x);
+        const spots = [0, 1, -1, 2, -2, 3, -3, 4].map((k) => {
+          const a = out0 + k * Math.PI / 4, cx = Math.cos(a), cy = Math.sin(a);
+          const ax = p.x + cx * g, ay = p.y + cy * g;
+          return [cx > 0.3 ? ax : cx < -0.3 ? ax - bw : ax - bw / 2, cy > 0.3 ? ay : cy < -0.3 ? ay - bh : ay - bh / 2];
+        });
+        box = spots.map(([x, y]) => ({ x, y, w: bw, h: bh })).find((b) => inView(b) && !overlaps(b));
+        if (box) break;
+      }
+      if (!box) box = { x: p.x + gap, y: p.y - bh / 2, w: bw, h: bh };
+      placed.push(box);
+      const cy = box.y + bh / 2;
+      const nearX = box.x > p.x ? box.x : box.x + bw;
+      if (Math.hypot(Math.max(0, Math.abs(box.x + bw / 2 - p.x) - bw / 2), Math.max(0, Math.abs(cy - p.y) - bh / 2)) > gap * 1.4) {
+        out += `<path class="ring" d="M${p.x.toFixed(0)} ${p.y.toFixed(0)}L${nearX.toFixed(0)} ${cy.toFixed(0)}"></path>`;
+      }
+      out += `<text class="node-lbl" x="${box.x.toFixed(0)}" y="${(box.y + lblPx * u).toFixed(0)}" font-size="${fs(lblPx)}">${escapeHtml(name)}</text>`;
+      out += `<text class="node-km" x="${box.x.toFixed(0)}" y="${(box.y + (lblPx + kmPx + 2) * u).toFixed(0)}" font-size="${fs(kmPx)}">${sub}</text>`;
+    });
+
+    svg.innerHTML = out;
+  }
+
+  function updateImpactStats(events, talkCount) {
+    const places = mapPlaces(events);
+    const countries = new Set(events.map((e) => parseCountry(e.location)).filter(Boolean));
+    const years = events.map((e) => new Date(e.eventStartDate).getFullYear()).filter((y) => y > 1990);
+    const set = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+    if (talkCount) set('statTalks', String(talkCount));
+    if (countries.size) set('statCountries', String(countries.size).padStart(2, '0'));
+    if (years.length) set('statYears', `${Math.min(2020, ...years)}–${Math.max(...years)}`);
+    const marquee = document.getElementById('cityMarquee');
+    if (marquee && places.length) {
+      const line = escapeHtml(places.map((p) => p.city.toUpperCase()).join(' · '));
+      marquee.innerHTML = `<span>${line}</span><span>${line}</span>`;
+    }
+  }
+
+  function setImpactEvents(events) {
+    if (Array.isArray(events) && events.length) mapState.events = events;
+    renderImpactMap();
+  }
+
+  fetch('./data/africa-map.json')
+    .then((r) => (r.ok ? r.json() : null))
+    .then((d) => { if (d && d.countries) { mapState.shapes = d.countries; renderImpactMap(); } })
+    .catch((err) => console.warn('Impact map outlines unavailable.', err));
+  renderImpactMap();
+  let mapResizeTimer;
+  window.addEventListener('resize', () => { clearTimeout(mapResizeTimer); mapResizeTimer = setTimeout(renderImpactMap, 150); });
 
   const dataObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {

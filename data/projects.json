@@ -1,5 +1,23 @@
 [
   {
+    "projectName": "QR Code Generator",
+    "year": 2026,
+    "abstract": "Browser-based QR code maker for links, emails, phone numbers and text, with custom colours, corner styles, an optional centre logo, and PNG, SVG or clipboard export. It reads its own code back after every change and flags any design that won't scan.",
+    "rationale": "Most free QR tools trade your data for convenience, or let you style a code until it quietly stops working. This one runs offline, uploads nothing, and checks itself, so a branded code is still a working code. Part of Brandon's Small Apps."
+  },
+  {
+    "projectName": "Cover Page Maker",
+    "year": 2026,
+    "abstract": "Offline tool that builds A4 university assignment cover pages in the standard bold, capitalised Times New Roman format, for one student or a group of up to 25, with a live preview and PDF or Word export.",
+    "rationale": "Every student loses time fighting margins and fonts on a cover page that always follows the same rules. The Cover Page Maker fills in the format for them, warns when content won't fit, and won't export until the preview has been checked. Part of Brandon's Small Apps."
+  },
+  {
+    "projectName": "Business Card Maker",
+    "year": 2026,
+    "abstract": "Print-ready business card designer with ten front templates, four matching back designs with a scan-tested QR code, and exports as 600 DPI PNGs, a two-page PDF, or an A4 sheet of ten cards with cut marks and optional 3 mm bleed.",
+    "rationale": "A good business card shouldn't need a designer, a subscription, or an account. This app takes someone from blank to print-shop-ready files in the browser, with nothing uploaded or stored. Part of Brandon's Small Apps."
+  },
+  {
     "projectName": "StudyBuddy",
     "year": 2026,
     "abstract": "Student-centric, AI-powered learning platform built for learners in low-resource environments. Built on open-weight large language models, it delivers a personalised, contextualised education experience shaped around each student.",
