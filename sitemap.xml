@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://rogue0015.github.io/</loc><lastmod>2026-11-05</lastmod></url>
-  <url><loc>https://rogue0015.github.io/blogs/</loc><lastmod>2026-11-05</lastmod></url>
-  <url><loc>https://rogue0015.github.io/blogs/page2.html</loc><lastmod>2026-11-05</lastmod></url>
-  <url><loc>https://rogue0015.github.io/blogs/page3.html</loc><lastmod>2026-11-05</lastmod></url>
-  <url><loc>https://rogue0015.github.io/blogs/page4.html</loc><lastmod>2026-11-05</lastmod></url>
+  <url><loc>https://rogue0015.github.io/</loc><lastmod>2026-11-06</lastmod></url>
+  <url><loc>https://rogue0015.github.io/blogs/</loc><lastmod>2026-11-06</lastmod></url>
+  <url><loc>https://rogue0015.github.io/blogs/page2.html</loc><lastmod>2026-11-06</lastmod></url>
+  <url><loc>https://rogue0015.github.io/blogs/page3.html</loc><lastmod>2026-11-06</lastmod></url>
+  <url><loc>https://rogue0015.github.io/blogs/page4.html</loc><lastmod>2026-11-06</lastmod></url>
+  <url><loc>https://rogue0015.github.io/blogs/icarus-testing-browser-limits.html</loc><lastmod>2026-11-06</lastmod></url>
   <url><loc>https://rogue0015.github.io/blogs/data-sovereign-ai-and-automated-workflows.html</loc><lastmod>2026-11-01</lastmod></url>
   <url><loc>https://rogue0015.github.io/blogs/designing-vision-sl.html</loc><lastmod>2026-10-31</lastmod></url>
   <url><loc>https://rogue0015.github.io/blogs/around-and-back.html</loc><lastmod>2026-11-05</lastmod></url>
@@ -23,10 +24,11 @@
   <url><loc>https://rogue0015.github.io/blogs/aura-over-authority.html</loc><lastmod>2026-07-22</lastmod></url>
   <url><loc>https://rogue0015.github.io/blogs/stone-soup-chef.html</loc><lastmod>2026-11-05</lastmod></url>
   <url><loc>https://rogue0015.github.io/blogs/hello-world.html</loc><lastmod>2026-07-18</lastmod></url>
-  <url><loc>https://rogue0015.github.io/tools/</loc><lastmod>2026-11-05</lastmod></url>
+  <url><loc>https://rogue0015.github.io/tools/</loc><lastmod>2026-11-06</lastmod></url>
   <url><loc>https://rogue0015.github.io/tools/qr/</loc><lastmod>2026-11-02</lastmod></url>
   <url><loc>https://rogue0015.github.io/tools/cover/</loc><lastmod>2026-11-02</lastmod></url>
   <url><loc>https://rogue0015.github.io/tools/card/</loc><lastmod>2026-11-02</lastmod></url>
   <url><loc>https://rogue0015.github.io/tools/flyer/</loc><lastmod>2026-11-02</lastmod></url>
   <url><loc>https://rogue0015.github.io/tools/avatar/</loc><lastmod>2026-11-05</lastmod></url>
+  <url><loc>https://rogue0015.github.io/tools/teleprompter/</loc><lastmod>2026-11-06</lastmod></url>
 </urlset>
