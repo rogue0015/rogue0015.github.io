@@ -4,7 +4,7 @@
 #
 #   copy blogs\_post-template.md blogs\<seo-friendly-slug>.md
 #
-# Slug rules: lowercase, hyphens only, keyword-rich, NO dates, NO underscores.
+# Slug rules: lowercase, hyphens only, descriptive, NO dates, NO underscores.
 # Files starting with "_" are ignored by the build, so this template is never
 # published. Fill every field below, delete these comment lines, then run:
 #
@@ -13,12 +13,18 @@
 # and commit the .md plus ALL generated files (.html, blogs/index.html,
 # sitemap.xml).
 #
-# STANDARD KEYWORD SET — pick 2-4 tags from this list, verbatim, for every
-# post. Reusing the same tokens (not synonyms) keeps the blog index tag
-# filter clean and keeps each topic cluster strong for SEO instead of
-# splintering into one-off variants. Only add a new tag if a post truly
-# doesn't fit any of these. Single token per tag, hyphenate multi-word ones
-# (no spaces — the tag filter splits on whitespace).
+# Write a unique title that accurately describes the post. Search engines may
+# shorten or rewrite title links to fit a query and screen, so there is no
+# fixed character target. Keep the useful words near the start.
+#
+# Write a concise, specific description that helps a reader decide whether the
+# post is relevant. Search engines primarily use page content for snippets and
+# may use this description when it is a better summary.
+#
+# TOPIC TAGS — choose 2-4 tags from this shared set when they fit. These tags
+# keep the blog filter useful and consistent for readers; they are not a ranking
+# shortcut. Only add a new tag if a post genuinely covers a new topic. Use one
+# token per tag and hyphenate multi-word tags (no spaces).
 #
 #   ai                  — AI/GenAI, LLMs, applied AI, AI strategy
 #   tech-community       — community building, GDG/Zindi, organizing, events
@@ -29,8 +35,8 @@
 #   zimbabwe                     — Zimbabwe-specific angle
 #   africa                         — pan-African tech/community angle
 # ============================================================================
-title: "Primary Keyword Up Front — Rest of Title, 50 to 60 Chars"
-description: "One sentence of 140 to 160 characters with the keyword near the start. This exact text is the Google snippet, so write it as the reason to click."
+title: "A clear, specific title for the article"
+description: "A concise summary of the article that names its subject and gives readers a reason to continue."
 date: 2026-01-01
 tags: [ai, tech-community]
 ---

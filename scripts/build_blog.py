@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Build the ROGUE0015 blog.
 
-Converts every blogs/*.md (Markdown + front matter) into a fully SEO-optimized
-static HTML page, regenerates the paginated blog index (blogs/index.html,
+Converts every blogs/*.md (Markdown + front matter) into a static HTML page,
+regenerates the paginated blog index (blogs/index.html,
 blogs/page2.html, ...) and regenerates sitemap.xml. Standard library only —
 no installs, no Jekyll.
 
@@ -216,7 +216,6 @@ POST_TEMPLATE = Template("""<!DOCTYPE html>
 <meta name="title" content="$title_attr">
 <meta name="description" content="$desc_attr">
 <meta name="author" content="Brandon T. Bande">
-<meta name="keywords" content="$keywords_attr">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#08060B">
 <meta name="color-scheme" content="dark">
@@ -299,7 +298,6 @@ INDEX_TEMPLATE = Template("""<!DOCTYPE html>
 <meta name="title" content="$page_title">
 <meta name="description" content="$page_desc">
 <meta name="author" content="Brandon T. Bande">
-<meta name="keywords" content="Brandon T. Bande blog, ROGUE0015, AI Zimbabwe, tech community Africa, generative AI, developer community, thoughts">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#08060B">
 <meta name="color-scheme" content="dark">
@@ -335,9 +333,7 @@ $header
 <main>
   <div class="index-tag mono"><span class="rule"></span> 06 / FIELD NOTES</div>
   <h1>Thoughts.</h1>
-  <p class="index-intro">Signals from the ground — notes on AI, community building, and
-    strategy from <a href="../index.html">Brandon T. Bande</a>, written between
-    <a href="../index.html#p4">talks and workshops</a> across Southern Africa.</p>
+  <p class="index-intro">Field notes on <a href="../index.html#p3">developer community building</a>, digital transformation, and responsible AI in Zimbabwe and across Africa — from organising GDG Harare and Young AI Leaders to building for low-resource settings.</p>
 
   <div class="tag-filter-row">
     <label class="mono" for="tag-filter">FILTER BY TAG</label>
@@ -423,8 +419,7 @@ def truncate(s, limit=158):
 # ---------------------------------------------------------------------- build
 
 def check_post(path, slug, meta):
-    """Enforce the blogs/_post-template.md rules. Hard-fail on structure,
-    warn on SEO length targets."""
+    """Enforce the blogs/_post-template.md publishing requirements."""
     if not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", slug):
         sys.exit(f"ERROR: {path.name}: slug must be lowercase-with-hyphens "
                  "(no dates, underscores, or uppercase). Copy blogs/_post-template.md.")
@@ -434,12 +429,11 @@ def check_post(path, slug, meta):
     if not meta["tags"]:
         sys.exit(f"ERROR: {path.name}: front matter needs 'tags: [..]'. "
                  "Copy blogs/_post-template.md.")
-    if "Primary Keyword Up Front" in meta["title"] or "reason to click" in meta.get("description", ""):
+    if (
+        meta["title"] == "A clear, specific title for the article"
+        or meta.get("description") == "A concise summary of the article that names its subject and gives readers a reason to continue."
+    ):
         sys.exit(f"ERROR: {path.name}: still contains template placeholder text.")
-    if not 20 <= len(meta["title"]) <= 60:
-        print(f"  WARN   {path.name}: title is {len(meta['title'])} chars (target 50-60).")
-    if not 140 <= len(meta["description"]) <= 160:
-        print(f"  WARN   {path.name}: description is {len(meta['description'])} chars (target 140-160).")
 
 def make_post(slug, title, description, date_obj, modified, tags, content):
     return {
@@ -564,7 +558,6 @@ def build_post(post, older, newer):
         title_esc=esc(post["title"]),
         title_attr=attr(post["title"]),
         desc_attr=attr(post["description"]),
-        keywords_attr=attr(", ".join(post["tags"] + ["Brandon T. Bande", "ROGUE0015", "Zimbabwe"])),
         url=post["url"],
         image_url=f"{SITE}/assets/brandon-bande.jpg",
         date_iso=post["date"].isoformat(),
@@ -642,7 +635,7 @@ def build_index(page_posts, newest_first, n, total):
         "@id": BLOG_ID,
         "url": f"{SITE}/blogs/",
         "name": "Thoughts — Brandon T. Bande",
-        "description": "Thoughts on AI, tech community building, and strategy from Brandon T. Bande (ROGUE0015).",
+        "description": "Field notes on developer community building, digital transformation, responsible AI, and technology in Zimbabwe and across Africa.",
         "inLanguage": "en",
         "author": {"@id": AUTHOR_ID},
         "publisher": {"@id": AUTHOR_ID},
@@ -658,12 +651,12 @@ def build_index(page_posts, newest_first, n, total):
         ],
     }, ensure_ascii=False, indent=2)
     if n == 1:
-        page_title = "Thoughts — Blog | Brandon T. Bande"
-        page_desc = ("Thoughts on AI, tech community building, and strategy from Brandon T. Bande "
-                     "— Tech Community Lead and speaker in Gweru, Zimbabwe.")
+        page_title = "Developer Community & Digital Transformation | Brandon T. Bande"
+        page_desc = ("Field notes on developer community building, digital transformation, responsible AI, "
+                     "and technology in Zimbabwe and across Africa by Brandon T. Bande.")
     else:
         page_title = f"Thoughts — Page {n} | Brandon T. Bande"
-        page_desc = (f"Page {n} of Thoughts — AI, tech community building, and strategy notes "
+        page_desc = (f"Page {n} of Thoughts — developer community building, digital transformation, and AI notes "
                      "from Brandon T. Bande (ROGUE0015).")
     rel_links = ""
     if n > 1:
@@ -732,14 +725,14 @@ def build_sitemap(posts, page_count):
     previous = {html.unescape(u): m for u, m in re.findall(
         r"<loc>([^<]+)</loc><lastmod>([^<]+)</lastmod>", old.read_text(encoding="utf-8"))} if old.exists() else {}
     urls = [
-        (f"{SITE}/", homepage_lastmod(today), "1.0"),
-        (f"{SITE}/blogs/", newest, "0.8"),
-    ] + [(page_url(n), newest, "0.5") for n in range(2, page_count + 1)] \
-      + [(p["url"], p["modified"], "0.7") for p in reversed(posts)] \
-      + [(u, m, "0.6" if u == TOOLS_URL else "0.5") for u, m in tools_rows(previous)]
+        (f"{SITE}/", homepage_lastmod(today)),
+        (f"{SITE}/blogs/", newest),
+    ] + [(page_url(n), newest) for n in range(2, page_count + 1)] \
+      + [(p["url"], p["modified"]) for p in reversed(posts)] \
+      + [(u, m) for u, m in tools_rows(previous)]
     rows = "\n".join(
-        f"  <url><loc>{html.escape(u)}</loc><lastmod>{m}</lastmod><priority>{pr}</priority></url>"
-        for u, m, pr in urls
+        f"  <url><loc>{html.escape(u)}</loc><lastmod>{m}</lastmod></url>"
+        for u, m in urls
     )
     return ('<?xml version="1.0" encoding="UTF-8"?>\n'
             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
