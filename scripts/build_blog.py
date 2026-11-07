@@ -3,8 +3,8 @@
 
 Converts every blogs/*.md (Markdown + front matter) into a static HTML page,
 regenerates the paginated blog index (blogs/index.html,
-blogs/page2.html, ...) and regenerates sitemap.xml. Standard library only —
-no installs, no Jekyll.
+blogs/page2.html, ...) and regenerates sitemap.xml and the RSS feed
+(feed.xml). Standard library only — no installs, no Jekyll.
 
 The sitemap also lists the /tools apps, which are published from the separate
 rogue0015/tools repo: the build reads their list from the live /tools page and
@@ -24,10 +24,11 @@ import re
 import subprocess
 import sys
 import urllib.request
-from datetime import date
-from email.utils import parsedate_to_datetime
+from datetime import date, datetime, timezone
+from email.utils import format_datetime, parsedate_to_datetime
 from pathlib import Path
 from string import Template
+from urllib.parse import urljoin
 
 ROOT = Path(__file__).resolve().parent.parent
 BLOGS = ROOT / "blogs"
@@ -39,6 +40,10 @@ PER_PAGE = 5
 HOME_SOURCES = ("index.html", "data/projects.json")
 TOOLS_URL = f"{SITE}/tools/"
 TOOLS_REPO = "rogue0015/tools"
+FEED_URL = f"{SITE}/feed.xml"
+FEED_TITLE = "Thoughts — Brandon T. Bande"
+FEED_ITEMS = 20  # newest posts to include in the RSS feed
+FEED_LINK = f'<link rel="alternate" type="application/rss+xml" title="{FEED_TITLE}" href="{FEED_URL}">'
 
 # ---------------------------------------------------------------- front matter
 
@@ -186,7 +191,8 @@ FOOTER = """<footer class="site-foot mono">
     <a href="../index.html">HOME</a> · <a href="index.html">THOUGHTS</a> · <a href="../index.html#p4">TALKS</a> ·
     <a href="https://twitter.com/Rogue0015" target="_blank" rel="noopener">X</a> ·
     <a href="https://www.linkedin.com/in/brandoebande" target="_blank" rel="noopener">LINKEDIN</a> ·
-    <a href="https://sessionize.com/brandon-bande/" target="_blank" rel="noopener">SESSIONIZE</a>
+    <a href="https://sessionize.com/brandon-bande/" target="_blank" rel="noopener">SESSIONIZE</a> ·
+    <a href="../feed.xml" type="application/rss+xml">RSS</a>
   </span>
 </footer>"""
 
@@ -224,6 +230,7 @@ POST_TEMPLATE = Template("""<!DOCTYPE html>
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
+$feed_link
 <meta property="og:type" content="article">
 <meta property="og:title" content="$title_attr">
 <meta property="og:description" content="$desc_attr">
@@ -306,6 +313,7 @@ INDEX_TEMPLATE = Template("""<!DOCTYPE html>
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
+$feed_link
 $rel_links<meta property="og:type" content="website">
 <meta property="og:title" content="$page_title">
 <meta property="og:description" content="$page_desc">
@@ -571,6 +579,7 @@ def build_post(post, older, newer):
         tag_chips=tag_chips,
         content=post["content"],
         pager=pager,
+        feed_link=FEED_LINK,
     )
 
 def page_href(n):
@@ -667,6 +676,7 @@ def build_index(page_posts, newest_first, n, total):
         site=SITE, jsonld=jsonld, header=HEADER, footer=FOOTER, analytics=ANALYTICS,
         cards=cards, all_cards=all_cards, tag_options=tag_options, page_title=page_title, page_desc=page_desc,
         page_url=page_url(n), rel_links=rel_links, index_pager=build_index_pager(n, total),
+        feed_link=FEED_LINK,
     )
 
 def homepage_lastmod(today):
@@ -738,6 +748,47 @@ def build_sitemap(posts, page_count):
             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
             f"{rows}\n</urlset>\n")
 
+def build_feed(posts):
+    """RSS 2.0 feed of the newest posts, with each post's full text."""
+    def rfc822(d):
+        return format_datetime(datetime(d.year, d.month, d.day, tzinfo=timezone.utc))
+
+    def absolute_links(content, base):
+        # Feed readers don't know where the post lives, so make every link absolute.
+        return re.sub(r'(href|src)="([^"]+)"',
+                      lambda m: f'{m.group(1)}="{urljoin(base, m.group(2))}"', content)
+
+    items = []
+    for p in list(reversed(posts))[:FEED_ITEMS]:
+        tags = "".join(f"      <category>{esc(t)}</category>\n" for t in p["tags"])
+        items.append(
+            "    <item>\n"
+            f"      <title>{esc(p['title'])}</title>\n"
+            f"      <link>{p['url']}</link>\n"
+            f'      <guid isPermaLink="true">{p["url"]}</guid>\n'
+            f"      <pubDate>{rfc822(p['date'])}</pubDate>\n"
+            f"      <description>{esc(p['description'])}</description>\n"
+            f"      <content:encoded>{esc(absolute_links(p['content'], p['url']))}</content:encoded>\n"
+            f"{tags}"
+            "    </item>\n"
+        )
+    # Dated by the newest post, so feed.xml only changes when a post does.
+    return (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" '
+        'xmlns:content="http://purl.org/rss/1.0/modules/content/">\n'
+        "  <channel>\n"
+        f"    <title>{esc(FEED_TITLE)}</title>\n"
+        f"    <link>{SITE}/blogs/</link>\n"
+        "    <description>Field notes on developer community building, digital transformation, "
+        "responsible AI, and technology in Zimbabwe and across Africa.</description>\n"
+        "    <language>en</language>\n"
+        f"    <lastBuildDate>{rfc822(posts[-1]['date'])}</lastBuildDate>\n"
+        f'    <atom:link href="{FEED_URL}" rel="self" type="application/rss+xml"/>\n'
+        + "".join(items)
+        + "  </channel>\n</rss>\n"
+    )
+
 def main():
     posts, sources = load_posts()
     if not posts:
@@ -758,6 +809,8 @@ def main():
             print(f"  removed blogs/{stale.name}")
     (ROOT / "sitemap.xml").write_text(build_sitemap(posts, len(pages)), encoding="utf-8")
     print("  built  sitemap.xml")
+    (ROOT / "feed.xml").write_text(build_feed(posts), encoding="utf-8")
+    print("  built  feed.xml")
     new = sum(1 for s in sources.values() if s == "md")
     print(f"OK: {len(posts)} post(s) published ({new} from .md, {len(posts) - new} kept from .html).")
 

@@ -11,7 +11,7 @@
 #   python scripts/build_blog.py
 #
 # and commit the .md plus ALL generated files (.html, blogs/index.html,
-# sitemap.xml).
+# sitemap.xml, feed.xml).
 #
 # Write a unique title that accurately describes the post. Search engines may
 # shorten or rewrite title links to fit a query and screen, so there is no
