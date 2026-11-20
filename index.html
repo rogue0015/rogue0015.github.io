@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>Brandon T. Bande | Developer Community &amp; Digital Transformation</title>
 <meta name="title" content="Brandon T. Bande | Developer Community &amp; Digital Transformation">
-<meta name="description" content="Brandon T. Bande builds developer communities and advances practical digital transformation in Zimbabwe and Africa through responsible AI, talks, and strategy.">
+<meta name="description" content="Brandon T. Bande has reached 5,000+ developers across 27 conferences and leads tech communities. He speaks on AI, digital transformation strategy and user-centric product design.">
 <meta name="author" content="Brandon T. Bande">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#08060B">
@@ -19,7 +19,7 @@
 <link rel="alternate" type="application/rss+xml" title="Thoughts — Brandon T. Bande" href="https://rogue0015.github.io/feed.xml">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Brandon T. Bande | Developer Community &amp; Digital Transformation">
-<meta property="og:description" content="Brandon T. Bande builds developer communities and advances practical digital transformation in Zimbabwe and Africa through responsible AI, talks, and strategy.">
+<meta property="og:description" content="Brandon T. Bande has reached 5,000+ developers across 27 conferences and leads tech communities. He speaks on AI, digital transformation strategy and user-centric product design.">
 <meta property="og:url" content="https://rogue0015.github.io/">
 <meta property="og:site_name" content="ROGUE0015">
 <meta property="og:locale" content="en_ZW">
@@ -29,7 +29,7 @@
 <meta property="og:image:alt" content="Brandon T. Bande, developer community builder and speaker in Zimbabwe">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Brandon T. Bande | Developer Community &amp; Digital Transformation">
-<meta name="twitter:description" content="Brandon T. Bande builds developer communities and advances practical digital transformation in Zimbabwe and Africa through responsible AI, talks, and strategy.">
+<meta name="twitter:description" content="Brandon T. Bande has reached 5,000+ developers across 27 conferences and leads tech communities. He speaks on AI, digital transformation strategy and user-centric product design.">
 <meta name="twitter:image" content="https://rogue0015.github.io/assets/brandon-bande.jpg">
 <meta name="twitter:site" content="@Rogue0015">
 <meta name="twitter:creator" content="@Rogue0015">
@@ -45,7 +45,7 @@
       "url": "https://rogue0015.github.io/",
       "image": "https://rogue0015.github.io/assets/brandon-bande.jpg",
       "jobTitle": "Developer Community Builder, Speaker & Strategic Manager",
-      "description": "Brandon T. Bande (ROGUE0015) is a Zimbabwean speaker and developer community builder advancing practical digital transformation through responsible AI and systems thinking. He organises Google Developer Groups Harare, leads the Young AI Leaders Gweru hub, and is a former Zindi Zimbabwe ambassador.",
+      "description": "Brandon T. Bande (ROGUE0015) is a Zimbabwean speaker and tech community manager who has reached 5,000+ developers across 27 conferences. He speaks on AI, digital transformation strategy and user-centric product design.",
       "address": { "@type": "PostalAddress", "addressLocality": "Gweru", "addressCountry": "ZW" },
       "nationality": { "@type": "Country", "name": "Zimbabwe" },
       "knowsAbout": ["Artificial Intelligence", "Generative AI", "AI Innovation", "Developer Community Building", "Developer Communities", "Community Strategy", "Digital Transformation", "Digital Transformation in Africa", "Python", "Google Gemini", "Retrieval-Augmented Generation", "AI Strategy", "Offline and Edge AI", "Computer Vision", "Public Speaking", "Mentorship", "Systems Thinking", "Privacy-First AI", "Low-Resource Systems", "Technology in Zimbabwe", "Technology in Africa"],
@@ -220,6 +220,15 @@
     font-size:11px; color:var(--paper-dim); letter-spacing:0.06em;
     text-align:right;
   }
+  .tools-nav{
+    position:fixed; top:52px; right:24px; z-index:60;
+    padding:8px 12px; border:1px solid var(--line-strong);
+    color:var(--acid); background:rgba(8,6,11,0.72);
+    font:500 11px 'IBM Plex Mono', monospace; letter-spacing:0.12em;
+    text-decoration:none; transition:background .2s, border-color .2s;
+  }
+  .tools-nav:hover{ background:rgba(212,255,63,0.1); border-color:var(--acid); }
+  @media (max-width:640px){ .tools-nav{ top:52px; right:14px; } }
   @media (max-width:640px){ .coord{ display:none; } }
 
   /* ---------- BOOT OVERLAY ---------- */
@@ -258,7 +267,7 @@
     overscroll-behavior-y: none;
     scroll-snap-type:x mandatory;
     scroll-behavior:smooth;
-    touch-action:pan-x pinch-zoom;
+    touch-action:pan-x pan-y pinch-zoom;
     -webkit-overflow-scrolling: touch;
   }
   .panel{
@@ -292,6 +301,8 @@
   .arrow-nav.next{ right:20px; }
   @media (max-width:640px){ .arrow-nav{ display:none; } }
   .panel-inner{ max-width:1180px; margin:0 auto; width:100%; padding:0 clamp(4px, 1.5vw, 20px); }
+  #p1{ overflow-y:auto; }
+  @media (max-width:1000px) and (max-height:900px){ #p1{ justify-content:flex-start; } }
 
   .frame{
     position:absolute; inset:18px;
@@ -451,8 +462,15 @@
 
   /* ---------- PANEL 1: ABOUT ---------- */
   .about-grid{ display:grid; grid-template-columns:0.8fr 1.35fr 1fr; gap:clamp(24px, 3vw, 42px); align-items:start; }
-  @media (max-width:1000px){ .about-grid{ grid-template-columns:1fr 1fr; } .about-grid .photo-col{ grid-row:1 / 3; } }
-  @media (max-width:700px){ .about-grid{ grid-template-columns:1fr; } .about-grid .photo-col{ grid-row:auto; max-width:200px; margin:0 auto; } }
+  @media (max-width:1000px){ .about-grid{ grid-template-columns:minmax(0, 1fr) minmax(0, 1fr); } .about-grid .photo-col{ grid-row:1 / 3; } }
+  @media (max-width:700px){
+    #p1{ justify-content:flex-start; overflow-y:auto; touch-action:pan-x pan-y pinch-zoom; }
+    .about-grid{ grid-template-columns:minmax(88px, .65fr) minmax(0, 1.35fr); gap:18px; }
+    .about-grid .photo-col{ grid-column:1; grid-row:1; max-width:100%; margin:0; }
+    .about-grid .aboutCopy{ grid-column:2; grid-row:1; min-width:0; }
+    .about-grid .log{ grid-column:1 / -1; grid-row:2; }
+    .about-grid p{ font-size:14px; line-height:1.55; }
+  }
 
   .photo-frame{
     position:relative; width:100%; aspect-ratio:3/4; overflow:hidden;
@@ -512,11 +530,9 @@
   .trail-wrap{ display:grid; grid-template-columns:1.2fr 0.8fr; gap:clamp(24px, 3vw, 40px); align-items:center; }
   @media (max-width:900px){ .trail-wrap{ grid-template-columns:1fr; } }
   .netmap{ position:relative; height:340px; }
-  .netmap svg{ width:100%; height:calc(100% - 22px); display:block;
-    -webkit-mask-image:linear-gradient(to right, transparent, #000 6%, #000 94%, transparent), linear-gradient(to bottom, transparent, #000 7%, #000 93%, transparent);
-    -webkit-mask-composite:source-in; mask-image:linear-gradient(to right, transparent, #000 6%, #000 94%, transparent), linear-gradient(to bottom, transparent, #000 7%, #000 93%, transparent); mask-composite:intersect; }
-  .netmap .land{ fill:rgba(245,239,223,0.05); stroke:rgba(245,239,223,0.2); stroke-width:.6; vector-effect:non-scaling-stroke; }
-  .netmap .land.visited{ fill:rgba(77,225,255,0.13); stroke:rgba(77,225,255,0.5); }
+  .netmap svg{ width:100%; height:calc(100% - 22px); display:block; }
+  .netmap .land{ fill:rgba(245,239,223,0.10); stroke:rgba(245,239,223,0.4); stroke-width:.8; vector-effect:non-scaling-stroke; }
+  .netmap .land.visited{ fill:rgba(77,225,255,0.18); stroke:rgba(77,225,255,0.65); }
   .netmap .ring{ fill:none; stroke:rgba(245,239,223,0.16); stroke-width:1; stroke-dasharray:2 4; vector-effect:non-scaling-stroke; }
   .netmap .ring-lbl{ font-family:'IBM Plex Mono', monospace; fill:rgba(245,239,223,0.4); }
   .netmap .node-lbl{ font-family:'IBM Plex Mono', monospace; fill:var(--paper); letter-spacing:.04em; }
@@ -728,7 +744,7 @@
 
   /* ---------- MOBILE TUNING ---------- */
   @media (max-width:640px){
-    .panels{ overflow-x:auto; overflow-y:hidden; overscroll-behavior-x:contain; overscroll-behavior-y:none; touch-action:pan-x pinch-zoom; }
+    .panels{ overflow-x:auto; overflow-y:hidden; overscroll-behavior-x:contain; overscroll-behavior-y:none; touch-action:pan-x pan-y pinch-zoom; }
     .panel{ padding:84px 18px 96px; width:100vw; }
     .panel-inner{ padding:0 2px; }
     .frame{ inset:10px; }
@@ -772,6 +788,7 @@
 
 <div class="brandmark"><span class="dotlive"></span> BRANDON.T.BANDE // ROGUE0015</div>
 <div class="coord mono" id="coord">19.4500° S 29.8167° E<br>GWERU, ZW</div>
+<a class="tools-nav" href="/tools/" aria-label="Explore Brandon's tools">TOOLS ↗</a>
 
 <nav class="sidenav" id="sidenav" aria-label="Section navigation">
   <button data-i="0" class="active" aria-label="Go to Hero"></button>
@@ -798,7 +815,7 @@
         <span class="line"><span class="accent">SYSTEMS.</span></span>
         <span class="line"><span>BUILD LOCAL.</span></span>
       </h1>
-      <p class="hero-sub">Brandon T. Bande is a Zimbabwean speaker and developer community builder. He advances practical digital transformation through community leadership, responsible AI and systems thinking shaped by real constraints on connectivity, budgets and data control.</p>
+      <p class="hero-sub">Brandon T. Bande is a Zimbabwean speaker and tech community manager who has reached over 5,000 developers across 27 conferences. He speaks on AI, digital transformation strategy and user-centric product design.</p>
       <div class="hero-cta">
         <a href="#p4" id="ctaTalks" class="cta-solid glitch-card">→ VIEW MY TALKS</a>
         <a href="blogs/index.html" class="cta-ghost glitch-card">→ READ MY THOUGHTS</a>
@@ -832,16 +849,17 @@
           </div>
         </div>
        
-<div class="aboutCopy">
-          <p>Since 2020, Brandon has given keynotes, panels and workshops across six countries, from TEDxBorrowdale and DevFests in Harare, Lusaka and Mbarara to PyCon Africa and PyCon South Africa. He organises GDG Harare, leads the Young AI Leaders Gweru hub and is a former Zindi Zimbabwe ambassador.</p>
-          <p>His approach to digital transformation starts with people, purpose, product and impact, then accounts for connectivity, budget and data sovereignty before choosing technology. He builds privacy-first AI for low-resource settings with local open-weight models and edge computer vision.</p>
+<div class="aboutCopy" id="aboutCopy">
+          <p>Brandon has reached over 5,000 developers across 27 conferences through keynotes, panels and workshops. His speaking spans AI, digital transformation strategy and user-centric product design, with a focus on turning ideas into useful outcomes for people.</p>
+          <p>He manages and grows tech communities across multiple networks, including Google Developer Groups Harare and the Young AI Leaders Gweru hub, and is a former Zindi Zimbabwe ambassador. His community work connects developers, students and practitioners through learning, collaboration and shared opportunity.</p>
         </div>
 
         <div class="log glitch-card" id="transmissionLog">
           <div class="log-title">// transmission log</div>
           <div class="log-row"><span>Based in</span><span>Gweru, ZW</span></div>
           <div class="log-row"><span>Latest stage</span><span>PyCon South Africa</span></div>
-          <div class="log-row"><span>Talk count</span><span>20+</span></div>
+          <div class="log-row"><span>Reach</span><span>5,000+ developers</span></div>
+          <div class="log-row"><span>Conferences</span><span>27</span></div>
           <div class="log-row"><span>Builds</span><span>Privacy-first AI</span></div>
           <div class="log-row"><span>Thinks in</span><span>Systems &amp; strategy</span></div>
           <div class="log-row"><span>Communities</span><span>GDG Harare · YAL</span></div>
@@ -1434,14 +1452,9 @@
 
     const aboutCopy = document.getElementById('aboutCopy');
     if (aboutCopy) {
-      const bio = cleanText(speaker.bio || '');
-      const shortBio = bio.length > 520 ? `${bio.slice(0, 517)}…` : bio;
       aboutCopy.innerHTML = `
-        <p><strong>${escapeHtml(speaker.tagline || 'Developer Community Builder | Speaker | Strategic Manager')}</strong></p>
-        <p>${escapeHtml(shortBio || 'Brandon builds and leads purpose-driven AI and developer communities across Zimbabwe and Africa, grounded in the DBAD principle of doing better and delivering. He brings inclusive Generative AI, mentorship and practical innovation to developers, students and everyday users.')}</p>
-        <p>Google Developer Groups Harare organiser, Young AI Leaders lead, and Zindi Zimbabwe ambassador — championing responsible Gen AI adoption and African tech innovation.</p>
-        <p>His work connects developer community building to digital transformation: organising GDG Harare, leading the Young AI Leaders Gweru hub, and applying responsible AI to local constraints.</p>
-        <p><strong><em>Inspire</em></strong>, <strong><em>inform</em></strong>, and <strong><em>engage</em></strong> are the pillars behind every community, workshop and keynote.</p>`;
+        <p>Brandon has reached over 5,000 developers across 27 conferences through keynotes, panels and workshops. His speaking spans AI, digital transformation strategy and user-centric product design, with a focus on turning ideas into useful outcomes for people.</p>
+        <p>He manages and grows tech communities across multiple networks, including Google Developer Groups Harare and the Young AI Leaders Gweru hub, and is a former Zindi Zimbabwe ambassador. His community work connects developers, students and practitioners through learning, collaboration and shared opportunity.</p>`;
     }
 
     const photo = document.getElementById('speakerPhoto');
@@ -1459,10 +1472,10 @@
         <div class="log-title">// transmission log</div>
         <div class="log-row"><span>Based in</span><span>Gweru, ZW</span></div>
         <div class="log-row"><span>Latest stage</span><span>${escapeHtml(latestEvent.name || 'PyCon South Africa')}</span></div>
-        <div class="log-row"><span>Talk count</span><span>${talkCount || '20+'}</span></div>
-        <div class="log-row"><span>Builds</span><span>Privacy-first AI</span></div>
-        <div class="log-row"><span>Thinks in</span><span>Systems &amp; strategy</span></div>
-        <div class="log-row"><span>Communities</span><span>GDG Harare · YAL</span></div>`;
+        <div class="log-row"><span>Reach</span><span>5,000+ developers</span></div>
+        <div class="log-row"><span>Conferences</span><span>27</span></div>
+        <div class="log-row"><span>Topics</span><span>AI · Strategy · Product</span></div>
+        <div class="log-row"><span>Communities</span><span>GDG Harare · YAL · more</span></div>`;
     }
 
     setImpactEvents(events);
@@ -1567,6 +1580,8 @@
   ].map(([d, l]) => ({ eventStartDate: d, location: l, name: '' }));
 
   const mapState = { events: MAP_FALLBACK_EVENTS, shapes: null };
+  const MAP_SHAPE_BOUNDS = { minX: -5413, maxX: 2436, minY: -6317, maxY: 1744 };
+  const isLocalFilePreview = window.location.protocol === 'file:';
   const R_EARTH = 6371;
   const rad = (d) => d * Math.PI / 180;
 
@@ -1611,8 +1626,11 @@
     const boxW = svg.clientWidth || 420, boxH = svg.clientHeight || 340;
     let minX = Math.min(...places.map((p) => p.x)), maxX = Math.max(...places.map((p) => p.x));
     let minY = Math.min(...places.map((p) => p.y)), maxY = Math.max(...places.map((p) => p.y));
+    // Focus the map on the full set of event cities, with room around the
+    // outer labels, instead of scaling the cities down to fit all of Africa.
     const span = Math.max(maxX - minX, maxY - minY, 800);
-    minX -= span * 0.14; maxX += span * 0.26; minY -= span * 0.12; maxY += span * 0.2;
+    const cityPadding = span * 0.2;
+    minX -= cityPadding; maxX += cityPadding; minY -= cityPadding; maxY += cityPadding;
     let w = maxX - minX, h = maxY - minY;
     if (w / h < boxW / boxH) { const nw = h * boxW / boxH; minX -= (nw - w) / 2; w = nw; }
     else { const nh = w * boxH / boxW; minY -= (nh - h) / 2; h = nh; }
@@ -1622,6 +1640,12 @@
     const visited = new Set(places.filter((p) => p.events.length).map((p) => p.country));
     const fs = (px) => (px * u).toFixed(1);
     let out = '';
+
+    // A file:// preview cannot fetch JSON due to browser origin restrictions.
+    // The local SVG keeps the country outlines visible in that case.
+    if (isLocalFilePreview) {
+      out += `<image href="data/africa-map.svg" x="${MAP_SHAPE_BOUNDS.minX}" y="${MAP_SHAPE_BOUNDS.minY}" width="${MAP_SHAPE_BOUNDS.maxX - MAP_SHAPE_BOUNDS.minX}" height="${MAP_SHAPE_BOUNDS.maxY - MAP_SHAPE_BOUNDS.minY}" preserveAspectRatio="none"></image>`;
+    }
 
     // Country outlines
     const shapes = mapState.shapes || {};
@@ -1662,7 +1686,7 @@
 
     // Labels: try spots around each node and keep the first that doesn't overlap.
     const placed = places.map((p) => ({ x: p.x - nodeR(p), y: p.y - nodeR(p), w: nodeR(p) * 2, h: nodeR(p) * 2 })).concat(ringBoxes);
-    const lblPx = 10, kmPx = 9;
+    const lblPx = 11, kmPx = 10;
     const overlaps = (b) => placed.some((o) => b.x < o.x + o.w && b.x + b.w > o.x && b.y < o.y + o.h && b.y + b.h > o.y);
     // keep labels clear of the faded edges
     const inView = (b) => b.x >= minX + w * 0.06 && b.x + b.w <= minX + w * 0.94 && b.y >= minY + h * 0.07 && b.y + b.h <= minY + h * 0.93;
