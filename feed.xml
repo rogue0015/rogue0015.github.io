@@ -5,8 +5,54 @@
     <link>https://rogue0015.github.io/blogs/</link>
     <description>Field notes on developer community building, digital transformation, responsible AI, and technology in Zimbabwe and across Africa.</description>
     <language>en</language>
-    <lastBuildDate>Sat, 14 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 24 Nov 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://rogue0015.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Solving AI: Borrowing from Biomimicry and Society</title>
+      <link>https://rogue0015.github.io/blogs/solving-ai-borrowing-from-biomimicry-and-society.html</link>
+      <guid isPermaLink="true">https://rogue0015.github.io/blogs/solving-ai-borrowing-from-biomimicry-and-society.html</guid>
+      <pubDate>Tue, 24 Nov 2026 00:00:00 +0000</pubDate>
+      <description>How designing a multi-persona AI automation system led me to borrow from nature, human onboarding, and workplace access control — and what that means for building resilient AI on a budget.</description>
+      <content:encoded>&lt;p&gt;Hey,&lt;/p&gt;
+&lt;p&gt;It's Bee again.&lt;/p&gt;
+&lt;p&gt;I wonder who holds the most patents in this world, and how they would compare to God. Every time we face a hard problem, the best answers seem to come from studying nature. From aerodynamics to architecture — and now to AI. We even have a word for it: biomimicry. As I tinker around in AI, some of my clearest solutions have come from drawing parallels between God's finest work — humans — and what I'd argue is the most interesting thing people have built recently: AI agents.&lt;/p&gt;
+&lt;p&gt;Here is how the story goes.&lt;/p&gt;
+&lt;h2&gt;The problem started with a prompt that never ended&lt;/h2&gt;
+&lt;p&gt;One day I sat down writing system instructions for an AI prompt destined to be part of Fung.ai. The goal was enterprise-wide automation: defining roles, permissions, tone, and context for every job the system would handle. After the third role, I had had enough. The file was bloating, the logic was tangled, and there had to be a better way.&lt;/p&gt;
+&lt;p&gt;But honestly, the problem started earlier.&lt;/p&gt;
+&lt;h2&gt;A desperate job-hunter's shortcut&lt;/h2&gt;
+&lt;p&gt;Roll back to 2024 — job-hunting season. I wanted to rate my CV against a role that was advertised online. I gave Gemini the link and it refused to read the site due to safety settings. Being the shortcut dev that I am, I went to Google AI Studio, wrote a small Python script using BeautifulSoup to extract the page text, fed it to Gemini, ran the assessment, and got the report. Easy.&lt;/p&gt;
+&lt;p&gt;That linear pipeline — get link, attach CV, generate report — worked perfectly for one job at a time. But Fung.ai needed something far more dynamic.&lt;/p&gt;
+&lt;h2&gt;Why linear pipelines break at enterprise scale&lt;/h2&gt;
+&lt;p&gt;For enterprise automation you have branching operations that depend on user input you cannot predict in advance. There is no clean mapping from "here is some text" to "run the right operation." That is what landed me with a markdown file of over a thousand lines (mostly AI-generated at the time) and a growing sense that something was structurally wrong.&lt;/p&gt;
+&lt;p&gt;Meanwhile, AI itself had been evolving. We went from pure chat models in 2022 to thinking models, reasoning models, and — the one I chose — function-calling models. Same intelligent core, but designed to pick the right tool given a described situation and a catalogue of available tools. It reminded me of those early childhood exercises where you match a profession to its tools. At IndabaX Zimbabwe 2024, I drew a parallel between AI models and children who need to be deliberately moulded rather than simply prompted. Most people in the room thought I was being dramatic. The analogy holds.&lt;/p&gt;
+&lt;h2&gt;Borrowing from workplace onboarding&lt;/h2&gt;
+&lt;p&gt;When you are onboarded at a new job, you receive a few things: the rules of the workplace, background context, your equipment, and the scope of your authority. Some tools are shared — anyone can use the stapler. Others are restricted: the IT admin can install software that the accountant cannot even update. These access dynamics are not bureaucracy for its own sake; they are the first line of security and the foundation of coordinated work.&lt;/p&gt;
+&lt;p&gt;I realised that any serious AI automation system inherits exactly these dynamics, and I needed to model them explicitly.&lt;/p&gt;
+&lt;h2&gt;Designing personas&lt;/h2&gt;
+&lt;p&gt;I initially wanted to call them roles, but someone beat me to it. Each persona in Fung.ai is defined by three things: instructions (what it knows and how it behaves), tools (what functions it can call), and permissions (what it is allowed to access and at what level).&lt;/p&gt;
+&lt;p&gt;For the tools, I wrote well-documented Python functions. With a simple API call I could hand the model a situation and let Qwen 2.5 — which performed well given my resource constraints — pick the right function and run it. I am giving a full talk on this architecture at PyCon Namibia in February 2027.&lt;/p&gt;
+&lt;h2&gt;Building for the future by designing backward&lt;/h2&gt;
+&lt;p&gt;Here is where I differ from most AI builders: I do not assume AI will always be available, affordable, or generous. I build for the scenario where it gets nerfed.&lt;/p&gt;
+&lt;p&gt;The rationale is simple. AI is cheap right now because of the race for user acquisition. Frontier labs have already started discussing how unsustainable current pricing is. Open-weight models exist because sharing research was once a competitive strategy — but once knowledge becomes the ultimate competitive advantage, the free gifts stop. Coca-Cola stopped sharing its recipe. Colonel Sanders guarded his. It is business, and it is fair. I build clean architecture so that if the model improves, we benefit immediately; if it gets restricted, the system still functions.&lt;/p&gt;
+&lt;h2&gt;Multiple fallbacks baked into the design&lt;/h2&gt;
+&lt;p&gt;Each persona lives in its own folder. Adding a new one is as simple as dropping a markdown file in the right place — the system scans dynamically. A mapping file governs which persona has access to which tools and at what level. When roles change or new capabilities are added, the system re-scans the full configuration and gives the LLM up-to-date context automatically.&lt;/p&gt;
+&lt;p&gt;Personas also include definitions of expected user input patterns, detection logic for prompt injection, and access-override attempts — which get blocked before they reach the model. Pydantic models enforce strict, uniform data structures for inter-persona coordination, so no extra payload or malicious data can be passed between agents. It mirrors how procedures and checklists in physical workplaces are both workflow tools and security controls.&lt;/p&gt;
+&lt;h2&gt;Current state&lt;/h2&gt;
+&lt;p&gt;It works — well, actually. The best-performing persona so far is the data analyst, which processed a 40 MB CSV in under three minutes and produced a clear summary report. The reporting persona still needs tuning to shift its output from technical jargon to something customer-facing.&lt;/p&gt;
+&lt;p&gt;I have not tested this in production at scale; time and resources are the current bottleneck. But the architecture is sound and the personas are composable.&lt;/p&gt;
+&lt;h2&gt;Why open-weight models&lt;/h2&gt;
+&lt;p&gt;Data sovereignty, privacy, and infrastructure are topics I return to often. I believe genuinely in keeping data local — especially in African contexts where cloud costs are high and trust in external infrastructure is low. Open-weight models make that possible today. If Qwen or any equivalent model reaches superintelligence levels, a clean architecture will get the full benefit automatically. If the frontier closes, the local model keeps running.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;As I tinker, I keep wondering where AI goes from here. What I know is that the most durable answers will keep coming from the same places they always have — from nature, from human behaviour, from the way organisations actually work. Someone took "go touch grass" too literally, and I think they were onto something.&lt;/p&gt;
+&lt;p&gt;Sincerely&lt;/p&gt;
+&lt;p&gt;Yours Truly&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Let's connect via the following platforms: &lt;a href="https://www.linkedin.com/in/brandoebande" target="_blank" rel="noopener"&gt;LinkedIn&lt;/a&gt;, on &lt;a href="https://twitter.com/Rogue0015" target="_blank" rel="noopener"&gt;X as @Rogue0015&lt;/a&gt;, or check the &lt;a href="https://sessionize.com/brandon-bande/" target="_blank" rel="noopener"&gt;Sessionize speaker profile&lt;/a&gt; if you want this signal live on your stage. And if you're new here, start with &lt;a href="https://rogue0015.github.io/index.html#p4"&gt;the talks&lt;/a&gt; — this blog is their echo.&lt;/p&gt;</content:encoded>
+      <category>ai</category>
+      <category>developers</category>
+      <category>zimbabwe</category>
+    </item>
     <item>
       <title>The show must go on</title>
       <link>https://rogue0015.github.io/blogs/the-show-must-go-on.html</link>
@@ -591,33 +637,6 @@
 &lt;p&gt;Let's connect via the following platforms : &lt;a href="https://www.linkedin.com/in/brandoebande" target="_blank" rel="noopener"&gt;LinkedIn&lt;/a&gt;, on &lt;a href="https://twitter.com/Rogue0015" target="_blank" rel="noopener"&gt;X as @Rogue0015&lt;/a&gt;, or check the &lt;a href="https://sessionize.com/brandon-bande/" target="_blank" rel="noopener"&gt;Sessionize speaker profile&lt;/a&gt; if you want this signal live on your stage. And if you're new here, start with &lt;a href="https://rogue0015.github.io/index.html#p4"&gt;the talks&lt;/a&gt; — this blog is their echo.&lt;/p&gt;</content:encoded>
       <category>tech-community</category>
       <category>developers</category>
-    </item>
-    <item>
-      <title>Hello World</title>
-      <link>https://rogue0015.github.io/blogs/hello-world.html</link>
-      <guid isPermaLink="true">https://rogue0015.github.io/blogs/hello-world.html</guid>
-      <pubDate>Sat, 18 Jul 2026 00:00:00 +0000</pubDate>
-      <description>I don't know how many times I have reintroduced myself. But with growth , I often feel the need to. So some time ago , I made a decision - to pause posting on LinkedIn. This was not the first time - I did so in 2023 and 2024....</description>
-      <content:encoded>&lt;p&gt;Hi,&lt;/p&gt;
-&lt;p&gt;I'm Brandon.&lt;/p&gt;
-&lt;p&gt;I don't know how many times I have reintroduced myself. But with growth , I often feel the need to. So some time ago , I made a decision - to pause posting on LinkedIn. This was not the first time - I did so in 2023 and 2024. This time it was different - more like a nail in the coffin. Somehow , there is a rude awakening for me : I might still have to stick around. Like LinkedIn still has domain authority, so as long as I still wanna be visible - I have to post those I am thrilled content.&lt;/p&gt;
-&lt;h2&gt;The major reason behind the shift&lt;/h2&gt;
-&lt;p&gt;One of the things that I have prided myself is was my authenticity. And it was more than just my voice , but openly sharing my thoughts , my flaws and my experiences. At times , even belittling my wins when they were not all that - a trend that bothers my mates at the pedestals that we are placed on. Now growing into different environments - it's becoming a problem especially when your thoughts appear frequently on the feeds of the people that to some extent have power to squash my growth . To avoid frequently antagonising people , I find myself here and the only way to get here is if you make the choice to press click 😏&lt;/p&gt;
-&lt;h2&gt;Also SEO&lt;/h2&gt;
-&lt;p&gt;Then there is this crazy idea - with AI , automation and stuff I believe a personal portfolio and blogs will do more good to me than LinkedIn will. This blog becomes the single point where information about Brandon T. Bande or rogue0015 is read by both human and machine. For the machines - at least I control the narrative , for the humans , you get to hear my side of the story too. I have used sessionize for my talks , medium for my thoughts and LinkedIn for my brand image. This portfolio will bring it all together in one place.&lt;/p&gt;
-&lt;h2&gt;No more signups to read my thoughts&lt;/h2&gt;
-&lt;p&gt;What good is writing , if no one reads what you write? Well , for someone whose thoughts attracts audiences ( whether its for good reasons or otherwise ) , the option to create an account to read does not sit well with me. But a blog , is just like putting it in plain sight (and you can also Google me and come to this directly ).&lt;/p&gt;
-&lt;h2&gt;The no AI-pledge&lt;/h2&gt;
-&lt;p&gt;In a sea of voices , the desire to stand out has made me do the unthinkable - resort to AI 😭 . Not saying that AI is bad , but when you have something too real to share there are a lot of trade offs to make. Keywords. Tone . Tags .  Then AI asks to tighten certain expressions , optimize for impact etc. Once done , you would realise that it feels way different than the original piece.&lt;/p&gt;
-&lt;h2&gt;Messing with markdown&lt;/h2&gt;
-&lt;p&gt;Haha , so as a way to decompress I write these article......in markdown. Then use a script to optimise it for SEO and stuff. But those minutes , typing in content in raw markdown ... are a necessary distraction. As a crazy , imaginative person this is the modern day equivalence to burning the midnight oil connecting my brain to the quill&lt;/p&gt;
-&lt;p&gt;So.on a final note. Welcome to my little corner on the internet. In this corner , expect to see genius takes next to what a certain pal at a conference termed 'interestingly intelligent ignorance' .Let's chat , connect and share crazy ideas. Always feel free to connect via different platforms. I look forward to hearing from you.&lt;/p&gt;
-&lt;p&gt;Signed&lt;/p&gt;
-&lt;p&gt;Yours Truly&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;Let's connect via the following platforms : &lt;a href="https://www.linkedin.com/in/brandoebande" target="_blank" rel="noopener"&gt;LinkedIn&lt;/a&gt;, on &lt;a href="https://twitter.com/Rogue0015" target="_blank" rel="noopener"&gt;X as @Rogue0015&lt;/a&gt;, or check the &lt;a href="https://sessionize.com/brandon-bande/" target="_blank" rel="noopener"&gt;Sessionize speaker profile&lt;/a&gt; if you want this signal live on your stage. And if you're new here, start with &lt;a href="https://rogue0015.github.io/index.html#p4"&gt;the talks&lt;/a&gt; — this blog is their echo.&lt;/p&gt;</content:encoded>
-      <category>personal-branding</category>
-      <category>ai</category>
     </item>
   </channel>
 </rss>

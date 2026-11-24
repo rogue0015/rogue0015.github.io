@@ -1550,6 +1550,29 @@
     select.value = options.includes(current) ? current : 'all';
   }
 
+  function renderStaticCards() {
+    const allPast = eventBoard.events
+      .filter((ev) => eventWhen(ev) === 'past')
+      .sort((a, b) => eventStartTime(b) - eventStartTime(a));
+    const allUpcoming = eventBoard.events
+      .filter((ev) => eventWhen(ev) === 'upcoming')
+      .sort((a, b) => eventStartTime(a) - eventStartTime(b));
+
+    const lastEl = document.getElementById('lastEvent');
+    const upcomingEl = document.getElementById('upcomingEvents');
+
+    if (lastEl) {
+      lastEl.innerHTML = allPast[0]
+        ? eventCard(allPast[0])
+        : '<div class="event-empty">No past events recorded.</div>';
+    }
+    if (upcomingEl) {
+      upcomingEl.innerHTML = allUpcoming.length
+        ? allUpcoming.map(eventCard).join('')
+        : '<div class="event-empty">No upcoming events scheduled.</div>';
+    }
+  }
+
   function renderEventBoard() {
     const filtered = eventBoard.events.filter(eventPasses);
     // past: most-recent first; upcoming: soonest first — both sorted by start date
@@ -1560,23 +1583,13 @@
       .filter((ev) => eventWhen(ev) === 'upcoming')
       .sort((a, b) => eventStartTime(a) - eventStartTime(b));
 
-    const lastEl = document.getElementById('lastEvent');
-    const upcomingEl = document.getElementById('upcomingEvents');
+    // Filters update the stats counters and bar widths
+    const isFiltered = eventBoard.when !== 'all' || eventBoard.year !== 'all' || eventBoard.country !== 'all';
+    const displayCount = isFiltered ? filtered.length : (eventBoard.totalTalkCount || eventBoard.events.length);
+    updateImpactStats(filtered, displayCount);
+
+    // Filters update the full log content
     const fullLog = document.getElementById('fullLog');
-
-    // Split cards
-    if (lastEl) {
-      lastEl.innerHTML = past.length
-        ? past.map(eventCard).join('')
-        : '<div class="event-empty">No past events for this filter.</div>';
-    }
-    if (upcomingEl) {
-      upcomingEl.innerHTML = upcoming.length
-        ? upcoming.map(eventCard).join('')
-        : '<div class="event-empty">No upcoming events for this filter.</div>';
-    }
-
-    // Full log — sectioned by upcoming / past
     if (fullLog) {
       const sections = [];
       if (eventBoard.when !== 'past' && upcoming.length) {
@@ -1590,12 +1603,15 @@
     }
   }
 
-  function setEventBoard(events) {
+  function setEventBoard(events, talkCount) {
     eventBoard.events = Array.isArray(events) ? events.slice() : [];
-    const years = [...new Set(eventBoard.events.map(eventYear).filter(Boolean))].sort((a, b) => b - a);
+    if (talkCount !== undefined) eventBoard.totalTalkCount = talkCount;
     const countries = [...new Set(eventBoard.events.map((event) => parseCountry(event.location)).filter(Boolean))].sort();
+    eventBoard.totalCountries = countries.length || 6;
+    const years = [...new Set(eventBoard.events.map(eventYear).filter(Boolean))].sort((a, b) => b - a);
     fillEventSelect(document.getElementById('eventYear'), years, 'ALL YEARS');
     fillEventSelect(document.getElementById('eventCountry'), countries, 'ALL COUNTRIES');
+    renderStaticCards();
     renderEventBoard();
   }
 
@@ -1648,8 +1664,7 @@
     }
 
     setImpactEvents(events);
-    updateImpactStats(events, talkCount);
-    setEventBoard(events);
+    setEventBoard(events, talkCount);
 
     const talkList = document.getElementById('talkList');
     if (talkList) {
@@ -1756,7 +1771,7 @@
   const MAP_SHAPE_BOUNDS = { minX: -5413, maxX: 2436, minY: -6317, maxY: 1744 };
   const isLocalFilePreview = window.location.protocol === 'file:';
   // Seed the event board with the static fallback so panels are never empty.
-  setEventBoard(MAP_FALLBACK_EVENTS);
+  setEventBoard(MAP_FALLBACK_EVENTS, 20);
   const R_EARTH = 6371;
   const rad = (d) => d * Math.PI / 180;
 
@@ -1901,11 +1916,30 @@
   function updateImpactStats(events, talkCount) {
     const places = mapPlaces(events);
     const countries = new Set(events.map((e) => parseCountry(e.location)).filter(Boolean));
-    const years = events.map((e) => new Date(e.eventStartDate).getFullYear()).filter((y) => y > 1990);
+    const years = events.map((e) => new Date(e.eventStartDate).getUTCFullYear()).filter((y) => !Number.isNaN(y) && y > 1990);
     const set = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
-    if (talkCount) set('statTalks', String(talkCount));
-    if (countries.size) set('statCountries', String(countries.size).padStart(2, '0'));
-    if (years.length) set('statYears', `${Math.min(2020, ...years)}–${Math.max(...years)}`);
+
+    const countDisplay = (talkCount !== undefined && talkCount !== null) ? talkCount : events.length;
+    set('statTalks', String(countDisplay));
+    set('statCountries', String(countries.size).padStart(2, '0'));
+    if (years.length) {
+      const minY = Math.min(...years);
+      const maxY = Math.max(...years);
+      set('statYears', minY === maxY ? String(minY) : `${minY}–${maxY}`);
+    } else {
+      set('statYears', '—');
+    }
+
+    const totalTalks = Number(eventBoard.totalTalkCount) || eventBoard.events.length || 20;
+    const talkPct = Math.min(100, Math.max(0, Math.round((Number(countDisplay) || 0) / Math.max(1, totalTalks) * 100)));
+    const totalCountries = eventBoard.totalCountries || 6;
+    const countryPct = Math.min(100, Math.max(0, Math.round(countries.size / Math.max(1, totalCountries) * 100)));
+    const totalYearsSpan = (years.length && totalTalks > 0) ? Math.min(100, Math.max(15, Math.round(years.length / totalTalks * 100))) : 0;
+    const bars = document.querySelectorAll('#p2 .bar-item');
+    if (bars[0]) bars[0].style.setProperty('--w', `${talkPct}%`);
+    if (bars[1]) bars[1].style.setProperty('--w', `${countryPct}%`);
+    if (bars[2]) bars[2].style.setProperty('--w', `${totalYearsSpan}%`);
+
     const marquee = document.getElementById('cityMarquee');
     if (marquee && places.length) {
       const line = escapeHtml(places.map((p) => p.city.toUpperCase()).join(' · '));
